@@ -19,6 +19,10 @@ namespace MolliesMovies.Movies.Requests
 
         public ICollection<string> Genres { get; set; }
         
+        public string YouTubeTrailerCode { get; set; }
+        
+        public string SourceCoverImageUrl { get; set; }
+        
         public string SourceUrl { get; set; }
         
         public string SourceId { get; set; }

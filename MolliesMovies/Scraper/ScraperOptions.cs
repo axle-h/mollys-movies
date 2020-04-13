@@ -5,14 +5,9 @@ namespace MolliesMovies.Scraper
 {
     public class ScraperOptions
     {
-        public YtsOptions Yts { get; set; }
+        public TimeSpan RemoteScrapeDelay { get; set; }
         
         public PlexOptions Plex { get; set; }
-    }
-
-    public class YtsOptions
-    {
-        public TimeSpan ScrapeDelay { get; set; }
     }
     
     public class PlexOptions

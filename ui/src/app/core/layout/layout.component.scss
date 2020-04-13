@@ -1,0 +1,9 @@
+@import "../../../styles/lib";
+
+.navbar {
+  box-shadow: $box-shadow;
+  .navbar-toggler {
+    border: 0;
+  }
+}
+

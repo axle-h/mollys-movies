@@ -1,0 +1,68 @@
+<h1>
+  <i class="fas fa-code"></i>
+  Scraper
+</h1>
+
+<div class="mb-4">
+  <button class="btn btn-success" (click)="createScrape()">
+    <i class="fas fa-plus"></i>
+    New
+  </button>
+  <button class="btn btn-secondary" (click)="load()">
+    <i class="fas fa-sync"></i>
+    Refresh
+  </button>
+</div>
+
+<ng-container *ngIf="scrapes; else spinner">
+  <table class="table table-stacked" *ngIf="scrapes.length; else noData">
+    <thead>
+    <tr>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Success</th>
+      <th>Local Movies</th>
+      <th>Movies</th>
+      <th>Torrents</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let scrape of scrapes">
+      <td data-title="Start Date">
+        {{scrape.startDate | date:'medium'}}
+      </td>
+      <td data-title="End Date">
+        <ng-container *ngIf="scrape.endDate; else noEndDate">
+          {{scrape.endDate | date:'medium'}}
+        </ng-container>
+        <ng-template #noEndDate>
+          <i class="fas fa-sync fa-spin"></i>
+        </ng-template>
+      </td>
+      <ng-container *ngIf="scrape.endDate">
+        <td data-title="Success">
+          <mm-bool [value]="scrape.success"></mm-bool>
+        </td>
+        <td data-title="Local Movies">
+          {{scrape.localMovieCount | number}}
+        </td>
+        <td data-title="Movies">
+          {{scrape.movieCount | number}}
+        </td>
+        <td data-title="Torrents">
+          {{scrape.torrentCount | number}}
+        </td>
+      </ng-container>
+    </tr>
+    </tbody>
+  </table>
+  <ng-template #noData>
+    <p class="my-3">
+      No results
+    </p>
+  </ng-template>
+</ng-container>
+
+<ng-template #spinner>
+  <mm-spinner></mm-spinner>
+</ng-template>

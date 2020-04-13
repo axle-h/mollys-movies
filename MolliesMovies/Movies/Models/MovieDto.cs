@@ -21,6 +21,10 @@ namespace MolliesMovies.Movies.Models
         
         public string Description { get; set; }
         
+        public string YouTubeTrailerCode { get; set; }
+        
+        public string ImageFilename { get; set; }
+
         public ICollection<string> Genres { get; set; }
         
         public ICollection<MovieSourceDto> MovieSources { get; set; }

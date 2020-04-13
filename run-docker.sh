@@ -1,12 +1,8 @@
 #!/bin/bash
 set -e
 
-uname=`uname -s`
-if [ "$uname" == "Linux" ]; then
+if [ "`uname -s`" == "Linux" ]; then
   export DOCKER_HOST_IP=`ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+'`
-else
-  # Windows and Macos
-  export DOCKER_HOST_IP="docker.host.internal"
 fi
 
 function wait_for_mysql() {

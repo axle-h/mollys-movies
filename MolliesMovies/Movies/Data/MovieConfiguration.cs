@@ -12,6 +12,8 @@ namespace MolliesMovies.Movies.Data
             builder.Property(x => x.Title).HasMaxLength(191).IsRequired();
             builder.Property(x => x.Language).HasMaxLength(191).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(4096);
+            builder.Property(x => x.YouTubeTrailerCode).HasMaxLength(255);
+            builder.Property(x => x.ImageFilename).HasMaxLength(255);
             builder.Property(x => x.Rating).HasColumnType("DECIMAL(3, 1)");
             
             builder.HasMany(x => x.MovieGenres)

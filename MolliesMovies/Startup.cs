@@ -1,17 +1,23 @@
 using System;
+using System.IO;
 using System.Text.Json.Serialization;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MolliesMovies.Common;
 using MolliesMovies.Common.Data;
 using MolliesMovies.Common.Exceptions;
+using MolliesMovies.Common.Routing;
 using MolliesMovies.Movies;
 using MolliesMovies.Movies.Data;
 using MolliesMovies.Scraper;
@@ -53,21 +59,56 @@ namespace MolliesMovies
                 return;
             }
             
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        if (_env.IsDevelopment())
+                        {
+                            builder.WithOrigins("http://localhost:4200");                            
+                        }
+                    });
+            });
+            
+            services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
+            
             services.AddControllers(o =>
                 {
                     o.Filters.Add<ApiExceptionFilter>();
+                    o.Conventions.Add(new RouteTokenTransformerConvention(
+                        new SlugifyParameterTransformer()));
                 })
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                     options.JsonSerializerOptions.IgnoreNullValues = true;
+                })
+                .AddFluentValidation(c =>
+                {
+                    c.RegisterValidatorsFromAssemblyContaining<Startup>();
+                    c.ImplicitlyValidateChildProperties = true;
                 });
+            
+            services.AddRouting(o =>
+            {
+                o.LowercaseUrls = true;
+            });
             
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mollies Movies", Version = "v1" });
             });
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(RouteConstants.PublicApi(1), new OpenApiInfo { Title = "Public Mollies Movies API", Version = "v1" });
+                c.CustomSchemaIds(t => t.DtoSafeFriendlyId());
+                c.CustomOperationIds(ad => ad.GetOperationId());
+                c.DocInclusionPredicate((name, api) => api.IsApi(name));
+            });
 
+            services.Configure<MovieOptions>(_configuration.GetSection("Movie"));
             services.Configure<ScraperOptions>(_configuration.GetSection("Scraper"));
             services.Configure<TransmissionOptions>(_configuration.GetSection("Transmission"));
             services.PostConfigure<TransmissionOptions>(o => o.RpcUri = GetApiUrl("transmission"));
@@ -116,7 +157,7 @@ namespace MolliesMovies
             return uri;
         }
 
-        public void Configure(IApplicationBuilder app, IServiceProvider provider)
+        public void Configure(IApplicationBuilder app, IServiceProvider provider, IOptions<MovieOptions> options)
         {
             if (_env.IsEnvironment(MigrationEnvironment))
             {
@@ -131,10 +172,27 @@ namespace MolliesMovies
             }
             
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mollies Movies V1"));
+            app.UseSwaggerUI(c => c.PublicApi(1));
 
             app.UseRouting();
+            app.UseCors();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(options.Value.ImagePath),
+                RequestPath = "/movie-images"
+            });
+            
             app.UseEndpoints(endpoints => endpoints.MapControllers());
+            
+            app.UseSpaStaticFiles();
+            app.UseSpa(o =>
+            {
+                if (_env.IsDevelopment())
+                {
+                    o.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                }
+            });
         }
     }
 }

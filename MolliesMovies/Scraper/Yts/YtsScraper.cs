@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MolliesMovies.Movies;
+using MolliesMovies.Movies.Models;
 using MolliesMovies.Movies.Requests;
 using MolliesMovies.Scraper.Data;
 using MolliesMovies.Scraper.Yts.Models;
@@ -39,7 +40,7 @@ namespace MolliesMovies.Scraper.Yts
         public async Task<ScrapeResult> ScrapeAsync(IScrapeSession session, CancellationToken cancellationToken = default)
         {
             var result = new ScrapeResult();
-            var options = _options.Value.Yts;
+            var options = _options.Value;
             
             _logger.LogInformation("Scraping yts movies from {fromDate}", session.ScrapeFrom);
             
@@ -55,9 +56,14 @@ namespace MolliesMovies.Scraper.Yts
                 };
                 var response = await _client.ListMoviesAsync(request, cancellationToken);
 
+                if (response.Movies is null)
+                {
+                    break;
+                }
+
                 var movies = session.ScrapeFrom.HasValue
                     ? response.Movies
-                        .Where(x => x.DateUploaded >= session.ScrapeFrom.Value)
+                        .Where(x => x.DateUploaded > session.ScrapeFrom.Value)
                         .ToList()
                     : response.Movies;
                 
@@ -82,15 +88,26 @@ namespace MolliesMovies.Scraper.Yts
                     break;
                 }
 
-                if (options.ScrapeDelay > TimeSpan.Zero)
+                if (options.RemoteScrapeDelay > TimeSpan.Zero)
                 {
-                    await Task.Delay(options.ScrapeDelay, cancellationToken);
+                    await Task.Delay(options.RemoteScrapeDelay, cancellationToken);
                 }
             }
 
             _logger.LogInformation("done");
 
             return result;
+        }
+
+        public async Task<CreateMovieImageRequest> ScrapeImageAsync(string imDbCode, MovieImageSourceDto source, CancellationToken cancellationToken = default)
+        {
+            var image = await _client.GetImageAsync(source.Value, cancellationToken);
+            return new CreateMovieImageRequest
+            {
+                Content = image.Content,
+                ContentType = image.ContentType,
+                ImdbCode = imDbCode
+            };
         }
     }
 }

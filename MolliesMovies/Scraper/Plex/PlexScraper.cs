@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using MolliesMovies.Common.Data;
 using MolliesMovies.Movies;
 using MolliesMovies.Movies.Data;
+using MolliesMovies.Movies.Models;
 using MolliesMovies.Movies.Requests;
 using MolliesMovies.Scraper.Data;
 
@@ -58,5 +59,15 @@ namespace MolliesMovies.Scraper.Plex
             };
         }
 
+        public async Task<CreateMovieImageRequest> ScrapeImageAsync(string imDbCode, MovieImageSourceDto source, CancellationToken cancellationToken = default)
+        {
+            var image = await _client.GetThumbAsync(source.Value, cancellationToken);
+            return new CreateMovieImageRequest
+            {
+                Content = image.Content,
+                ContentType = image.ContentType,
+                ImdbCode = imDbCode
+            };
+        }
     }
 }

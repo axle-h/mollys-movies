@@ -19,6 +19,8 @@ namespace MolliesMovies.Scraper.Data
         
         public int TorrentCount { get; set; }
         
+        public int ImageCount { get; set; }
+        
         public virtual ICollection<ScrapeSource> ScrapeSources { get; set; }
     }
 }

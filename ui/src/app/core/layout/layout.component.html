@@ -1,0 +1,41 @@
+<header>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand mr-auto" routerLink="/" aria-label="Mollies Movies">
+      <i class="fas fa-wine-glass-alt"></i>
+    </a>
+
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+      <i class="fas fa-bars text-light"></i>
+    </button>
+
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link p-2" [routerLink]="['/movies']" [routerLinkActive]="['active']" (click)="navClick()">
+            <i class="fas fa-film text-light"></i>
+            Movies
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link p-2" [routerLink]="['/downloads']" [routerLinkActive]="['active']" (click)="navClick()">
+            <i class="fas fa-download text-light"></i>
+            Downloads
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link p-2" [routerLink]="['/scraper']" [routerLinkActive]="['active']" (click)="navClick()">
+            <i class="fas fa-code text-light"></i>
+            Scraper
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+<article>
+  <div class="container pt-3">
+    <router-outlet></router-outlet>
+  </div>
+</article>

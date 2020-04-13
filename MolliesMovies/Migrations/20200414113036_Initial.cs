@@ -53,7 +53,9 @@ namespace MolliesMovies.Migrations
                     Language = table.Column<string>(maxLength: 191, nullable: false),
                     Year = table.Column<int>(nullable: false),
                     Rating = table.Column<decimal>(type: "DECIMAL(3, 1)", nullable: false),
-                    Description = table.Column<string>(maxLength: 4096, nullable: true)
+                    Description = table.Column<string>(maxLength: 4096, nullable: true),
+                    YouTubeTrailerCode = table.Column<string>(maxLength: 255, nullable: true),
+                    ImageFilename = table.Column<string>(maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,7 +74,8 @@ namespace MolliesMovies.Migrations
                     Success = table.Column<bool>(nullable: false),
                     LocalMovieCount = table.Column<int>(nullable: false),
                     MovieCount = table.Column<int>(nullable: false),
-                    TorrentCount = table.Column<int>(nullable: false)
+                    TorrentCount = table.Column<int>(nullable: false),
+                    ImageCount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,6 +144,7 @@ namespace MolliesMovies.Migrations
                     Source = table.Column<string>(maxLength: 191, nullable: false),
                     SourceUrl = table.Column<string>(maxLength: 255, nullable: false),
                     SourceId = table.Column<string>(maxLength: 191, nullable: false),
+                    SourceCoverImageUrl = table.Column<string>(maxLength: 255, nullable: true),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     DateScraped = table.Column<DateTime>(nullable: false)
                 },

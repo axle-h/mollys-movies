@@ -23,6 +23,15 @@ namespace MolliesMovies.Movies
             CreateMap<MovieSource, MovieSourceDto>();
             CreateMap<Torrent, TorrentDto>();
             CreateMap<LocalMovie, LocalMovieDto>();
+            CreateMap<Movie, MovieImageSourcesDto>()
+                .ForMember(x => x.LocalSource, o => o.MapFrom(x => x.DownloadedMovies.Select(y => y.LocalMovie).FirstOrDefault(y => !string.IsNullOrEmpty(y.ThumbPath))))
+                .ForMember(x => x.RemoteSources, o => o.MapFrom(x => x.MovieSources.Where(y => !string.IsNullOrEmpty(y.SourceCoverImageUrl))));
+
+            CreateMap<LocalMovie, MovieImageSourceDto>()
+                .ForMember(x => x.Value, o => o.MapFrom(x => x.ThumbPath));
+
+            CreateMap<MovieSource, MovieImageSourceDto>()
+                .ForMember(x => x.Value, o => o.MapFrom(x => x.SourceCoverImageUrl));
         }
     }
 }

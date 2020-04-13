@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +26,10 @@ namespace MolliesMovies.Movies
         Task CreateMoviesAsync(ICollection<CreateMovieRequest> requests);
 
         Task CreateLocalMoviesAsync(ICollection<CreateLocalMovieRequest> requests);
+
+        Task CreateMovieImageAsync(CreateMovieImageRequest request, CancellationToken cancellationToken = default);
+        void CreateMovieImageDirectory();
+        Task<bool> AssertMovieImageAsync(string imdbCode, CancellationToken cancellationToken = default);
     }
 
     public class ScrapeSession : IScrapeSession
@@ -34,6 +39,7 @@ namespace MolliesMovies.Movies
         private readonly MolliesMoviesContext _context;
         private readonly CancellationToken _cancellationToken;
         private readonly DateTime _scrapeDate;
+        private readonly MovieOptions _options;
 
         public ScrapeSession(
             string source,
@@ -43,7 +49,8 @@ namespace MolliesMovies.Movies
             List<string> localImdbCodes,
             MolliesMoviesContext context,
             ISystemClock clock,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            MovieOptions options)
         {
             ScrapeFrom = scrapeFrom;
             _source = source;
@@ -53,12 +60,13 @@ namespace MolliesMovies.Movies
             _context = context;
             _scrapeDate = clock.UtcNow;
             _cancellationToken = cancellationToken;
+            _options = options;
         }
-        
+
         public DateTime? ScrapeFrom { get; }
-        
+
         public List<string> MovieImdbCodes { get; }
-        
+
         public List<string> LocalImdbCodes { get; }
 
         public async Task CreateLocalMoviesAsync(ICollection<CreateLocalMovieRequest> requests)
@@ -67,7 +75,7 @@ namespace MolliesMovies.Movies
             {
                 throw new InvalidOperationException($"scrape session of type {_type} cannot create local movies");
             }
-            
+
             var toAdd = requests.Where(x => !LocalImdbCodes.Contains(x.ImdbCode))
                 .Select(x => new LocalMovie
                 {
@@ -85,7 +93,7 @@ namespace MolliesMovies.Movies
             {
                 return;
             }
-            
+
             LocalImdbCodes.AddRange(toAdd.Select(x => x.ImdbCode));
             _context.AddRange(toAdd);
 
@@ -96,7 +104,7 @@ namespace MolliesMovies.Movies
                     LocalMovieImdbCode = x
                 });
             _context.AddRange(downloadedMovies);
-            
+
             await _context.SaveChangesAsync(_cancellationToken);
         }
 
@@ -106,7 +114,7 @@ namespace MolliesMovies.Movies
             {
                 throw new InvalidOperationException($"scrape session of type {_type} cannot create torrent movies");
             }
-            
+
             static string Clean(string s) => s.Trim().ToLower();
             var requestedGenres = requests.SelectMany(x => x.Genres).Distinct().ToList();
             var genres = await _context.AssertGenresAsync(requestedGenres, _cancellationToken);
@@ -119,6 +127,7 @@ namespace MolliesMovies.Movies
                     DateScraped = _scrapeDate,
                     SourceId = request.SourceId,
                     SourceUrl = request.SourceUrl,
+                    SourceCoverImageUrl = request.SourceCoverImageUrl,
                     Torrents = request.Torrents
                         ?.Select(x => new Torrent
                         {
@@ -161,11 +170,12 @@ namespace MolliesMovies.Movies
                         Year = request.Year,
                         ImdbCode = imdbCode,
                         MetaSource = _source,
+                        YouTubeTrailerCode = request.YouTubeTrailerCode,
                         MovieGenres = request.Genres
                             ?.Join(genres, Clean, g => Clean(g.Name), (s, genre) => genre)
                             .Select(x => new MovieGenre {GenreId = x.Id})
                             .ToList(),
-                        MovieSources = new List<MovieSource> { source }
+                        MovieSources = new List<MovieSource> {source}
                     };
                     _context.Add(movie);
                     MovieImdbCodes.Add(imdbCode);
@@ -179,8 +189,43 @@ namespace MolliesMovies.Movies
                     }
                 }
             }
-            
+
             await _context.SaveChangesAsync(_cancellationToken);
+        }
+
+        public void CreateMovieImageDirectory() => Directory.CreateDirectory(_options.ImagePath);
+
+        public async Task CreateMovieImageAsync(CreateMovieImageRequest request, CancellationToken cancellationToken = default)
+        {
+            var file = request.ImdbCode + request.ContentType.Split('/').Last() switch
+            {
+                "jpeg" => ".jpg",
+                "jpg" => ".jpg",
+                "png" => ".png",
+                _ => throw new ArgumentException($"unknown image mime type {request.ContentType}")
+            };
+            await File.WriteAllBytesAsync(Path.Combine(_options.ImagePath, file), request.Content, cancellationToken);
+
+            await UpdateImageFilenameAsync(request.ImdbCode, file, cancellationToken);
+        }
+
+        public async Task<bool> AssertMovieImageAsync(string imdbCode, CancellationToken cancellationToken = default)
+        {
+            var file = Directory.EnumerateFiles(_options.ImagePath, imdbCode + ".*").FirstOrDefault();
+            if (file is null)
+            {
+                return false;
+            }
+
+            await UpdateImageFilenameAsync(imdbCode, Path.GetFileName(file), cancellationToken);
+            return true;
+        }
+
+        private async Task UpdateImageFilenameAsync(string imdbCode, string file, CancellationToken cancellationToken)
+        {
+            var movie = await _context.GetMovieByImdbCodeAsync(imdbCode, cancellationToken);
+            movie.ImageFilename = file;
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
