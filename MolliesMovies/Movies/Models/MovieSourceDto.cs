@@ -7,10 +7,6 @@ namespace MolliesMovies.Movies.Models
     {
         public string Source { get; set; }
         
-        public string SourceUrl { get; set; }
-        
-        public string SourceId { get; set; }
-        
         public DateTime DateCreated { get; set; }
         
         public DateTime DateScraped { get; set; }

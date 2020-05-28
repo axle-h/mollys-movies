@@ -15,6 +15,8 @@ namespace MolliesMovies.Movies.Data
         
         public string SourceId { get; set; }
         
+        public string SourceCoverImageUrl { get; set; }
+        
         public DateTime DateCreated { get; set; }
         
         public DateTime DateScraped { get; set; }

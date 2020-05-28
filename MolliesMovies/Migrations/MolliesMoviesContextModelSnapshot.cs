@@ -115,6 +115,10 @@ namespace MolliesMovies.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("ImageFilename")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
+                        .HasMaxLength(255);
+
                     b.Property<string>("ImdbCode")
                         .IsRequired()
                         .HasColumnType("varchar(191) CHARACTER SET utf8mb4")
@@ -140,6 +144,10 @@ namespace MolliesMovies.Migrations
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
+
+                    b.Property<string>("YouTubeTrailerCode")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
@@ -195,6 +203,10 @@ namespace MolliesMovies.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(191) CHARACTER SET utf8mb4")
                         .HasMaxLength(191);
+
+                    b.Property<string>("SourceCoverImageUrl")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
+                        .HasMaxLength(255);
 
                     b.Property<string>("SourceId")
                         .IsRequired()
@@ -268,6 +280,9 @@ namespace MolliesMovies.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ImageCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("LocalMovieCount")
                         .HasColumnType("int");

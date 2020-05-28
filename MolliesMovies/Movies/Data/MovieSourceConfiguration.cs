@@ -10,6 +10,7 @@ namespace MolliesMovies.Movies.Data
             builder.Property(x => x.Source).HasMaxLength(191).IsRequired();
             builder.Property(x => x.SourceUrl).HasMaxLength(255).IsRequired();
             builder.Property(x => x.SourceId).HasMaxLength(191).IsRequired();
+            builder.Property(x => x.SourceCoverImageUrl).HasMaxLength(255);
             builder.Property(x => x.DateCreated).IsRequired();
             builder.Property(x => x.DateScraped).IsRequired();
             

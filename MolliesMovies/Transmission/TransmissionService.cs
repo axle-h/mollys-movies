@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -11,6 +12,7 @@ using MolliesMovies.Common;
 using MolliesMovies.Common.Data;
 using MolliesMovies.Common.Exceptions;
 using MolliesMovies.Movies;
+using MolliesMovies.Movies.Models;
 using MolliesMovies.Scraper;
 using MolliesMovies.Transmission.Data;
 using MolliesMovies.Transmission.Models;
@@ -25,9 +27,10 @@ namespace MolliesMovies.Transmission
 
         Task<LiveTransmissionStatusDto> GetLiveTransmissionStatusAsync(int movieId, int torrentId, CancellationToken cancellationToken = default);
         
-        Task<TransmissionContextDto> GetContextByExternalIdAsync(int externalId, CancellationToken cancellationToken = default);
+        Task<TransmissionContextDto> GetActiveContextByExternalIdAsync(int externalId, CancellationToken cancellationToken = default);
         
-        Task CompleteCallbackAsync(int externalId, CancellationToken cancellationToken = default);
+        Task CompleteActiveContextAsync(int externalId, CancellationToken cancellationToken = default);
+        Task<Paginated<TransmissionContextDto>> GetAllContextsAsync(PaginatedRequest request, CancellationToken cancellationToken = default);
     }
 
     public class TransmissionService : ITransmissionService
@@ -153,10 +156,13 @@ namespace MolliesMovies.Transmission
             };
         }
 
-        public async Task<TransmissionContextDto> GetContextByExternalIdAsync(int externalId, CancellationToken cancellationToken = default)
+        public async Task<TransmissionContextDto> GetActiveContextByExternalIdAsync(int externalId, CancellationToken cancellationToken = default)
         {
             var context = await _context.TransmissionContexts()
-                .FirstOrDefaultAsync(x => x.ExternalId == externalId, cancellationToken);
+                .FirstOrDefaultAsync(x => x.ExternalId == externalId
+                                          && x.Statuses.Any()
+                                          && x.Statuses.OrderBy(s => s.DateCreated).Last().Status == TransmissionStatusCode.Started,
+                    cancellationToken);
             if (context is null)
             {
                 throw EntityNotFoundException.Of<TransmissionContext>(new { ExternalId = externalId });
@@ -165,14 +171,9 @@ namespace MolliesMovies.Transmission
             return _mapper.Map<TransmissionContextDto>(context);
         }
 
-        public async Task CompleteCallbackAsync(int externalId, CancellationToken cancellationToken = default)
+        public async Task CompleteActiveContextAsync(int externalId, CancellationToken cancellationToken = default)
         {
-            var context = await GetContextByExternalIdAsync(externalId, cancellationToken);
-            if (context.Status != TransmissionStatusCode.Started)
-            {
-                // assume this is a double post.
-                return;
-            }
+            var context = await GetActiveContextByExternalIdAsync(externalId, cancellationToken);
 
             await SetStatusAsync(TransmissionStatusCode.Downloaded, context.Id, cancellationToken);
 
@@ -180,6 +181,31 @@ namespace MolliesMovies.Transmission
 
             await SetStatusAsync(TransmissionStatusCode.Complete, context.Id, CancellationToken.None);
             _logger.LogInformation("initiated scrape for downloaded movie {name}", context.Name);
+        }
+
+        public async Task<Paginated<TransmissionContextDto>> GetAllContextsAsync(PaginatedRequest request, CancellationToken cancellationToken = default)
+        {
+            var query = _context.Set<TransmissionContext>();
+            var count = await query.CountAsync(cancellationToken);
+
+            var page = request.Page ?? 1;
+            var limit = request.Limit ?? 20;
+            var data = count > 0
+                ? await query
+                    .OrderByDescending(x => x.Id)
+                    .Skip((page - 1) * limit)
+                    .Take(limit)
+                    .ProjectTo<TransmissionContextDto>(_mapper.ConfigurationProvider)
+                    .ToListAsync(cancellationToken)
+                : new List<TransmissionContextDto>();
+
+            return new Paginated<TransmissionContextDto>
+            {
+                Page = page,
+                Limit = limit,
+                Count = count,
+                Data = data
+            };
         }
 
         private async Task SetStatusAsync(TransmissionStatusCode code, int contextId, CancellationToken cancellationToken = default)

@@ -21,6 +21,10 @@ namespace MolliesMovies.Movies.Data
         
         public string Description { get; set; }
         
+        public string YouTubeTrailerCode { get; set; }
+        
+        public string ImageFilename { get; set; }
+        
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }
         
         public virtual ICollection<MovieSource> MovieSources { get; set; }

@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MolliesMovies.Common.Routing;
 using MolliesMovies.Scraper.Models;
 
 namespace MolliesMovies.Scraper
 {
-    [Route("/api/scraper")]
+    [PublicApiRoute]
     public class ScraperController : ControllerBase
     {
         private readonly IScraperService _service;
@@ -19,7 +20,7 @@ namespace MolliesMovies.Scraper
         }
 
         [HttpGet]
-        public async Task<ICollection<ScrapeDto>> GetAll(CancellationToken cancellationToken = default) =>
+        public async Task<ICollection<ScrapeDto>> GetAllScrapes(CancellationToken cancellationToken = default) =>
             await _service.GetAllAsync(cancellationToken);
 
         [HttpPost]

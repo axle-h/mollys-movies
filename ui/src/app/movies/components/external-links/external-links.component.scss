@@ -1,0 +1,17 @@
+@import "../../../../styles/lib";
+
+svg.imdb-logo {
+  width: 3rem;
+  height: 1.5rem;
+  vertical-align: baseline;
+}
+
+.fa-youtube {
+  color: red;
+  font-size: 2rem;
+}
+
+a {
+  margin-right: map-get($spacers, 1);
+  margin-bottom: map-get($spacers, 1);
+}

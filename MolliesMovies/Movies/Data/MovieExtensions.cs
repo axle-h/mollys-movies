@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,6 +63,11 @@ namespace MolliesMovies.Movies.Data
                     : dbQuery.Where(x => !x.DownloadedMovies.Any());
             }
 
+            if (!string.IsNullOrEmpty(query.Genre))
+            {
+                dbQuery = dbQuery.Where(x => x.MovieGenres.Any(g => g.Genre.Name == query.Genre));
+            }
+
             if (!(query.OrderBy is null))
             {
                 for (var i = 0; i < query.OrderBy.Count; i++)
@@ -78,10 +84,12 @@ namespace MolliesMovies.Movies.Data
             }
 
             var count = await dbQuery.CountAsync(cancellationToken);
-            var movies = await dbQuery
-                .Skip((query.Page - 1) * query.Limit)
-                .Take(query.Limit)
-                .ToListAsync(cancellationToken);
+            var movies = count > 0
+                ? await dbQuery
+                    .Skip((query.Page - 1) * query.Limit)
+                    .Take(query.Limit)
+                    .ToListAsync(cancellationToken)
+                : new List<Movie>();
             
             return new PaginatedData<Movie>
             {

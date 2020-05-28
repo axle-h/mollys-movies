@@ -1,11 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MolliesMovies.Common;
+using MolliesMovies.Common.Routing;
 using MolliesMovies.Transmission.Models;
 
 namespace MolliesMovies.Transmission
 {
-    [Route("/api/movies/{movieId:int}/torrents")]
+    [PublicApiRoute]
     public class TransmissionController : ControllerBase
     {
         private readonly ITransmissionService _service;
@@ -14,14 +16,17 @@ namespace MolliesMovies.Transmission
         {
             _service = service;
         }
+        
+        [HttpGet("{externalId:int}")]
+        public async Task<TransmissionContextDto> GetContextByExternalId(int externalId, CancellationToken cancellationToken = default) =>
+            await _service.GetActiveContextByExternalIdAsync(externalId, cancellationToken);
+        
+        [HttpPost("{externalId:int}")]
+        public async Task CompleteCallback(int externalId, CancellationToken cancellationToken = default) =>
+            await _service.CompleteActiveContextAsync(externalId, cancellationToken);
 
-        [HttpPost("{torrentId:int}/download")]
-        public async Task Download(int movieId, int torrentId, CancellationToken cancellationToken = default) =>
-            await _service.DownloadMovieTorrentAsync(movieId, torrentId, cancellationToken);
-
-        [HttpGet("{torrentId:int}/live-status")]
-        public async Task<LiveTransmissionStatusDto> GetLiveTransmissionStatusAsync(int movieId, int torrentId,
-            CancellationToken cancellationToken = default) =>
-            await _service.GetLiveTransmissionStatusAsync(movieId, torrentId, cancellationToken);
+        [HttpGet]
+        public async Task<Paginated<TransmissionContextDto>> GetAllContexts(PaginatedRequest request, CancellationToken cancellationToken = default) =>
+            await _service.GetAllContextsAsync(request, cancellationToken);
     }
 }

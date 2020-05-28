@@ -14,17 +14,21 @@ namespace MolliesMovies.Scraper.Yts
     {
         Task<YtsListMoviesResponse> ListMoviesAsync(YtsListMoviesRequest request,
             CancellationToken cancellationToken = default);
+
+        Task<YtsImage> GetImageAsync(string url, CancellationToken cancellationToken = default);
     }
 
     public class YtsClient : IYtsClient
     {
-        private readonly JsonApiClient _client;
+        private readonly JsonApiClient _ytsClient;
         private readonly ILogger<YtsClient> _logger;
+        private readonly HttpClient _client;
         
         public YtsClient(HttpClient client, ILogger<YtsClient> logger)
         {
             _logger = logger;
-            _client = new JsonApiClient(client, x =>
+            _client = client;
+            _ytsClient = new JsonApiClient(client, x =>
             {
                 x.ContractResolver = new DefaultContractResolver
                 {
@@ -49,7 +53,7 @@ namespace MolliesMovies.Scraper.Yts
                 
                 try
                 {
-                    response = await _client.GetAsync<YtsResponse<YtsListMoviesResponse>>("/api/v2/list_movies.json", request,
+                    response = await _ytsClient.GetAsync<YtsResponse<YtsListMoviesResponse>>("/api/v2/list_movies.json", request,
                         cancellationToken);
                     break;
                 }
@@ -71,6 +75,18 @@ namespace MolliesMovies.Scraper.Yts
             }
 
             return response.Data;
+        }
+
+        public async Task<YtsImage> GetImageAsync(string url, CancellationToken cancellationToken = default)
+        {
+            var response = await _client.GetAsync(url, cancellationToken);
+            response.EnsureSuccessStatusCode();
+
+            return new YtsImage
+            {
+                Content = await response.Content.ReadAsByteArrayAsync(),
+                ContentType = response.Content.Headers.ContentType.ToString(),
+            };
         }
     }
 }
