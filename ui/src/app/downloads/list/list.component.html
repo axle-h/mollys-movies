@@ -3,6 +3,13 @@
   Downloads
 </h1>
 
+<div class="mb-4">
+  <button class="btn btn-secondary" (click)="load()">
+    <i class="fas fa-sync"></i>
+    Refresh
+  </button>
+</div>
+
 <ng-container *ngIf="data; else spinner">
   <ng-container *ngIf="count; else noResults">
     <table class="table table-stacked">
@@ -16,7 +23,7 @@
       <tr *ngFor="let context of data">
         <td data-title="Name">{{context.name}}</td>
         <td data-title="Status">
-          <ngb-progressbar *ngIf="context.liveStatus" type="light" [showValue]="true" [value]="context.liveStatus.percentComplete * 100"></ngb-progressbar>
+          <ngb-progressbar *ngIf="context.liveStatus" type="light" [value]="context.liveStatus.percentComplete * 100"></ngb-progressbar>
           <i *ngIf="!context.liveStatus" [ngClass]="getStatusIcon(context)"></i>
         </td>
       </tr>

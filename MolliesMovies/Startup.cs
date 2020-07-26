@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using System.Net.Http;
 using System.Text.Json.Serialization;
 using AutoMapper;
 using FluentValidation.AspNetCore;
@@ -11,9 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using MihaZupan;
 using MolliesMovies.Common;
 using MolliesMovies.Common.Data;
 using MolliesMovies.Common.Exceptions;
@@ -21,12 +21,9 @@ using MolliesMovies.Common.Routing;
 using MolliesMovies.Movies;
 using MolliesMovies.Movies.Data;
 using MolliesMovies.Scraper;
-using MolliesMovies.Scraper.Data;
 using MolliesMovies.Scraper.Plex;
 using MolliesMovies.Scraper.Yts;
 using MolliesMovies.Transmission;
-using Polly;
-using Polly.Extensions.Http;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace MolliesMovies
@@ -130,17 +127,10 @@ namespace MolliesMovies
             services.AddAutoMapper(typeof(Startup));
 
             var ytsUri = GetApiUrl("yts");
+            var proxyUrl = GetApiUrl("proxy");
             services.AddHttpClient<IYtsClient, YtsClient>(c => { c.BaseAddress = ytsUri; })
-                .AddPolicyHandler(
-                    (provider, request) => HttpPolicyExtensions.HandleTransientHttpError()
-                        .WaitAndRetryAsync(6, (retry, context) => TimeSpan.FromSeconds(Math.Pow(2, retry)),
-                            (outcome, timespan, retryAttempt, context) =>
-                            {
-                                provider.GetService<ILogger<YtsClient>>()?
-                                    .LogWarning("delaying for {delay}ms, then making retry {retry}.",
-                                        timespan.TotalMilliseconds, retryAttempt);
-                            }
-                        ));
+                .ConfigurePrimaryHttpMessageHandler(provider => new HttpClientHandler
+                    {Proxy = new HttpToSocks5Proxy(proxyUrl.Host, proxyUrl.Port)});
 
             var plexUri = GetApiUrl("plex");
             services.AddHttpClient<IPlexApiClient, PlexApiClient>(c => { c.BaseAddress = plexUri; });

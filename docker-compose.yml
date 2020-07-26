@@ -20,5 +20,9 @@ services:
       - CONNECTIONSTRINGS__MYSQL=Server=mysql;Port=3306;Database=MolliesMovies;Uid=root;Pwd=rootpassword;
       - CONNECTIONSTRINGS__PLEX=http://${DOCKER_HOST_IP:-docker.host.internal}:32400
       - CONNECTIONSTRINGS__TRANSMISSION=http://${DOCKER_HOST_IP:-docker.host.internal}:9091/transmission/rpc
+      - CONNECTIONSTRINGS__PROXY=socks5h://proxy:9150
     ports:
       - 6000:80
+      
+  proxy:
+    image: peterdavehello/tor-socks-proxy:latest
