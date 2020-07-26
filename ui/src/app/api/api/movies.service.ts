@@ -139,6 +139,10 @@ export class MoviesService {
      * @param language 
      * @param downloaded 
      * @param genre 
+     * @param yearFrom 
+     * @param yearTo 
+     * @param ratingFrom 
+     * @param ratingTo 
      * @param orderBy 
      * @param orderByDescending 
      * @param page 
@@ -146,10 +150,10 @@ export class MoviesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public searchMovies(title?: string, quality?: string, language?: string, downloaded?: boolean, genre?: string, orderBy?: MoviesOrderBy, orderByDescending?: boolean, page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<MoviePaginated>;
-    public searchMovies(title?: string, quality?: string, language?: string, downloaded?: boolean, genre?: string, orderBy?: MoviesOrderBy, orderByDescending?: boolean, page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<MoviePaginated>>;
-    public searchMovies(title?: string, quality?: string, language?: string, downloaded?: boolean, genre?: string, orderBy?: MoviesOrderBy, orderByDescending?: boolean, page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<MoviePaginated>>;
-    public searchMovies(title?: string, quality?: string, language?: string, downloaded?: boolean, genre?: string, orderBy?: MoviesOrderBy, orderByDescending?: boolean, page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public searchMovies(title?: string, quality?: string, language?: string, downloaded?: boolean, genre?: string, yearFrom?: number, yearTo?: number, ratingFrom?: number, ratingTo?: number, orderBy?: MoviesOrderBy, orderByDescending?: boolean, page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<MoviePaginated>;
+    public searchMovies(title?: string, quality?: string, language?: string, downloaded?: boolean, genre?: string, yearFrom?: number, yearTo?: number, ratingFrom?: number, ratingTo?: number, orderBy?: MoviesOrderBy, orderByDescending?: boolean, page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<MoviePaginated>>;
+    public searchMovies(title?: string, quality?: string, language?: string, downloaded?: boolean, genre?: string, yearFrom?: number, yearTo?: number, ratingFrom?: number, ratingTo?: number, orderBy?: MoviesOrderBy, orderByDescending?: boolean, page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<MoviePaginated>>;
+    public searchMovies(title?: string, quality?: string, language?: string, downloaded?: boolean, genre?: string, yearFrom?: number, yearTo?: number, ratingFrom?: number, ratingTo?: number, orderBy?: MoviesOrderBy, orderByDescending?: boolean, page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (title !== undefined && title !== null) {
@@ -171,6 +175,22 @@ export class MoviesService {
         if (genre !== undefined && genre !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>genre, 'Genre');
+        }
+        if (yearFrom !== undefined && yearFrom !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>yearFrom, 'YearFrom');
+        }
+        if (yearTo !== undefined && yearTo !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>yearTo, 'YearTo');
+        }
+        if (ratingFrom !== undefined && ratingFrom !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>ratingFrom, 'RatingFrom');
+        }
+        if (ratingTo !== undefined && ratingTo !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>ratingTo, 'RatingTo');
         }
         if (orderBy !== undefined && orderBy !== null) {
           queryParameters = this.addToHttpParams(queryParameters,

@@ -5,7 +5,7 @@ import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {SpinnerComponent} from './spinner/spinner.component';
 import { BoolComponent } from './bool/bool.component';
-import {NgbCollapseModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCollapseModule, NgbPaginationModule, NgbRatingModule} from '@ng-bootstrap/ng-bootstrap';
 
 const EXPORTED_MODULES = [
   CommonModule,
@@ -13,7 +13,8 @@ const EXPORTED_MODULES = [
   ReactiveFormsModule,
   HttpClientModule,
   NgbCollapseModule,
-  NgbPaginationModule
+  NgbPaginationModule,
+  NgbRatingModule,
 ];
 
 const COMPONENTS = [SpinnerComponent, BoolComponent];

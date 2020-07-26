@@ -67,6 +67,26 @@ namespace MolliesMovies.Movies.Data
             {
                 dbQuery = dbQuery.Where(x => x.MovieGenres.Any(g => g.Genre.Name == query.Genre));
             }
+            
+            if (query.YearFrom.HasValue)
+            {
+                dbQuery = dbQuery.Where(m => m.Year >= query.YearFrom.Value);
+            }
+            
+            if (query.YearTo.HasValue)
+            {
+                dbQuery = dbQuery.Where(m => m.Year <= query.YearTo.Value);
+            }
+            
+            if (query.RatingFrom.HasValue)
+            {
+                dbQuery = dbQuery.Where(m => m.Rating >= query.RatingFrom.Value);
+            }
+            
+            if (query.RatingTo.HasValue)
+            {
+                dbQuery = dbQuery.Where(m => m.Rating <= query.RatingTo.Value);
+            }
 
             if (!(query.OrderBy is null))
             {

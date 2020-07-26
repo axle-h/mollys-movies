@@ -6,8 +6,6 @@
 <div class="card mb-3 shadow">
   <div class="card-body">
     <form [formGroup]="searchForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="submit()">
-
-
       <div class="input-group mb-2">
         <input type="text" class="form-control" placeholder="Search movies" formControlName="title">
         <div class="input-group-append d-sm-none" *ngIf="isDirty">
@@ -19,7 +17,7 @@
 
       <div class="d-flex justify-content-between align-items-center">
         <span *ngIf="movies">
-          {{count | number}} result{{count > 1 ? 's' : ''}}
+          {{count | number}} result{{count === 0 || count > 1 ? 's' : ''}}
         </span>
         <div class="btn-group">
           <button class="btn btn-outline-danger btn-sm d-none d-sm-block" *ngIf="isDirty" (click)="reset()">
@@ -69,13 +67,44 @@
             <option [value]="genre" *ngFor="let genre of availableGenres">{{genre}}</option>
           </select>
         </div>
-        <div class="d-flex justify-content-end">
+
+        <div class="d-flex justify-content-end mb-2">
           <div class="custom-control custom-switch custom-control-inline">
             <input type="checkbox" class="custom-control-input" id="show-downloaded" formControlName="showDownloaded">
             <label class="custom-control-label" for="show-downloaded">
               Show downloaded
             </label>
           </div>
+        </div>
+
+        <ng-template #ratingStar let-fill="fill">
+          <i class="fas fa-star" *ngIf="fill === 100"></i>
+          <i class="far fa-star" *ngIf="fill === 0"></i>
+          <i class="fas fa-star-half-alt" *ngIf="fill !== 0 && fill !== 100"></i>
+        </ng-template>
+
+        <div class="d-flex justify-content-end mb-2">
+          <label for="rating-from" class="mr-1">Minimum rating</label>
+          <ngb-rating id="rating-from" formControlName="ratingFrom" resettable="true" max="5" [starTemplate]="ratingStar"></ngb-rating>
+        </div>
+
+        <div class="d-flex justify-content-end mb-2">
+          <label for="rating-to" class="mr-1">Maximum rating</label>
+          <ngb-rating id="rating-to" formControlName="ratingTo" resettable="true" max="5" [starTemplate]="ratingStar"></ngb-rating>
+        </div>
+
+        <div class="d-flex justify-content-end">
+
+          <label for="rating-from">Release year</label>
+        </div>
+        <div class="input-group justify-content-end mb-2">
+          <input id="year-from" type="number" min="1900" [max]="maxYear" class="form-control filter-field-sm" formControlName="yearFrom" />
+          <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fas fa-angle-right"></i>
+              </span>
+          </div>
+          <input id="year-to" type="number" min="1900" [max]="maxYear" class="form-control filter-field-sm" formControlName="yearTo" />
         </div>
       </div>
     </form>

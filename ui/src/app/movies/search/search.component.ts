@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GenreService, Movie, MoviesOrderBy, MoviesService } from '../../api';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { debounce, map, mergeAll, switchMap, tap } from 'rxjs/operators';
 import { from, interval, Subscription } from 'rxjs';
 
@@ -11,6 +11,10 @@ interface SearchState {
   title?: string;
   showDownloaded: boolean;
   genre?: string;
+  yearFrom: number | null;
+  yearTo: number | null;
+  ratingFrom: number | null;
+  ratingTo: number | null;
   orderBy?: MoviesOrderBy;
   descending: boolean;
 }
@@ -19,6 +23,10 @@ function filtersEqual(x: SearchState, y: SearchState) {
   return x.title === y.title
     && x.showDownloaded === y.showDownloaded
     && x.genre === y.genre
+    && x.ratingFrom === y.ratingFrom
+    && x.ratingTo === y.ratingTo
+    && x.yearFrom === y.yearFrom
+    && x.yearTo === y.yearTo
     && x.descending === y.descending
     && x.orderBy === y.orderBy;
 }
@@ -29,6 +37,10 @@ const defaultState: SearchState = {
   title: '',
   showDownloaded: true,
   genre: '',
+  yearFrom: null,
+  yearTo: null,
+  ratingFrom: null,
+  ratingTo: null,
   orderBy: MoviesOrderBy.Title,
   descending: false,
 };
@@ -78,9 +90,30 @@ export class SearchComponent implements OnInit, OnDestroy {
     return this.searchForm.get('genre');
   }
 
+  get yearFrom() {
+    return this.searchForm.get('yearFrom');
+  }
+
+  get yearTo() {
+    return this.searchForm.get('yearTo');
+  }
+
+  get ratingFrom() {
+    return this.searchForm.get('ratingFrom');
+  }
+
+  get ratingTo() {
+    return this.searchForm.get('ratingTo');
+  }
+
   get orderByKeys() {
     return Object.keys(MoviesOrderBy);
   }
+
+  get maxYear() {
+    return new Date().getFullYear();
+  }
+
 
   // '' | true => true => undefined
   // 'false => false => false
@@ -94,6 +127,10 @@ export class SearchComponent implements OnInit, OnDestroy {
         title: query.get('title') || defaultState.title,
         showDownloaded: (query.get('showDownloaded') || defaultState.showDownloaded.toString()) === 'true',
         genre: query.get('genre') || defaultState.genre,
+        yearFrom: parseInt(query.get('yearFrom'), 10) || defaultState.yearFrom,
+        yearTo: parseInt(query.get('yearTo'), 10) || defaultState.yearTo,
+        ratingFrom: parseInt(query.get('ratingFrom'), 10) || defaultState.ratingFrom,
+        ratingTo: parseInt(query.get('ratingTo'), 10) || defaultState.ratingTo,
         orderBy: (query.get('orderBy') as MoviesOrderBy) || defaultState.orderBy,
         descending: (query.get('descending') || defaultState.descending.toString()) === 'true',
       })),
@@ -103,6 +140,10 @@ export class SearchComponent implements OnInit, OnDestroy {
           title: [x.title],
           showDownloaded: [x.showDownloaded],
           genre: [x.genre],
+          yearFrom: [x.yearFrom, [Validators.min(1900), Validators.max(this.maxYear)]],
+          yearTo: [x.yearTo, [Validators.min(1900), Validators.max(this.maxYear)]],
+          ratingFrom: [x.ratingFrom, [Validators.min(0), Validators.max(5)]],
+          ratingTo: [x.ratingTo, [Validators.min(0), Validators.max(5)]],
           orderBy: [x.orderBy],
           descending: [x.descending],
         });
@@ -113,6 +154,10 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.subs.push(from([
           this.showDownloaded.valueChanges,
           this.genre.valueChanges,
+          this.yearFrom.valueChanges,
+          this.yearTo.valueChanges,
+          this.ratingFrom.valueChanges,
+          this.ratingTo.valueChanges,
           this.orderBy.valueChanges,
           this.descending.valueChanges
         ])
@@ -125,6 +170,10 @@ export class SearchComponent implements OnInit, OnDestroy {
         undefined,
         x.showDownloaded ? undefined : false,
         x.genre || undefined,
+        x.yearFrom,
+        x.yearTo,
+        x.ratingFrom && x.ratingFrom * 2,
+        x.ratingTo && x.ratingTo * 2,
         x.orderBy || undefined,
         x.descending || undefined,
         x.page,
@@ -147,7 +196,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     // unset defaults, no point these extending url
     for (const [key, value] of Object.entries(state)) {
-      if (defaultState[key] === value) {
+      if (!value || value === defaultState[key]) {
         state[key] = undefined;
       }
     }
@@ -166,6 +215,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.title.setValue(defaultState.title);
     this.showDownloaded.setValue(defaultState.showDownloaded);
     this.genre.setValue(defaultState.genre);
+    this.yearFrom.setValue(defaultState.yearFrom);
+    this.yearTo.setValue(defaultState.yearTo);
+    this.ratingFrom.setValue(defaultState.ratingFrom);
+    this.ratingTo.setValue(defaultState.ratingTo);
     this.orderBy.setValue(defaultState.orderBy);
     this.descending.setValue(defaultState.descending);
   }
@@ -199,6 +252,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       title: this.title.value,
       showDownloaded: this.showDownloaded.value,
       genre: this.genre.value,
+      yearFrom: this.yearFrom.value,
+      yearTo: this.yearTo.value,
+      ratingFrom: this.ratingFrom.value,
+      ratingTo: this.ratingTo.value,
       orderBy: this.orderBy.value,
       descending: this.descending.value,
     };

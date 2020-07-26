@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -74,27 +71,7 @@ namespace MolliesMovies.Movies
             SearchMoviesRequest request,
             CancellationToken cancellationToken = default)
         {
-            PaginatedOrderBy<Movie> OrderBy(Expression<Func<Movie, object>> property) =>
-                new PaginatedOrderBy<Movie> { Property = property, Descending = request.OrderByDescending ?? false };
-            
-            var query = new PaginatedMovieQuery
-            {
-                Page = request.Page ?? 1,
-                Limit = request.Limit ?? 20,
-                Title = request.Title,
-                Quality = request.Quality,
-                Language = request.Language,
-                Downloaded = request.Downloaded,
-                Genre = request.Genre,
-                OrderBy = (request.OrderBy ?? MoviesOrderBy.Title) switch
-                {
-                    MoviesOrderBy.Title => new[] { OrderBy(x => x.Title) },
-                    MoviesOrderBy.Year => new[] { OrderBy(x => x.Year), OrderBy(x => x.Title) },
-                    MoviesOrderBy.Rating => new[] { OrderBy(x => x.Rating) },
-                    _ => throw new ArgumentOutOfRangeException()
-                },
-            };
-
+            var query = _mapper.Map<PaginatedMovieQuery>(request);
             var result = await _context.SearchMoviesAsync(query, cancellationToken);
             return _mapper.Map<Paginated<MovieDto>>(result);
         }
