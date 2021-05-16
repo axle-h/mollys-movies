@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Serialization;
 using AutoMapper;
@@ -24,7 +25,6 @@ using MolliesMovies.Scraper;
 using MolliesMovies.Scraper.Plex;
 using MolliesMovies.Scraper.Yts;
 using MolliesMovies.Transmission;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace MolliesMovies
 {
@@ -48,7 +48,7 @@ namespace MolliesMovies
                 throw new Exception("mysql connection string is required");
             }
             services.AddDbContext<MolliesMoviesContext>(o => o
-                .UseMySql(mysqlConnectionString, mo => mo.ServerVersion(new Version(8, 0, 19), ServerType.MySql)));
+                .UseMySql(mysqlConnectionString, ServerVersion.AutoDetect(mysqlConnectionString)));
 
             if (_env.IsEnvironment(MigrationEnvironment))
             {
@@ -61,10 +61,10 @@ namespace MolliesMovies
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        if (_env.IsDevelopment())
-                        {
-                            builder.WithOrigins("http://localhost:4200");                            
-                        }
+                        var origins = _configuration.GetSection("CorsOrigins").GetChildren()
+                            .Select(x => x.Get<string>())
+                            .ToArray();
+                        builder.WithOrigins(origins);
                     });
             });
             
@@ -127,10 +127,20 @@ namespace MolliesMovies
             services.AddAutoMapper(typeof(Startup));
 
             var ytsUri = GetApiUrl("yts");
-            var proxyUrl = GetApiUrl("proxy");
-            services.AddHttpClient<IYtsClient, YtsClient>(c => { c.BaseAddress = ytsUri; })
-                .ConfigurePrimaryHttpMessageHandler(provider => new HttpClientHandler
-                    {Proxy = new HttpToSocks5Proxy(proxyUrl.Host, proxyUrl.Port)});
+            
+            var ytsClientBuilder = services.AddHttpClient<IYtsClient, YtsClient>(c => { c.BaseAddress = ytsUri; });
+            
+            var proxyUrl = _configuration.GetConnectionString("proxy");
+            if (!string.IsNullOrEmpty(proxyUrl))
+            {
+                if (!Uri.TryCreate(proxyUrl, UriKind.Absolute, out var uri))
+                {
+                    throw new Exception("proxy url is invalid");
+                }
+
+                ytsClientBuilder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+                    {Proxy = new HttpToSocks5Proxy(uri.Host, uri.Port)});                
+            }
 
             var plexUri = GetApiUrl("plex");
             services.AddHttpClient<IPlexApiClient, PlexApiClient>(c => { c.BaseAddress = plexUri; });
@@ -138,8 +148,7 @@ namespace MolliesMovies
 
         private Uri GetApiUrl(string name)
         {
-            if (!Uri.TryCreate(_configuration.GetConnectionString(name), UriKind.Absolute,
-                out var uri))
+            if (!Uri.TryCreate(_configuration.GetConnectionString(name), UriKind.Absolute, out var uri))
             {
                 throw new Exception($"valid {name} url is required");
             }
@@ -166,7 +175,7 @@ namespace MolliesMovies
 
             app.UseRouting();
             app.UseCors();
-
+            
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(options.Value.ImagePath),
