@@ -10,7 +10,7 @@ cd ..
 dotnet publish -c Release -r linux-x64
 
 mkdir -p /var/mollies-movies/movie-images
-cp -r MolliesMovies/bin/Release/netcoreapp3.1/linux-x64/publish /usr/share/mollies-movies
+cp -r MolliesMovies/bin/Release/net5.0/linux-x64/publish /usr/share/mollies-movies
 cp scripts/mollies-movies.service /etc/systemd/system/
 systemctl daemon-reload
 
