@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GenreService, Movie, MoviesOrderBy, MoviesService } from '../../api';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounce, map, mergeAll, switchMap, tap } from 'rxjs/operators';
 import { from, interval, Subscription } from 'rxjs';
 
@@ -20,15 +20,17 @@ interface SearchState {
 }
 
 function filtersEqual(x: SearchState, y: SearchState) {
-  return x.title === y.title
-    && x.showDownloaded === y.showDownloaded
-    && x.genre === y.genre
-    && x.ratingFrom === y.ratingFrom
-    && x.ratingTo === y.ratingTo
-    && x.yearFrom === y.yearFrom
-    && x.yearTo === y.yearTo
-    && x.descending === y.descending
-    && x.orderBy === y.orderBy;
+  return (
+    x.title === y.title &&
+    x.showDownloaded === y.showDownloaded &&
+    x.genre === y.genre &&
+    x.ratingFrom === y.ratingFrom &&
+    x.ratingTo === y.ratingTo &&
+    x.yearFrom === y.yearFrom &&
+    x.yearTo === y.yearTo &&
+    x.descending === y.descending &&
+    x.orderBy === y.orderBy
+  );
 }
 
 const defaultState: SearchState = {
@@ -68,7 +70,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly genreService: GenreService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
-    private readonly fb: FormBuilder) { }
+    private readonly fb: FormBuilder,
+  ) {}
 
   get title() {
     return this.searchForm.get('title');
@@ -114,70 +117,79 @@ export class SearchComponent implements OnInit, OnDestroy {
     return new Date().getFullYear();
   }
 
-
   // '' | true => true => undefined
   // 'false => false => false
   ngOnInit(): void {
-    this.genreService.getAllGenres().subscribe(x => this.availableGenres = x);
+    this.genreService.getAllGenres().subscribe(x => (this.availableGenres = x));
 
-    this.activatedRoute.queryParamMap.pipe(
-      map<ParamMap, SearchState>(query => ({
-        page: parseInt(query.get('page'), 10) || defaultState.page,
-        limit: parseInt(query.get('limit'), 10) || defaultState.limit,
-        title: query.get('title') || defaultState.title,
-        showDownloaded: (query.get('showDownloaded') || defaultState.showDownloaded.toString()) === 'true',
-        genre: query.get('genre') || defaultState.genre,
-        yearFrom: parseInt(query.get('yearFrom'), 10) || defaultState.yearFrom,
-        yearTo: parseInt(query.get('yearTo'), 10) || defaultState.yearTo,
-        ratingFrom: parseInt(query.get('ratingFrom'), 10) || defaultState.ratingFrom,
-        ratingTo: parseInt(query.get('ratingTo'), 10) || defaultState.ratingTo,
-        orderBy: (query.get('orderBy') as MoviesOrderBy) || defaultState.orderBy,
-        descending: (query.get('descending') || defaultState.descending.toString()) === 'true',
-      })),
-      tap(x => {
-        this.routerState = x;
-        this.searchForm = this.fb.group({
-          title: [x.title],
-          showDownloaded: [x.showDownloaded],
-          genre: [x.genre],
-          yearFrom: [x.yearFrom, [Validators.min(1900), Validators.max(this.maxYear)]],
-          yearTo: [x.yearTo, [Validators.min(1900), Validators.max(this.maxYear)]],
-          ratingFrom: [x.ratingFrom, [Validators.min(0), Validators.max(5)]],
-          ratingTo: [x.ratingTo, [Validators.min(0), Validators.max(5)]],
-          orderBy: [x.orderBy],
-          descending: [x.descending],
-        });
-        this.subs.push(this.title.valueChanges
-          .pipe(debounce(() => interval(500)))
-          .subscribe(() => this.search()));
+    this.activatedRoute.queryParamMap
+      .pipe(
+        map<ParamMap, SearchState>(query => ({
+          page: parseInt(query.get('page'), 10) || defaultState.page,
+          limit: parseInt(query.get('limit'), 10) || defaultState.limit,
+          title: query.get('title') || defaultState.title,
+          showDownloaded:
+            (query.get('showDownloaded') || defaultState.showDownloaded.toString()) === 'true',
+          genre: query.get('genre') || defaultState.genre,
+          yearFrom: parseInt(query.get('yearFrom'), 10) || defaultState.yearFrom,
+          yearTo: parseInt(query.get('yearTo'), 10) || defaultState.yearTo,
+          ratingFrom: parseInt(query.get('ratingFrom'), 10) || defaultState.ratingFrom,
+          ratingTo: parseInt(query.get('ratingTo'), 10) || defaultState.ratingTo,
+          orderBy: (query.get('orderBy') as MoviesOrderBy) || defaultState.orderBy,
+          descending: (query.get('descending') || defaultState.descending.toString()) === 'true',
+        })),
+        tap(x => {
+          this.routerState = x;
+          this.searchForm = this.fb.group({
+            title: [x.title],
+            showDownloaded: [x.showDownloaded],
+            genre: [x.genre],
+            yearFrom: [x.yearFrom, [Validators.min(1900), Validators.max(this.maxYear)]],
+            yearTo: [x.yearTo, [Validators.min(1900), Validators.max(this.maxYear)]],
+            ratingFrom: [x.ratingFrom, [Validators.min(0), Validators.max(5)]],
+            ratingTo: [x.ratingTo, [Validators.min(0), Validators.max(5)]],
+            orderBy: [x.orderBy],
+            descending: [x.descending],
+          });
+          this.subs.push(
+            this.title.valueChanges
+              .pipe(debounce(() => interval(500)))
+              .subscribe(() => this.search()),
+          );
 
-        this.subs.push(from([
-          this.showDownloaded.valueChanges,
-          this.genre.valueChanges,
-          this.yearFrom.valueChanges,
-          this.yearTo.valueChanges,
-          this.ratingFrom.valueChanges,
-          this.ratingTo.valueChanges,
-          this.orderBy.valueChanges,
-          this.descending.valueChanges
-        ])
-          .pipe(mergeAll())
-          .subscribe(() => this.search()));
-      }),
-      switchMap(x => this.moviesService.searchMovies(
-        x.title || undefined,
-        undefined,
-        undefined,
-        x.showDownloaded ? undefined : false,
-        x.genre || undefined,
-        x.yearFrom,
-        x.yearTo,
-        x.ratingFrom && x.ratingFrom * 2,
-        x.ratingTo && x.ratingTo * 2,
-        x.orderBy || undefined,
-        x.descending || undefined,
-        x.page,
-        x.limit)))
+          this.subs.push(
+            from([
+              this.showDownloaded.valueChanges,
+              this.genre.valueChanges,
+              this.yearFrom.valueChanges,
+              this.yearTo.valueChanges,
+              this.ratingFrom.valueChanges,
+              this.ratingTo.valueChanges,
+              this.orderBy.valueChanges,
+              this.descending.valueChanges,
+            ])
+              .pipe(mergeAll())
+              .subscribe(() => this.search()),
+          );
+        }),
+        switchMap(x =>
+          this.moviesService.searchMovies(
+            x.title || undefined,
+            undefined,
+            undefined,
+            x.showDownloaded ? undefined : false,
+            x.genre || undefined,
+            x.yearFrom,
+            x.yearTo,
+            x.ratingFrom && x.ratingFrom * 2,
+            x.ratingTo && x.ratingTo * 2,
+            x.orderBy || undefined,
+            x.descending || undefined,
+            x.page,
+            x.limit,
+          ),
+        ),
+      )
       .subscribe(value => {
         this.movies = value.data;
         this.routerState.page = value.page;

@@ -8,4 +8,10 @@ export * from './scraper.service';
 import { ScraperService } from './scraper.service';
 export * from './transmission.service';
 import { TransmissionService } from './transmission.service';
-export const APIS = [GenreService, MovieTorrentService, MoviesService, ScraperService, TransmissionService];
+export const APIS = [
+  GenreService,
+  MovieTorrentService,
+  MoviesService,
+  ScraperService,
+  TransmissionService,
+];

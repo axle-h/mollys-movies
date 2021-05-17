@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {ListComponent} from './list/list.component';
-
+import { ListComponent } from './list/list.component';
 
 const routes: Routes = [
-  { path: '',
+  {
+    path: '',
     children: [
       { path: '', component: ListComponent, pathMatch: 'full' },
-      { path: '**', redirectTo: '', pathMatch: 'full' }
-    ]
-  }
+      { path: '**', redirectTo: '', pathMatch: 'full' },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ScraperRoutingModule { }
+export class ScraperRoutingModule {}

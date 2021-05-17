@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import {map, mergeMap} from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { Movie, MoviesService, MovieTorrentService, Torrent } from '../../api';
-import {throwError} from 'rxjs';
+import { throwError } from 'rxjs';
 
 const typePref = {
   bluray: 1,
@@ -26,7 +26,7 @@ function getQualityPref(torrent: Torrent) {
 @Component({
   selector: 'mm-view',
   templateUrl: './view.component.html',
-  styleUrls: ['./view.component.scss']
+  styleUrls: ['./view.component.scss'],
 })
 export class ViewComponent implements OnInit {
   movie: Movie | null = null;
@@ -36,15 +36,18 @@ export class ViewComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly moviesService: MoviesService,
-    private readonly movieTorrentService: MovieTorrentService) { }
+    private readonly movieTorrentService: MovieTorrentService,
+  ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(
-      map(p => parseInt(p.id, 10)),
-      mergeMap(id => id
-        ? this.moviesService.getMovie(id)
-        : throwError(new Error('No id parameter provided')))
-    ).subscribe(x => this.movie = x);
+    this.route.params
+      .pipe(
+        map(p => parseInt(p.id, 10)),
+        mergeMap(id =>
+          id ? this.moviesService.getMovie(id) : throwError(new Error('No id parameter provided')),
+        ),
+      )
+      .subscribe(x => (this.movie = x));
   }
 
   back() {

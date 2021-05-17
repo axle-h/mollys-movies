@@ -16,7 +16,7 @@ interface TransmissionContextAndStatus extends TransmissionContext {
 @Component({
   selector: 'mm-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
   page?: number;
@@ -24,32 +24,35 @@ export class ListComponent implements OnInit {
   count?: number;
   data?: TransmissionContextAndStatus[] | null;
 
-  constructor(private readonly transmissionService: TransmissionService,
-              private readonly movieTorrentService: MovieTorrentService) {}
+  constructor(
+    private readonly transmissionService: TransmissionService,
+    private readonly movieTorrentService: MovieTorrentService,
+  ) {}
 
   ngOnInit(): void {
     this.load();
   }
 
   load() {
-    this.transmissionService.getAllContexts(this.page, this.limit)
-      .subscribe(x => {
-        this.page = x.page;
-        this.limit = x.limit;
-        this.count = x.count;
-        this.data = x.data as TransmissionContextAndStatus[];
-        const started = this.data && this.data.filter(c => c.status === TransmissionStatusCode.Started);
-        if (!started || started.length === 0) {
-          return of(x);
-        }
-        const $liveStatuses = started.map(c =>
-          this.movieTorrentService.getLiveTransmissionStatus(c.movieId, c.torrentId)
-            .pipe(map(s => ({ context: c, status: s })))
-        );
-        from($liveStatuses)
-          .pipe(mergeAll())
-          .subscribe(({ context, status }) => context.liveStatus = status);
-      });
+    this.transmissionService.getAllContexts(this.page, this.limit).subscribe(x => {
+      this.page = x.page;
+      this.limit = x.limit;
+      this.count = x.count;
+      this.data = x.data as TransmissionContextAndStatus[];
+      const started =
+        this.data && this.data.filter(c => c.status === TransmissionStatusCode.Started);
+      if (!started || started.length === 0) {
+        return of(x);
+      }
+      const $liveStatuses = started.map(c =>
+        this.movieTorrentService
+          .getLiveTransmissionStatus(c.movieId, c.torrentId)
+          .pipe(map(s => ({ context: c, status: s }))),
+      );
+      from($liveStatuses)
+        .pipe(mergeAll())
+        .subscribe(({ context, status }) => (context.liveStatus = status));
+    });
   }
 
   getStatusIcon(context: TransmissionContext) {

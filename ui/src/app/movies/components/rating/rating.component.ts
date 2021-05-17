@@ -1,9 +1,9 @@
-import {Component, Input} from '@angular/core';
-import {Movie} from '../../../api';
+import { Component, Input } from '@angular/core';
+import { Movie } from '../../../api';
 
 @Component({
   selector: 'mm-rating',
-  template: '<i *ngFor="let i of [1, 2, 3, 4, 5]" [ngClass]="getStar(i)"></i>'
+  template: '<i *ngFor="let i of [1, 2, 3, 4, 5]" [ngClass]="getStar(i)"></i>',
 })
 export class RatingComponent {
   @Input() movie: Movie;
@@ -20,5 +20,4 @@ export class RatingComponent {
 
     return 'far fa-star';
   }
-
 }

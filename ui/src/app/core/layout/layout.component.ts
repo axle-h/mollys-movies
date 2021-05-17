@@ -1,17 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'mm-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent {
   public isMenuCollapsed = true;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   navClick() {
     this.isMenuCollapsed = true;

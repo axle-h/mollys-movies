@@ -24,7 +24,11 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
-              { "glob": "**/*", "input": "src/favicon/", "output": "/" },
+              {
+                "glob": "**/*",
+                "input": "src/favicon/",
+                "output": "/"
+              },
               "src/assets"
             ],
             "styles": [
@@ -88,7 +92,11 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              { "glob": "**/*", "input": "src/favicon/", "output": "/" },
+              {
+                "glob": "**/*",
+                "input": "src/favicon/",
+                "output": "/"
+              },
               "src/assets"
             ],
             "styles": [
@@ -99,15 +107,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         },
@@ -124,6 +128,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ui"
+    }
+  },
+  "defaultProject": "ui",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

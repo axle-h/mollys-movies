@@ -5,13 +5,8 @@ import { ListComponent } from './list/list.component';
 import { SharedModule } from '../shared/shared.module';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 
-
 @NgModule({
   declarations: [ListComponent],
-  imports: [
-    SharedModule,
-    DownloadsRoutingModule,
-    NgbProgressbarModule
-  ]
+  imports: [SharedModule, DownloadsRoutingModule, NgbProgressbarModule],
 })
-export class DownloadsModule { }
+export class DownloadsModule {}
