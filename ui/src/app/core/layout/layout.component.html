@@ -1,3 +1,4 @@
+<div class='h-100 d-flex flex-column'>
 <header>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <a class="navbar-brand mr-auto" routerLink="/" aria-label="Mollies Movies">
@@ -33,9 +34,7 @@
   </nav>
 </header>
 
-
-<article>
-  <div class="container pt-3">
-    <router-outlet></router-outlet>
-  </div>
+<article class="container pt-3 flex-grow-1">
+  <router-outlet></router-outlet>
 </article>
+</div>

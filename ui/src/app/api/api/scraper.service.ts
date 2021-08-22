@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/member-ordering */
+/* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional } from '@angular/core';
 import {

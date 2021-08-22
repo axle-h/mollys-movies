@@ -10,6 +10,7 @@ import {
   NgbPaginationModule,
   NgbRatingModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import { QuantityPipe } from './quantity/quantity.pipe';
 
 const EXPORTED_MODULES = [
   CommonModule,
@@ -25,7 +26,7 @@ const COMPONENTS = [SpinnerComponent, BoolComponent];
 
 const DIRECTIVES = [];
 
-const PIPES = [];
+const PIPES = [QuantityPipe];
 
 @NgModule({
   imports: [...EXPORTED_MODULES],

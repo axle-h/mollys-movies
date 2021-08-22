@@ -34,7 +34,7 @@ export class ListComponent implements OnInit {
   }
 
   load() {
-    this.transmissionService.getAllContexts(this.page, this.limit).subscribe(x => {
+    this.transmissionService.getAllContexts({ page: this.page, limit: this.limit }).subscribe(x => {
       this.page = x.page;
       this.limit = x.limit;
       this.count = x.count;
@@ -46,7 +46,7 @@ export class ListComponent implements OnInit {
       }
       const $liveStatuses = started.map(c =>
         this.movieTorrentService
-          .getLiveTransmissionStatus(c.movieId, c.torrentId)
+          .getLiveTransmissionStatus({ movieId: c.movieId, torrentId: c.torrentId })
           .pipe(map(s => ({ context: c, status: s }))),
       );
       from($liveStatuses)

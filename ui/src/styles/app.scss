@@ -35,6 +35,8 @@
 @import "~bootstrap/scss/print";
 @import "~bootswatch/dist/solar/bootswatch";
 
+html, body { height: 100% }
+
 .cursor-pointer {
   cursor: pointer !important;
 }

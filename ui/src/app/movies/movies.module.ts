@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MoviesRoutingModule } from './movies-routing.module';
 import { SearchComponent } from './search/search.component';
 import { ViewComponent } from './view/view.component';
@@ -19,6 +19,6 @@ import { BadgesComponent } from './components/badges/badges.component';
     PosterComponent,
     BadgesComponent,
   ],
-  imports: [CommonModule, MoviesRoutingModule, SharedModule],
+  imports: [CommonModule, MoviesRoutingModule, SharedModule, ScrollingModule],
 })
 export class MoviesModule {}

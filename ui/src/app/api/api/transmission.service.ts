@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/member-ordering */
+/* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
@@ -28,6 +28,19 @@ import { TransmissionContextPaginated } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
+
+export interface CompleteCallbackRequestParams {
+  externalId: number;
+}
+
+export interface GetAllContextsRequestParams {
+  page?: number;
+  limit?: number;
+}
+
+export interface GetContextByExternalIdRequestParams {
+  externalId: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -99,34 +112,35 @@ export class TransmissionService {
   }
 
   /**
-   * @param externalId
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public completeCallback(
-    externalId: number,
+    requestParameters: CompleteCallbackRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined },
   ): Observable<any>;
   public completeCallback(
-    externalId: number,
+    requestParameters: CompleteCallbackRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined },
   ): Observable<HttpResponse<any>>;
   public completeCallback(
-    externalId: number,
+    requestParameters: CompleteCallbackRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined },
   ): Observable<HttpEvent<any>>;
   public completeCallback(
-    externalId: number,
+    requestParameters: CompleteCallbackRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined },
   ): Observable<any> {
+    const externalId = requestParameters.externalId;
     if (externalId === null || externalId === undefined) {
       throw new Error(
         'Required parameter externalId was null or undefined when calling completeCallback.',
@@ -166,39 +180,37 @@ export class TransmissionService {
   }
 
   /**
-   * @param page
-   * @param limit
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public getAllContexts(
-    page?: number,
-    limit?: number,
+    requestParameters: GetAllContextsRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<TransmissionContextPaginated>;
   public getAllContexts(
-    page?: number,
-    limit?: number,
+    requestParameters: GetAllContextsRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpResponse<TransmissionContextPaginated>>;
   public getAllContexts(
-    page?: number,
-    limit?: number,
+    requestParameters: GetAllContextsRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpEvent<TransmissionContextPaginated>>;
   public getAllContexts(
-    page?: number,
-    limit?: number,
+    requestParameters: GetAllContextsRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<any> {
+    const page = requestParameters.page;
+    const limit = requestParameters.limit;
+
     let queryParameters = new HttpParams({ encoder: this.encoder });
     if (page !== undefined && page !== null) {
       queryParameters = this.addToHttpParams(queryParameters, <any>page, 'Page');
@@ -238,34 +250,35 @@ export class TransmissionService {
   }
 
   /**
-   * @param externalId
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public getContextByExternalId(
-    externalId: number,
+    requestParameters: GetContextByExternalIdRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<TransmissionContext>;
   public getContextByExternalId(
-    externalId: number,
+    requestParameters: GetContextByExternalIdRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpResponse<TransmissionContext>>;
   public getContextByExternalId(
-    externalId: number,
+    requestParameters: GetContextByExternalIdRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpEvent<TransmissionContext>>;
   public getContextByExternalId(
-    externalId: number,
+    requestParameters: GetContextByExternalIdRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<any> {
+    const externalId = requestParameters.externalId;
     if (externalId === null || externalId === undefined) {
       throw new Error(
         'Required parameter externalId was null or undefined when calling getContextByExternalId.',

@@ -8,11 +8,16 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "openapi-generator": "openapi-generator generate -i http://localhost:5000/swagger/api-v1/swagger.json -g typescript-angular -o src/app/api --additional-properties=\"ngVersion=9.0.0,fileNaming=kebab-case,stringEnums=true\""
+    "openapi-generator": "openapi-generator generate -i http://10.0.0.10:5000/swagger/api-v1/swagger.json -g typescript-angular -o src/app/api --additional-properties=ngVersion=11.0.0,fileNaming=kebab-case,stringEnums=true,supportsES6=true,useSingleRequestParameter=true"
   },
   "private": true,
+  "engines": {
+    "node": "^14",
+    "npm": "^7"
+  },
   "dependencies": {
     "@angular/animations": "~11.2.14",
+    "@angular/cdk": "^11.2.13",
     "@angular/common": "~11.2.14",
     "@angular/compiler": "~11.2.14",
     "@angular/core": "~11.2.14",

@@ -44,7 +44,9 @@ export class ViewComponent implements OnInit {
       .pipe(
         map(p => parseInt(p.id, 10)),
         mergeMap(id =>
-          id ? this.moviesService.getMovie(id) : throwError(new Error('No id parameter provided')),
+          id
+            ? this.moviesService.getMovie({ id })
+            : throwError(new Error('No id parameter provided')),
         ),
       )
       .subscribe(x => (this.movie = x));
@@ -76,8 +78,10 @@ export class ViewComponent implements OnInit {
 
   download() {
     const torrent = this.pickTorrent();
-    this.movieTorrentService.downloadMovie(this.movie.id, torrent.id).subscribe(() => {
-      return this.router.navigate(['/downloads']);
-    });
+    this.movieTorrentService
+      .downloadMovie({ movieId: this.movie.id, torrentId: torrent.id })
+      .subscribe(() => {
+        return this.router.navigate(['/downloads']);
+      });
   }
 }

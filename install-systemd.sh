@@ -2,8 +2,8 @@
 set -e
 
 cd ui
-yarn
-yarn build --prod
+npm install
+npm run build -- --prod
 cp -r dist/ui ../MolliesMovies/wwwroot
 
 cd ..

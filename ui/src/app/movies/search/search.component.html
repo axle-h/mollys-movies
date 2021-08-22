@@ -1,142 +1,131 @@
-<h1>
-  <i class="fas fa-film"></i>
-  Movies
-</h1>
+<div class='h-100 d-flex flex-column'>
+  <h1>
+    <i class="fas fa-film"></i>
+    Movies
+  </h1>
 
-<div class="card mb-3 shadow">
-  <div class="card-body">
-    <form [formGroup]="searchForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="submit()">
-      <div class="input-group mb-2">
-        <input type="text" class="form-control" placeholder="Search movies" formControlName="title">
-        <div class="input-group-append d-sm-none" *ngIf="isDirty">
-          <button class="btn btn-outline-danger" type="button" (click)="reset()">
-            <i class="fas fa-times"></i>
-          </button>
+  <div class="card mb-2 shadow">
+    <div class="card-body">
+      <form [formGroup]="searchForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="submit()">
+        <div class="input-group mb-2">
+          <input type="text" class="form-control" placeholder="Search movies" formControlName="title">
+          <div class="input-group-append d-sm-none" *ngIf="isDirty">
+            <button class="btn btn-outline-danger" type="button" (click)="reset()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div class="d-flex justify-content-between align-items-center">
-        <span *ngIf="movies">
-          {{count | number}} result{{count === 0 || count > 1 ? 's' : ''}}
+        <div class="d-flex justify-content-between align-items-center">
+        <span>
+          {{ $count | async | quantity: 'result' }}
         </span>
-        <div class="btn-group">
-          <button class="btn btn-outline-danger btn-sm d-none d-sm-block" *ngIf="isDirty" (click)="reset()">
-            <i class="fas fa-times"></i>
-            Reset
-          </button>
+          <div class="btn-group">
+            <button class="btn btn-outline-danger btn-sm d-none d-sm-block" *ngIf="isDirty" (click)="reset()">
+              <i class="fas fa-times"></i>
+              Reset
+            </button>
 
-          <button
-            class="btn btn-outline-secondary btn-sm"
-            [ngClass]="{ 'btn-outline-secondary': sortCollapsed, 'btn-secondary': !sortCollapsed }"
-            type="button"
-            (click)="toggleSort()">
-            <i class="fas fa-sort-alpha-down"></i>
-            Sort
-          </button>
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              [ngClass]="{ 'btn-outline-secondary': sortCollapsed, 'btn-secondary': !sortCollapsed }"
+              type="button"
+              (click)="toggleSort()">
+              <i class="fas fa-sort-alpha-down"></i>
+              Sort
+            </button>
 
-          <button
-            class="btn btn-outline-secondary btn-sm"
-            [ngClass]="{ 'btn-outline-secondary': filtersCollapsed, 'btn-secondary': !filtersCollapsed }"
-            type="button"
-            (click)="toggleFilters()">
-            <i class="fas fa-filter"></i>
-            Filter
-          </button>
-        </div>
-      </div>
-
-      <div [ngbCollapse]="sortCollapsed" class="text-muted pt-2">
-        <div class="d-flex justify-content-end flex-wrap mb-2">
-          <div class="custom-control custom-radio custom-control-inline" *ngFor="let key of orderByKeys">
-            <input type="radio" id="sort-{{key}}" class="custom-control-input" [value]="key" formControlName="orderBy">
-            <label class="custom-control-label" for="sort-{{key}}">{{key | titlecase}}</label>
-          </div>
-        </div>
-        <div class="d-flex justify-content-end flex-wrap">
-          <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="sort-descending" formControlName="descending">
-            <label class="custom-control-label" for="sort-descending">Descending</label>
-          </div>
-        </div>
-      </div>
-
-      <div [ngbCollapse]="filtersCollapsed" class="text-muted pt-2">
-        <div class="d-flex justify-content-end mb-2">
-          <select id="genre" class="custom-select filter-field" formControlName="genre">
-            <option value="">All Genres</option>
-            <option [value]="genre" *ngFor="let genre of availableGenres">{{genre}}</option>
-          </select>
-        </div>
-
-        <div class="d-flex justify-content-end mb-2">
-          <div class="custom-control custom-switch custom-control-inline">
-            <input type="checkbox" class="custom-control-input" id="show-downloaded" formControlName="showDownloaded">
-            <label class="custom-control-label" for="show-downloaded">
-              Show downloaded
-            </label>
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              [ngClass]="{ 'btn-outline-secondary': filtersCollapsed, 'btn-secondary': !filtersCollapsed }"
+              type="button"
+              (click)="toggleFilters()">
+              <i class="fas fa-filter"></i>
+              Filter
+            </button>
           </div>
         </div>
 
-        <ng-template #ratingStar let-fill="fill">
-          <i class="fas fa-star" *ngIf="fill === 100"></i>
-          <i class="far fa-star" *ngIf="fill === 0"></i>
-          <i class="fas fa-star-half-alt" *ngIf="fill !== 0 && fill !== 100"></i>
-        </ng-template>
-
-        <div class="d-flex justify-content-end mb-2">
-          <label for="rating-from" class="mr-1">Minimum rating</label>
-          <ngb-rating id="rating-from" formControlName="ratingFrom" resettable="true" max="5" [starTemplate]="ratingStar"></ngb-rating>
+        <div [ngbCollapse]="sortCollapsed" class="text-muted pt-2">
+          <div class="d-flex justify-content-end flex-wrap mb-2">
+            <div class="custom-control custom-radio custom-control-inline" *ngFor="let key of orderByKeys">
+              <input type="radio" id="sort-{{key}}" class="custom-control-input" [value]="key" formControlName="orderBy">
+              <label class="custom-control-label" for="sort-{{key}}">{{key | titlecase}}</label>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end flex-wrap">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="sort-descending" formControlName="orderByDescending">
+              <label class="custom-control-label" for="sort-descending">Descending</label>
+            </div>
+          </div>
         </div>
 
-        <div class="d-flex justify-content-end mb-2">
-          <label for="rating-to" class="mr-1">Maximum rating</label>
-          <ngb-rating id="rating-to" formControlName="ratingTo" resettable="true" max="5" [starTemplate]="ratingStar"></ngb-rating>
-        </div>
+        <div [ngbCollapse]="filtersCollapsed" class="text-muted pt-2">
+          <div class="d-flex justify-content-end mb-2">
+            <select id="genre" class="custom-select filter-field" formControlName="genre">
+              <option value="">All Genres</option>
+              <option [value]="genre" *ngFor="let genre of $availableGenres | async">{{genre}}</option>
+            </select>
+          </div>
 
-        <div class="d-flex justify-content-end">
+          <div class="d-flex justify-content-end mb-2">
+            <div class="custom-control custom-switch custom-control-inline">
+              <input type="checkbox" class="custom-control-input" id="show-downloaded" formControlName="downloaded">
+              <label class="custom-control-label" for="show-downloaded">
+                Show downloaded
+              </label>
+            </div>
+          </div>
 
-          <label for="rating-from">Release year</label>
-        </div>
-        <div class="input-group justify-content-end mb-2">
-          <input id="year-from" type="number" min="1900" [max]="maxYear" class="form-control filter-field-sm" formControlName="yearFrom" />
-          <div class="input-group-append">
+          <ng-template #ratingStar let-fill="fill">
+            <i class="fas fa-star" *ngIf="fill === 100"></i>
+            <i class="far fa-star" *ngIf="fill === 0"></i>
+            <i class="fas fa-star-half-alt" *ngIf="fill !== 0 && fill !== 100"></i>
+          </ng-template>
+
+          <div class="d-flex justify-content-end mb-2">
+            <label for="rating-from" class="mr-1">Minimum rating</label>
+            <ngb-rating id="rating-from" formControlName="ratingFrom" resettable="true" max="5" [starTemplate]="ratingStar"></ngb-rating>
+          </div>
+
+          <div class="d-flex justify-content-end mb-2">
+            <label for="rating-to" class="mr-1">Maximum rating</label>
+            <ngb-rating id="rating-to" formControlName="ratingTo" resettable="true" max="5" [starTemplate]="ratingStar"></ngb-rating>
+          </div>
+
+          <div class="d-flex justify-content-end">
+
+            <label for="rating-from">Release year</label>
+          </div>
+          <div class="input-group justify-content-end mb-2">
+            <input id="year-from" type="number" min="1900" [max]="maxYear" class="form-control filter-field-sm" formControlName="yearFrom" />
+            <div class="input-group-append">
               <span class="input-group-text">
                 <i class="fas fa-angle-right"></i>
               </span>
+            </div>
+            <input id="year-to" type="number" min="1900" [max]="maxYear" class="form-control filter-field-sm" formControlName="yearTo" />
           </div>
-          <input id="year-to" type="number" min="1900" [max]="maxYear" class="form-control filter-field-sm" formControlName="yearTo" />
         </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-<ng-container *ngIf="movies; else spinner">
-  <div class="media media-card my-4 shadow cursor-pointer" *ngFor="let movie of movies" (click)="select(movie)">
-    <mm-poster [movie]="movie" [thumb]="true"></mm-poster>
-
-    <div class="media-body py-2 px-3">
-      <h5 class="mt-0 mb-1">
-        {{movie.title}}
-      </h5>
-
-      <mm-badges [movie]="movie"></mm-badges>
-
-      <mm-rating [movie]="movie"></mm-rating>
+      </form>
     </div>
   </div>
 
-  <ngb-pagination
-    [(page)]="routerState.page"
-    [pageSize]="routerState.limit"
-    [collectionSize]="count"
-    [maxSize]="5"
-    (pageChange)="search()"
-    *ngIf="count > routerState.limit"
-  ></ngb-pagination>
-</ng-container>
+  <cdk-virtual-scroll-viewport itemSize="150" class="flex-grow-1">
+    <div class="media media-card my-2 shadow cursor-pointer" *cdkVirtualFor="let movie of dataSource" (click)="select(movie)">
+      <mm-poster [movie]="movie" [thumb]="true"></mm-poster>
 
-<ng-template #spinner>
-  <mm-spinner></mm-spinner>
-</ng-template>
+      <div class="media-body py-2 px-3">
+        <h5 class="mt-0 mb-1">
+          {{movie.title}}
+        </h5>
+
+        <mm-badges [movie]="movie"></mm-badges>
+
+        <mm-rating [movie]="movie"></mm-rating>
+      </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
+
+</div>

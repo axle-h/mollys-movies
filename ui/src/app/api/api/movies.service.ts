@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/member-ordering */
+/* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
@@ -29,6 +29,26 @@ import { MoviesOrderBy } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
+
+export interface GetMovieRequestParams {
+  id: number;
+}
+
+export interface SearchMoviesRequestParams {
+  title?: string;
+  quality?: string;
+  language?: string;
+  downloaded?: boolean;
+  genre?: string;
+  yearFrom?: number;
+  yearTo?: number;
+  ratingFrom?: number;
+  ratingTo?: number;
+  orderBy?: MoviesOrderBy;
+  orderByDescending?: boolean;
+  page?: number;
+  limit?: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -100,34 +120,35 @@ export class MoviesService {
   }
 
   /**
-   * @param id
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public getMovie(
-    id: number,
+    requestParameters: GetMovieRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<Movie>;
   public getMovie(
-    id: number,
+    requestParameters: GetMovieRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpResponse<Movie>>;
   public getMovie(
-    id: number,
+    requestParameters: GetMovieRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpEvent<Movie>>;
   public getMovie(
-    id: number,
+    requestParameters: GetMovieRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<any> {
+    const id = requestParameters.id;
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling getMovie.');
     }
@@ -162,94 +183,48 @@ export class MoviesService {
   }
 
   /**
-   * @param title
-   * @param quality
-   * @param language
-   * @param downloaded
-   * @param genre
-   * @param yearFrom
-   * @param yearTo
-   * @param ratingFrom
-   * @param ratingTo
-   * @param orderBy
-   * @param orderByDescending
-   * @param page
-   * @param limit
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public searchMovies(
-    title?: string,
-    quality?: string,
-    language?: string,
-    downloaded?: boolean,
-    genre?: string,
-    yearFrom?: number,
-    yearTo?: number,
-    ratingFrom?: number,
-    ratingTo?: number,
-    orderBy?: MoviesOrderBy,
-    orderByDescending?: boolean,
-    page?: number,
-    limit?: number,
+    requestParameters: SearchMoviesRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<MoviePaginated>;
   public searchMovies(
-    title?: string,
-    quality?: string,
-    language?: string,
-    downloaded?: boolean,
-    genre?: string,
-    yearFrom?: number,
-    yearTo?: number,
-    ratingFrom?: number,
-    ratingTo?: number,
-    orderBy?: MoviesOrderBy,
-    orderByDescending?: boolean,
-    page?: number,
-    limit?: number,
+    requestParameters: SearchMoviesRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpResponse<MoviePaginated>>;
   public searchMovies(
-    title?: string,
-    quality?: string,
-    language?: string,
-    downloaded?: boolean,
-    genre?: string,
-    yearFrom?: number,
-    yearTo?: number,
-    ratingFrom?: number,
-    ratingTo?: number,
-    orderBy?: MoviesOrderBy,
-    orderByDescending?: boolean,
-    page?: number,
-    limit?: number,
+    requestParameters: SearchMoviesRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpEvent<MoviePaginated>>;
   public searchMovies(
-    title?: string,
-    quality?: string,
-    language?: string,
-    downloaded?: boolean,
-    genre?: string,
-    yearFrom?: number,
-    yearTo?: number,
-    ratingFrom?: number,
-    ratingTo?: number,
-    orderBy?: MoviesOrderBy,
-    orderByDescending?: boolean,
-    page?: number,
-    limit?: number,
+    requestParameters: SearchMoviesRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<any> {
+    const title = requestParameters.title;
+    const quality = requestParameters.quality;
+    const language = requestParameters.language;
+    const downloaded = requestParameters.downloaded;
+    const genre = requestParameters.genre;
+    const yearFrom = requestParameters.yearFrom;
+    const yearTo = requestParameters.yearTo;
+    const ratingFrom = requestParameters.ratingFrom;
+    const ratingTo = requestParameters.ratingTo;
+    const orderBy = requestParameters.orderBy;
+    const orderByDescending = requestParameters.orderByDescending;
+    const page = requestParameters.page;
+    const limit = requestParameters.limit;
+
     let queryParameters = new HttpParams({ encoder: this.encoder });
     if (title !== undefined && title !== null) {
       queryParameters = this.addToHttpParams(queryParameters, <any>title, 'Title');

@@ -1,51 +1,85 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GenreService, Movie, MoviesOrderBy, MoviesService } from '../../api';
+import {
+  GenreService,
+  Movie,
+  MoviePaginated,
+  MoviesOrderBy,
+  MoviesService,
+  SearchMoviesRequestParams,
+} from '../../api';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { debounce, map, mergeAll, switchMap, tap } from 'rxjs/operators';
-import { from, interval, Subscription } from 'rxjs';
+import { debounce, filter, flatMap, map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, interval, Observable, of, Subject, Subscription } from 'rxjs';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 
-interface SearchState {
-  page: number;
-  limit: number;
-  title?: string;
-  showDownloaded: boolean;
-  genre?: string;
-  yearFrom: number | null;
-  yearTo: number | null;
-  ratingFrom: number | null;
-  ratingTo: number | null;
-  orderBy?: MoviesOrderBy;
-  descending: boolean;
-}
+type SearchState = Omit<SearchMoviesRequestParams, 'limit'>;
 
-function filtersEqual(x: SearchState, y: SearchState) {
-  return (
-    x.title === y.title &&
-    x.showDownloaded === y.showDownloaded &&
-    x.genre === y.genre &&
-    x.ratingFrom === y.ratingFrom &&
-    x.ratingTo === y.ratingTo &&
-    x.yearFrom === y.yearFrom &&
-    x.yearTo === y.yearTo &&
-    x.descending === y.descending &&
-    x.orderBy === y.orderBy
-  );
-}
+const LIMIT = 20;
 
-const defaultState: SearchState = {
+const defaultState: SearchState = Object.freeze({
   page: 1,
-  limit: 20,
   title: '',
-  showDownloaded: true,
   genre: '',
+  downloaded: true,
   yearFrom: null,
   yearTo: null,
   ratingFrom: null,
   ratingTo: null,
   orderBy: MoviesOrderBy.Title,
-  descending: false,
-};
+  orderByDescending: false,
+});
+
+function unsetDefaults(state: SearchState) {
+  // unset defaults, no point these extending url
+  for (const [key, value] of Object.entries(state)) {
+    if (value === defaultState[key]) {
+      state[key] = undefined;
+    }
+  }
+  return state;
+}
+
+export class MovieDataSource extends DataSource<Movie> {
+  private readonly pages: Movie[][] = [];
+
+  constructor(
+    private readonly getPage: (page: number) => Observable<MoviePaginated>,
+    private readonly $count: Subject<number>,
+    private readonly $page: BehaviorSubject<number>,
+  ) {
+    super();
+  }
+
+  connect(collectionViewer: CollectionViewer): Observable<Movie[]> {
+    const $page1 = of(1);
+    const $scroll = collectionViewer.viewChange.pipe(
+      flatMap(range => {
+        const [minPage, maxPage] = [range.start, range.end].map(x => Math.floor(x / LIMIT) + 1);
+        if (this.$page.value !== minPage) {
+          this.$page.next(minPage);
+        }
+        return [...Array(maxPage - minPage + 1).keys()].map(i => i + minPage);
+      }),
+      filter(page => !this.pages[page - 1]),
+    );
+
+    return from([$page1, $scroll]).pipe(
+      mergeAll(),
+      switchMap(page =>
+        this.getPage(page).pipe(
+          map(result => {
+            this.$count.next(result.count);
+            this.pages[page - 1] = result.data;
+            return Object.values(this.pages).reduce((x, y) => [...x, ...y]);
+          }),
+        ),
+      ),
+    );
+  }
+
+  disconnect(collectionViewer: CollectionViewer): void {}
+}
 
 @Component({
   selector: 'mm-search',
@@ -53,17 +87,12 @@ const defaultState: SearchState = {
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  subs: Subscription[] = [];
-  movies: Movie[] | null = null;
-  count?: number;
-
+  private readonly subs: Subscription[] = [];
+  readonly $availableGenres = this.genreService.getAllGenres();
   searchForm: FormGroup;
-  routerState: SearchState;
-
   filtersCollapsed = true;
   sortCollapsed = true;
-
-  availableGenres: string[] = [];
+  dataSource: MovieDataSource;
 
   constructor(
     private readonly moviesService: MoviesService,
@@ -73,41 +102,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly fb: FormBuilder,
   ) {}
 
-  get title() {
-    return this.searchForm.get('title');
-  }
-
-  get showDownloaded() {
-    return this.searchForm.get('showDownloaded');
-  }
-
-  get orderBy() {
-    return this.searchForm.get('orderBy');
-  }
-
-  get descending() {
-    return this.searchForm.get('descending');
-  }
-
-  get genre() {
-    return this.searchForm.get('genre');
-  }
-
-  get yearFrom() {
-    return this.searchForm.get('yearFrom');
-  }
-
-  get yearTo() {
-    return this.searchForm.get('yearTo');
-  }
-
-  get ratingFrom() {
-    return this.searchForm.get('ratingFrom');
-  }
-
-  get ratingTo() {
-    return this.searchForm.get('ratingTo');
-  }
+  $count = new BehaviorSubject<number>(0);
 
   get orderByKeys() {
     return Object.keys(MoviesOrderBy);
@@ -117,122 +112,94 @@ export class SearchComponent implements OnInit, OnDestroy {
     return new Date().getFullYear();
   }
 
-  // '' | true => true => undefined
-  // 'false => false => false
   ngOnInit(): void {
-    this.genreService.getAllGenres().subscribe(x => (this.availableGenres = x));
+    this.searchForm = this.fb.group({
+      title: [defaultState.title],
+      downloaded: [defaultState.downloaded],
+      genre: [defaultState.genre],
+      yearFrom: [defaultState.yearFrom, [Validators.min(1900), Validators.max(this.maxYear)]],
+      yearTo: [defaultState.yearTo, [Validators.min(1900), Validators.max(this.maxYear)]],
+      ratingFrom: [defaultState.ratingFrom, [Validators.min(0), Validators.max(5)]],
+      ratingTo: [defaultState.ratingTo, [Validators.min(0), Validators.max(5)]],
+      orderBy: [defaultState.orderBy],
+      orderByDescending: [defaultState.orderByDescending],
+    });
 
-    this.activatedRoute.queryParamMap
-      .pipe(
-        map<ParamMap, SearchState>(query => ({
-          page: parseInt(query.get('page'), 10) || defaultState.page,
-          limit: parseInt(query.get('limit'), 10) || defaultState.limit,
-          title: query.get('title') || defaultState.title,
-          showDownloaded:
-            (query.get('showDownloaded') || defaultState.showDownloaded.toString()) === 'true',
-          genre: query.get('genre') || defaultState.genre,
-          yearFrom: parseInt(query.get('yearFrom'), 10) || defaultState.yearFrom,
-          yearTo: parseInt(query.get('yearTo'), 10) || defaultState.yearTo,
-          ratingFrom: parseInt(query.get('ratingFrom'), 10) || defaultState.ratingFrom,
-          ratingTo: parseInt(query.get('ratingTo'), 10) || defaultState.ratingTo,
-          orderBy: (query.get('orderBy') as MoviesOrderBy) || defaultState.orderBy,
-          descending: (query.get('descending') || defaultState.descending.toString()) === 'true',
-        })),
-        tap(x => {
-          this.routerState = x;
-          this.searchForm = this.fb.group({
-            title: [x.title],
-            showDownloaded: [x.showDownloaded],
-            genre: [x.genre],
-            yearFrom: [x.yearFrom, [Validators.min(1900), Validators.max(this.maxYear)]],
-            yearTo: [x.yearTo, [Validators.min(1900), Validators.max(this.maxYear)]],
-            ratingFrom: [x.ratingFrom, [Validators.min(0), Validators.max(5)]],
-            ratingTo: [x.ratingTo, [Validators.min(0), Validators.max(5)]],
-            orderBy: [x.orderBy],
-            descending: [x.descending],
-          });
-          this.subs.push(
-            this.title.valueChanges
-              .pipe(debounce(() => interval(500)))
-              .subscribe(() => this.search()),
-          );
+    this.subs.push(
+      from([
+        // only title is debounced
+        this.searchForm.get('title').valueChanges.pipe(debounce(() => interval(500))),
+        ...Object.entries(this.searchForm.controls)
+          .filter(([k]) => k !== 'title')
+          .map(([, v]) => v.valueChanges),
+      ])
+        .pipe(mergeAll())
+        // reset the page back to number 1, this will trigger the query string subscription to reset the data source
+        .subscribe(() => $page.next(1)),
+    );
 
-          this.subs.push(
-            from([
-              this.showDownloaded.valueChanges,
-              this.genre.valueChanges,
-              this.yearFrom.valueChanges,
-              this.yearTo.valueChanges,
-              this.ratingFrom.valueChanges,
-              this.ratingTo.valueChanges,
-              this.orderBy.valueChanges,
-              this.descending.valueChanges,
-            ])
-              .pipe(mergeAll())
-              .subscribe(() => this.search()),
+    const $page = new BehaviorSubject<number>(1);
+    this.subs.push(
+      $page.subscribe(page =>
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParams: unsetDefaults({ ...this.formState, page }),
+        }),
+      ),
+    );
+
+    this.subs.push(
+      this.activatedRoute.queryParamMap
+        .pipe(
+          filter(() => !this.dataSource || !this.searchForm.pristine),
+          map<ParamMap, SearchState>(query => ({
+            page: parseInt(query.get('page'), 10) || defaultState.page,
+            title: query.get('title') || defaultState.title,
+            downloaded: (query.get('downloaded') || defaultState.downloaded.toString()) === 'true',
+            genre: query.get('genre') || defaultState.genre,
+            yearFrom: parseInt(query.get('yearFrom'), 10) || defaultState.yearFrom,
+            yearTo: parseInt(query.get('yearTo'), 10) || defaultState.yearTo,
+            ratingFrom: parseInt(query.get('ratingFrom'), 10) || defaultState.ratingFrom,
+            ratingTo: parseInt(query.get('ratingTo'), 10) || defaultState.ratingTo,
+            orderBy: (query.get('orderBy') as MoviesOrderBy) || defaultState.orderBy,
+            orderByDescending:
+              (query.get('orderByDescending') || defaultState.orderByDescending.toString()) ===
+              'true',
+          })),
+        )
+        .subscribe(x => {
+          if (!this.dataSource) {
+            this.reset(x);
+            // TODO somehow scroll to initial page
+          } else {
+            this.searchForm.markAsPristine();
+          }
+
+          const state = this.formState;
+          this.dataSource = new MovieDataSource(
+            page =>
+              this.moviesService.searchMovies({
+                ...state,
+                page,
+                limit: LIMIT,
+                downloaded: state.downloaded ? undefined : false,
+                ratingFrom: state.ratingFrom && state.ratingFrom * 2,
+                ratingTo: state.ratingTo && state.ratingTo * 2,
+              }),
+            this.$count,
+            $page,
           );
         }),
-        switchMap(x =>
-          this.moviesService.searchMovies(
-            x.title || undefined,
-            undefined,
-            undefined,
-            x.showDownloaded ? undefined : false,
-            x.genre || undefined,
-            x.yearFrom,
-            x.yearTo,
-            x.ratingFrom && x.ratingFrom * 2,
-            x.ratingTo && x.ratingTo * 2,
-            x.orderBy || undefined,
-            x.descending || undefined,
-            x.page,
-            x.limit,
-          ),
-        ),
-      )
-      .subscribe(value => {
-        this.movies = value.data;
-        this.routerState.page = value.page;
-        this.routerState.limit = value.limit;
-        this.count = value.count;
-      });
-  }
-
-  search() {
-    const state = this.state;
-
-    if (!filtersEqual(state, this.routerState)) {
-      // filters changed so go back to page 1.
-      state.page = 1;
-    }
-
-    // unset defaults, no point these extending url
-    for (const [key, value] of Object.entries(state)) {
-      if (!value || value === defaultState[key]) {
-        state[key] = undefined;
-      }
-    }
-
-    return this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: state,
-    });
+    );
   }
 
   get isDirty() {
-    return !filtersEqual(this.state, defaultState);
+    return Object.entries(this.formState).some(([k, v]) => defaultState[k] !== v);
   }
 
-  reset() {
-    this.title.setValue(defaultState.title);
-    this.showDownloaded.setValue(defaultState.showDownloaded);
-    this.genre.setValue(defaultState.genre);
-    this.yearFrom.setValue(defaultState.yearFrom);
-    this.yearTo.setValue(defaultState.yearTo);
-    this.ratingFrom.setValue(defaultState.ratingFrom);
-    this.ratingTo.setValue(defaultState.ratingTo);
-    this.orderBy.setValue(defaultState.orderBy);
-    this.descending.setValue(defaultState.descending);
+  reset(state: SearchState = defaultState) {
+    this.searchForm.reset(state);
+    this.dataSource = null;
   }
 
   toggleFilters() {
@@ -257,19 +224,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   submit() {}
 
-  private get state(): SearchState {
-    return {
-      page: this.routerState.page,
-      limit: this.routerState.limit,
-      title: this.title.value,
-      showDownloaded: this.showDownloaded.value,
-      genre: this.genre.value,
-      yearFrom: this.yearFrom.value,
-      yearTo: this.yearTo.value,
-      ratingFrom: this.ratingFrom.value,
-      ratingTo: this.ratingTo.value,
-      orderBy: this.orderBy.value,
-      descending: this.descending.value,
-    };
+  private get formState(): SearchState {
+    return Object.entries(this.searchForm.controls)
+      .map(([k, v]) => ({ [k]: v.value }))
+      .reduce((x, y) => ({ ...x, ...y }));
   }
 }

@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/member-ordering */
+/* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
@@ -27,6 +27,16 @@ import { LiveTransmissionStatus } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
+
+export interface DownloadMovieRequestParams {
+  movieId: number;
+  torrentId: number;
+}
+
+export interface GetLiveTransmissionStatusRequestParams {
+  movieId: number;
+  torrentId: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -98,44 +108,41 @@ export class MovieTorrentService {
   }
 
   /**
-   * @param movieId
-   * @param torrentId
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public downloadMovie(
-    movieId: number,
-    torrentId: number,
+    requestParameters: DownloadMovieRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined },
   ): Observable<any>;
   public downloadMovie(
-    movieId: number,
-    torrentId: number,
+    requestParameters: DownloadMovieRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined },
   ): Observable<HttpResponse<any>>;
   public downloadMovie(
-    movieId: number,
-    torrentId: number,
+    requestParameters: DownloadMovieRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined },
   ): Observable<HttpEvent<any>>;
   public downloadMovie(
-    movieId: number,
-    torrentId: number,
+    requestParameters: DownloadMovieRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined },
   ): Observable<any> {
+    const movieId = requestParameters.movieId;
     if (movieId === null || movieId === undefined) {
       throw new Error(
         'Required parameter movieId was null or undefined when calling downloadMovie.',
       );
     }
+    const torrentId = requestParameters.torrentId;
     if (torrentId === null || torrentId === undefined) {
       throw new Error(
         'Required parameter torrentId was null or undefined when calling downloadMovie.',
@@ -175,44 +182,41 @@ export class MovieTorrentService {
   }
 
   /**
-   * @param movieId
-   * @param torrentId
+   * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public getLiveTransmissionStatus(
-    movieId: number,
-    torrentId: number,
+    requestParameters: GetLiveTransmissionStatusRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<LiveTransmissionStatus>;
   public getLiveTransmissionStatus(
-    movieId: number,
-    torrentId: number,
+    requestParameters: GetLiveTransmissionStatusRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpResponse<LiveTransmissionStatus>>;
   public getLiveTransmissionStatus(
-    movieId: number,
-    torrentId: number,
+    requestParameters: GetLiveTransmissionStatusRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<HttpEvent<LiveTransmissionStatus>>;
   public getLiveTransmissionStatus(
-    movieId: number,
-    torrentId: number,
+    requestParameters: GetLiveTransmissionStatusRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json' },
   ): Observable<any> {
+    const movieId = requestParameters.movieId;
     if (movieId === null || movieId === undefined) {
       throw new Error(
         'Required parameter movieId was null or undefined when calling getLiveTransmissionStatus.',
       );
     }
+    const torrentId = requestParameters.torrentId;
     if (torrentId === null || torrentId === undefined) {
       throw new Error(
         'Required parameter torrentId was null or undefined when calling getLiveTransmissionStatus.',
