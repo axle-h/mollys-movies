@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mollys-movies.api.fullname" . }}
+  labels:
+    {{- include "mollys-movies.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "mollys-movies.api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "mollys-movies.api.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "mollys-movies.serviceAccountName" . }}
+      volumes:
+        - name: movie-images
+          hostPath:
+            path: {{ .Values.hostPaths.movieImages }}
+            type: DirectoryOrCreate
+      containers:
+        - name: "{{ .Chart.Name }}-api"
+          image: {{ include "mollys-movies.api.image" . }}
+          imagePullPolicy: {{ .Values.api.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: /movie-images
+              name: movie-images
+          env:
+            - name: CONNECTIONSTRINGS__MONGO
+              value: {{ include "mollys-movies.mongodbConnectionString" . | quote }}
+            - name: CONNECTIONSTRINGS__RABBITMQ
+              value: {{ include "mollys-movies.rabbitmqConnectionString" . | quote }}
+            - name: CONNECTIONSTRINGS__TRANSMISSION
+              value: "http://{{ include "mollys-movies.transmission.fullname" . }}:{{ .Values.transmission.service.port }}/transmission/"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http

@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "mollys-movies.fullname" . }}
+  labels:
+    {{- include "mollys-movies.labels" . | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.ingress.className | quote }}
+  rules:
+    - http:
+        paths:
+          - path: "/api"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "mollys-movies.api.fullname" . }}
+                port:
+                  number: {{ .Values.api.service.port }}
+          - path: "/movie-images"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "mollys-movies.api.fullname" . }}
+                port:
+                  number: {{ .Values.api.service.port }}
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "mollys-movies.ui.fullname" . }}
+                port:
+                  number: {{ .Values.ui.service.port }}

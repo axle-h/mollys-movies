@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mollys-movies.vpn.fullname" . }}
+  labels:
+    {{- include "mollys-movies.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "mollys-movies.vpn.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "mollys-movies.vpn.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "mollys-movies.serviceAccountName" . }}
+      volumes:
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun
+            type: CharDevice
+        - name: openvpn-conf
+          secret:
+            secretName: {{ .Values.vpn.secret }}
+      containers:
+        - name: "{{ .Chart.Name }}-vpn"
+          image: "{{ .Values.vpn.image.repository }}:{{ .Values.vpn.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.vpn.image.pullPolicy }}
+          volumeMounts:
+            - name: dev-net-tun
+              mountPath: /dev/net/tun
+            - name: openvpn-conf
+              mountPath: /etc/openvpn/client
+              readOnly: true
+          securityContext:
+            privileged: true
+            capabilities:
+                add: ["NET_ADMIN"]
+          ports:
+            - name: socks
+              containerPort: 1080
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: socks
+            periodSeconds: 60
+          startupProbe:
+            tcpSocket:
+              port: socks
+            failureThreshold: 10
+            periodSeconds: 10

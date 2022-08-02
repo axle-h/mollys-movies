@@ -1,0 +1,10 @@
+{
+  "arguments": {
+    "torrent-added": {
+      "hashString": "f1fcdc1462d36530f526c1d9402eec9100b7ba18",
+      "id": 8,
+      "name": "ubuntu-21.10-desktop-amd64.iso"
+    }
+  },
+  "result": "success"
+}

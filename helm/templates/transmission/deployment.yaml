@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mollys-movies.transmission.fullname" . }}
+  labels:
+    {{- include "mollys-movies.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "mollys-movies.transmission.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "mollys-movies.transmission.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "mollys-movies.serviceAccountName" . }}
+      volumes:
+        - name: downloads
+          hostPath:
+            path: {{ .Values.hostPaths.downloads }}
+            type: DirectoryOrCreate
+      containers:
+        - name: "{{ .Chart.Name }}-transmission"
+          image: "{{ .Values.transmission.image.repository }}:{{ .Values.transmission.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.transmission.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: /downloads
+              name: downloads
+          env:
+            - name: CONNECTIONSTRINGS__RABBITMQ
+              value: {{ include "mollys-movies.rabbitmqConnectionString" . | quote }}
+          ports:
+            - name: rpc
+              containerPort: 9091
+              protocol: TCP
+            - containerPort: 51413
+              protocol: TCP
+            - containerPort: 51413
+              protocol: UDP
+          livenessProbe:
+            httpGet:
+              path: /transmission
+              port: rpc
+          readinessProbe:
+            httpGet:
+              path: /transmission
+              port: rpc

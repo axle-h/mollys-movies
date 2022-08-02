@@ -1,0 +1,91 @@
+api:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/axle-h/mollys-movies-api
+    pullPolicy: Always
+    tag: ""
+  service:
+    type: ClusterIP
+    port: 80
+
+ui:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/axle-h/mollys-movies-ui
+    pullPolicy: Always
+    tag: ""
+  service:
+    type: ClusterIP
+    port: 80
+
+scraper:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/axle-h/mollys-movies-scraper
+    pullPolicy: Always
+    tag: ""
+
+transmission:
+  image:
+    repository: ghcr.io/axle-h/mollys-movies-transmission
+    pullPolicy: Always
+    tag: ""
+  service:
+    type: ClusterIP
+    port: 9091
+
+vpn:
+  secret: openvpn
+  image:
+    repository: ghcr.io/axle-h/mollys-movies-openvpn
+    tag: ""
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 1080
+
+hostPaths:
+  movieImages: "/var/mollys-movies/movie-images"
+  movieLibrary: "/mnt/storage/movies"
+  downloads: "/mnt/downloads"
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  annotations: {}
+  name: ""
+
+ingress:
+  className: nginx
+
+plex:
+  url: null
+  token: null
+
+mongodb:
+  architecture: standalone
+  service:
+    port: 27017
+  auth:
+    databases: ["mollys-movies"]
+    usernames: ["user"]
+    passwords: ["password"]
+    rootPassword: password
+  persistence:
+    enabled: true
+    # resourcePolicy: keep
+    storageClass: local-path
+    accessModes: ["ReadWriteOnce"]
+    size: 2Gi
+
+rabbitmq:
+  persistence:
+    enabled: false
+  service:
+    port: 5672
+    managerPort: 15672
+  auth:
+    username: user
+    password: password
+    erlangCookie: secretcookie

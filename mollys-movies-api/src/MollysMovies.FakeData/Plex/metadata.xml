@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="1" allowSync="1" identifier="com.plexapp.plugins.library" librarySectionID="5"
+                librarySectionTitle="Films" librarySectionUUID="62f1e1a8-f713-4726-a9f8-89d511ca43b5"
+                mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1616494552">
+    <Video ratingKey="11516" key="/library/metadata/11516" guid="plex://movie/5d7769cefb0d55001f530acd"
+           studio="Legendary Pictures" type="movie" title="Interstellar" librarySectionTitle="Films"
+           librarySectionID="5" librarySectionKey="/library/sections/5" contentRating="PG-13"
+           summary="Earth&#39;s future has been riddled by disasters, famines, and droughts. There is only one way to ensure mankind&#39;s survival: Interstellar travel. A newly discovered wormhole in the far reaches of our solar system allows a team of astronauts to go where no man has gone before, a planet that may have the right environment to sustain human life."
+           rating="7.2" audienceRating="8.6" year="2014"
+           tagline="Mankind was born on Earth. It was never meant to die here."
+           thumb="/library/metadata/11516/thumb/1638304380" art="/library/metadata/11516/art/1638304380"
+           duration="10144008" originallyAvailableAt="2014-11-07" addedAt="1548021707" updatedAt="1638304380"
+           audienceRatingImage="rottentomatoes://image.rating.upright" hasPremiumExtras="1" hasPremiumPrimaryExtra="1"
+           ratingImage="rottentomatoes://image.rating.ripe">
+        <Media id="11054" duration="10144008" bitrate="1914" width="1920" height="1080" aspectRatio="1.78"
+               audioChannels="2" audioCodec="aac" videoCodec="h264" videoResolution="1080" container="mp4"
+               videoFrameRate="24p" optimizedForStreaming="1" audioProfile="lc" has64bitOffsets="0" videoProfile="high">
+            <Part id="11054" key="/library/parts/11054/1548021707/file.mp4" duration="10144008"
+                  file="/mnt/storage/movies/Interstellar (2014)/Interstellar (2014).mp4" size="2431697820"
+                  audioProfile="lc" container="mp4" has64bitOffsets="0" optimizedForStreaming="1" videoProfile="high">
+                <Stream id="16053" streamType="1" default="1" codec="h264" index="0" bitrate="1820" bitDepth="8"
+                        chromaLocation="left" chromaSubsampling="4:2:0" codedHeight="1088" codedWidth="1920"
+                        colorPrimaries="bt709" colorRange="tv" colorSpace="bt709" frameRate="23.976"
+                        hasScalingMatrix="0" height="1080" level="41" profile="high" refFrames="4" streamIdentifier="1"
+                        width="1920" displayTitle="1080p (H.264)" extendedDisplayTitle="1080p (H.264)"></Stream>
+                <Stream id="16054" streamType="2" selected="1" default="1" codec="aac" index="1" channels="2"
+                        bitrate="94" language="English" languageCode="eng" audioChannelLayout="stereo" profile="lc"
+                        samplingRate="48000" streamIdentifier="2" displayTitle="English (AAC Stereo)"
+                        extendedDisplayTitle="English (AAC Stereo)"></Stream>
+            </Part>
+        </Media>
+        <Genre id="243" filter="genre=243" tag="Adventure"/>
+        <Genre id="14" filter="genre=14" tag="Drama"/>
+        <Genre id="15" filter="genre=15" tag="Science Fiction"/>
+        <Director id="10171" filter="director=10171" tag="Christopher Nolan"/>
+        <Writer id="10172" filter="writer=10172" tag="Christopher Nolan"/>
+        <Writer id="21172" filter="writer=21172" tag="Jonathan Nolan"/>
+        <Producer id="16280" filter="producer=16280" tag="Christopher Nolan"/>
+        <Producer id="10278" filter="producer=10278" tag="Emma Thomas"/>
+        <Producer id="20302" filter="producer=20302" tag="Lynda Obst"/>
+        <Country id="660" filter="country=660" tag="United Kingdom"/>
+        <Country id="1608" filter="country=1608" tag="United States of America"/>
+        <Guid id="imdb://tt0816692"/>
+        <Guid id="tmdb://157336"/>
+        <Guid id="tvdb://131079"/>
+        <Role id="14164" filter="actor=14164" tag="Matthew McConaughey" role="Joseph &#39;Coop&#39; Cooper"
+              thumb="https://metadata-static.plex.tv/2/people/2514e174df22fe791a5ad2ce4e69c03a.jpg"/>
+        <Role id="6798" filter="actor=6798" tag="Anne Hathaway" role="Dr. Amelia Brand"
+              thumb="https://metadata-static.plex.tv/7/people/7d58a9b21d871ab4503a5d5d55fc0ace.jpg"/>
+        <Role id="21173" filter="actor=21173" tag="Jessica Chastain" role="Murphy &#39;Murph&#39; Cooper"
+              thumb="https://metadata-static.plex.tv/3/people/369030c6d71f4b6e12e8b80279697055.jpg"/>
+        <Role id="21177" filter="actor=21177" tag="Ellen Burstyn" role="Old Murph Cooper"
+              thumb="https://metadata-static.plex.tv/f/people/f1f8bb9b4dc3e1857cb0b3642548973b.jpg"/>
+        <Role id="13825" filter="actor=13825" tag="John Lithgow" role="Donald"
+              thumb="https://metadata-static.plex.tv/f/people/f589e961037998998644e26de9d7e3f7.jpg"/>
+        <Role id="9120" filter="actor=9120" tag="Michael Caine" role="Professor John Brand"
+              thumb="https://metadata-static.plex.tv/1/people/1f8762b68a501d66747d54f41f366525.jpg"/>
+        <Role id="18954" filter="actor=18954" tag="Casey Affleck" role="Tom Cooper"
+              thumb="https://metadata-static.plex.tv/9/people/96209aa086866a45aecb3b5821b78e7f.jpg"/>
+        <Role id="7248" filter="actor=7248" tag="Wes Bentley" role="Dr. Doyle"
+              thumb="https://metadata-static.plex.tv/b/people/b32aac3dc4d72126cf77799e63589266.jpg"/>
+        <Role id="21176" filter="actor=21176" tag="Bill Irwin" role="TARS (voice)"
+              thumb="https://metadata-static.plex.tv/7/people/77005c9bd69613f305501e28aad82696.jpg"/>
+        <Role id="21174" filter="actor=21174" tag="Mackenzie Foy" role="Young Murph Cooper"
+              thumb="https://metadata-static.plex.tv/4/people/45d16ed6bdfa33a656872f8245dc31a9.jpg"/>
+        <Role id="21178" filter="actor=21178" tag="Topher Grace" role="Getty"
+              thumb="https://image.tmdb.org/t/p/original/tgF5PeH4xwz32FjB80n5aFiuHX.jpg"/>
+        <Role id="13547" filter="actor=13547" tag="David Gyasi" role="Dr. Romilly"
+              thumb="https://metadata-static.plex.tv/a/people/a63778866d85ec852581bd4c12f0a08d.jpg"/>
+        <Role id="21175" filter="actor=21175" tag="Timoth&#233;e Chalamet" role="Young Tom Cooper"
+              thumb="https://metadata-static.plex.tv/b/people/beb30b93ec08aac4fc806504d4b58bfe.jpg"/>
+        <Role id="13936" filter="actor=13936" tag="Matt Damon" role="Dr. Mann"
+              thumb="https://metadata-static.plex.tv/b/people/bb60cab43a5950b50aac86c63a96d672.jpg"/>
+        <Role id="21179" filter="actor=21179" tag="David Oyelowo" role="Principal"
+              thumb="https://metadata-static.plex.tv/e/people/ec451903c6debabfb87d1d9883226147.jpg"/>
+        <Role id="21180" filter="actor=21180" tag="William Devane" role="NASA Board Member"
+              thumb="https://metadata-static.plex.tv/f/people/f438c1b6a9bc39f0af62315da27e1232.jpg"/>
+        <Role id="21181" filter="actor=21181" tag="Josh Stewart" role="CASE (voice)"
+              thumb="https://metadata-static.plex.tv/a/people/af98208f30f69c30ef23e0d3bfba07af.jpg"/>
+        <Role id="20137" filter="actor=20137" tag="Collette Wolfe" role="Ms. Kelly"
+              thumb="https://metadata-static.plex.tv/people/5d776839eb5d26001f1e1a1b.jpg"/>
+        <Role id="21182" filter="actor=21182" tag="Leah Cairns" role="Lois Cooper"
+              thumb="https://metadata-static.plex.tv/people/5d77682a6f4521001ea99e52.jpg"/>
+        <Role id="20626" filter="actor=20626" tag="Russ Fega" role="Crew Chief"
+              thumb="https://metadata-static.plex.tv/people/5d7768252ec6b5001f6ba1f7.jpg"/>
+        <Role id="21183" filter="actor=21183" tag="Lena Georgas" role="Nurse Practitioner"
+              thumb="https://metadata-static.plex.tv/people/5d77697d7a53e9001e6e7b6b.jpg"/>
+        <Role id="21184" filter="actor=21184" tag="Jeff Hephner" role="Doctor"
+              thumb="https://metadata-static.plex.tv/people/5d7768a13ab0e7001f506130.jpg"/>
+        <Role id="21185" filter="actor=21185" tag="Elyes Gabel" role="Administrator"
+              thumb="https://metadata-static.plex.tv/people/5d77683d85719b001f3a5327.jpg"/>
+        <Role id="20668" filter="actor=20668" tag="Brooke Smith" role="Nurse"
+              thumb="https://metadata-static.plex.tv/people/5d7768253c3c2a001fbcaca0.jpg"/>
+        <Role id="21186" filter="actor=21186" tag="Liam Dickinson" role="Coop"
+              thumb="https://metadata-static.plex.tv/f/people/fa8a35bca98ad797ca67f0f76d8f93e1.jpg"/>
+        <Role id="21187" filter="actor=21187" tag="Francis X. McCarthy" role="Boots"
+              thumb="https://metadata-static.plex.tv/0/people/099a0ff37d91cac1065e81d82d5eb6ca.jpg"/>
+        <Role id="21188" filter="actor=21188" tag="Andrew Borba" role="Smith"/>
+        <Role id="21189" filter="actor=21189" tag="Flora Nolan" role="Girl on Truck"/>
+        <Role id="21190" filter="actor=21190" tag="William Patrick Brown" role="NASA Employee (uncredited)"/>
+        <Role id="21192" filter="actor=21192" tag="Kristian Van der Heyden" role="Scientist (uncredited)"/>
+        <Role id="7543" filter="actor=7543" tag="Joseph Oliveira" role="Astronaut (uncredited)"/>
+        <Role id="21194" filter="actor=21194" tag="Ryan Irving" role="Popcorn Seller (uncredited)"/>
+        <Role id="21195" filter="actor=21195" tag="Alexander Michael Helisek" role="Construction Boss (uncredited)"/>
+        <Role id="21196" filter="actor=21196" tag="Benjamin Hardy" role="NASA Scientist (uncredited)"/>
+        <Role id="21197" filter="actor=21197" tag="Griffen Fraser" role="Boy on Truck"/>
+        <Similar id="14650" filter="similar=14650" tag="The Martian"/>
+        <Similar id="16818" filter="similar=16818" tag="Gravity"/>
+        <Similar id="14564" filter="similar=14564" tag="Edge of Tomorrow"/>
+        <Similar id="8809" filter="similar=8809" tag="Ex Machina"/>
+        <Similar id="17527" filter="similar=17527" tag="The Prestige"/>
+        <Similar id="14197" filter="similar=14197" tag="Birdman or (The Unexpected Virtue of Ignorance)"/>
+        <Similar id="7658" filter="similar=7658" tag="Nightcrawler"/>
+        <Similar id="15794" filter="similar=15794" tag="Memento"/>
+        <Similar id="21198" filter="similar=21198" tag="Gone Girl"/>
+        <Similar id="21199" filter="similar=21199" tag="The Imitation Game"/>
+        <Similar id="10947" filter="similar=10947" tag="Whiplash"/>
+        <Similar id="21200" filter="similar=21200" tag="The Wolf of Wall Street"/>
+        <Similar id="19249" filter="similar=19249" tag="The Hobbit: The Battle of the Five Armies"/>
+        <Similar id="7650" filter="similar=7650" tag="Fury"/>
+        <Similar id="13299" filter="similar=13299" tag="District 9"/>
+        <Similar id="10948" filter="similar=10948" tag="The Grand Budapest Hotel"/>
+        <Similar id="4605" filter="similar=4605" tag="Dallas Buyers Club"/>
+        <Similar id="16378" filter="similar=16378" tag="Dawn of the Planet of the Apes"/>
+        <Similar id="13575" filter="similar=13575" tag="Source Code"/>
+        <Similar id="19304" filter="similar=19304" tag="Arrival"/>
+    </Video>
+</MediaContainer>

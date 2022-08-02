@@ -1,0 +1,18 @@
+export type MaybeReadonlyArray<T> = Array<T> | ReadonlyArray<T>;
+
+type DateTypes = Date;
+
+/**
+ * Same as Partial<T> but goes deeper and makes Partial<T> all its properties and sub-properties.
+ */
+export type DeepPartial<T> = {
+  [P in keyof T]?:
+    | (T[P] extends Array<infer U>
+        ? Array<DeepPartial<U>>
+        : T[P] extends ReadonlyArray<infer U>
+        ? ReadonlyArray<DeepPartial<U>>
+        : T[P] extends DateTypes
+        ? T[P]
+        : DeepPartial<T[P]>)
+    | null;
+};

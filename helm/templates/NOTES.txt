@@ -1,0 +1,26 @@
+{{- $mongodbService := (printf "%s-mongodb" .Release.Name) | trunc 63 | trimSuffix "-" }}
+{{- $mongodbUrl := (printf "mongodb://%s:%s@localhost:%v/%s"
+    (first .Values.mongodb.auth.usernames) (first .Values.mongodb.auth.passwords) .Values.mongodb.service.port (first .Values.mongodb.auth.databases)) -}}
+{{- $rabbitmqService := (printf "%s-rabbitmq" .Release.Name) | trunc 63 | trimSuffix "-" }}
+Call the API:
+
+curl http://localhost/api/v1/movies
+
+View the UI in a browser at: http://localhost
+
+Connect to mongodb:
+
+kubectl port-forward service/{{ $mongodbService }} {{ .Values.mongodb.service.port }}:{{ .Values.mongodb.service.port }}
+mongo {{ $mongodbUrl | quote }}
+
+connect to rabbitmq:
+
+kubectl port-forward service/{{ $rabbitmqService }} {{ .Values.rabbitmq.service.managerPort }}:{{ .Values.rabbitmq.service.managerPort }}
+Browse to http://localhost:15672
+Username: {{ .Values.rabbitmq.auth.username }}
+Password: {{ .Values.rabbitmq.auth.password }}
+
+Connect to transmission UI:
+
+kubectl port-forward service/{{ include "mollys-movies.transmission.fullname" . }} {{ .Values.transmission.service.port }}:{{ .Values.transmission.service.port }}
+Then view the UI in a browser at: http://localhost:9091/transmission
