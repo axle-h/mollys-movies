@@ -1,0 +1,8 @@
+.gitignore
+appveyor.yml
+git_push.sh
+MollysMovies.Client.sln
+README.md
+docs/
+src/MollysMovies.Client.Test
+src/MollysMovies.Client.Test/

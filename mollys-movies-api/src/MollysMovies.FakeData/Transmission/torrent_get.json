@@ -1,0 +1,22 @@
+{
+  "arguments": {
+    "torrents": [
+      {
+        "downloadDir": "/mnt/storage/downloads",
+        "eta": 7672,
+        "files": [
+          {
+            "bytesCompleted": 31916032,
+            "length": 3116482560,
+            "name": "ubuntu-21.10-desktop-amd64.iso"
+          }
+        ],
+        "id": 8,
+        "isStalled": false,
+        "name": "ubuntu-21.10-desktop-amd64.iso",
+        "percentDone": 0.0102
+      }
+    ]
+  },
+  "result": "success"
+}

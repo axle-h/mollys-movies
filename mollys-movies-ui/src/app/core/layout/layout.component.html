@@ -1,0 +1,42 @@
+<div class='h-100 d-flex flex-column'>
+<header>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand me-auto" routerLink="/" aria-label="Molly's Movies">
+        <i class="fas fa-wine-glass-alt"></i>
+      </a>
+
+      <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+        <i class="fas fa-bars text-light"></i>
+      </button>
+
+      <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link p-2" [routerLink]="['/movies']" [routerLinkActive]="['active']" (click)="navClick()">
+              <i class="fas fa-film text-light"></i>
+              Movies
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link p-2" [routerLink]="['/downloads']" [routerLinkActive]="['active']" (click)="navClick()">
+              <i class="fas fa-download text-light"></i>
+              Downloads
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link p-2" [routerLink]="['/scraper']" [routerLinkActive]="['active']" (click)="navClick()">
+              <i class="fas fa-code text-light"></i>
+              Scraper
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<article class="container pt-3 flex-grow-1">
+  <router-outlet></router-outlet>
+</article>
+</div>

@@ -1,0 +1,753 @@
+﻿[
+  {
+    "ImdbCode": "tt0088763",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Back to the Future",
+      "Language": "English",
+      "Year": 1985,
+      "Rating": 8.5,
+      "Description": "Marty McFly, a typical American teenager of the Eighties, is accidentally sent back to 1955 in a plutonium-powered DeLorean \u0022time machine\u0022 invented by a slightly mad scientist. During his often hysterical, always amazing trip back in time, Marty must make certain his teenage parents-to-be meet and fall in love - so he can get back to the future.",
+      "YouTubeTrailerCode": "qvsgGtivCgs",
+      "ImageFilename": "tt0088763.jpg",
+      "Genres": [
+        "Adventure",
+        "Action",
+        "Sci-Fi",
+        "Comedy"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/Back_to_the_Future_1985/large-cover.jpg",
+      "DateCreated": "2015-10-31T21:41:46",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/0CE7772B55BEF2DA98C49AA1DF608DEBBB20670F",
+        "Hash": "0CE7772B55BEF2DA98C49AA1DF608DEBBB20670F",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 733636198
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/FB94D1F636CF921A7CD37BA2FFBB3C7FFD680113",
+        "Hash": "FB94D1F636CF921A7CD37BA2FFBB3C7FFD680113",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1599875318
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2019-01-20T22:42:27",
+      "DateScraped": "2020-04-20T07:11:47.030392"
+    },
+    "Download": null
+  },
+  {
+    "ImdbCode": "tt1823672",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Chappie",
+      "Language": "English",
+      "Year": 2015,
+      "Rating": 6.8,
+      "Description": "In Johannesburg, the police department reduced the high rating of criminality using robots from the Tetravaal Company, designed by the engineer Deon Wilson. The former military Vincent Moore is envious of Deon, since he has developed another project called Moose, but neither Tetravaal nor the police department is interested. Deon has just developed an Artificial Intelligence but the Tetravaal\u0027s CEO Michelle Bradley asks him to abort the project. Deon decides to bring the damaged Robot 22 that was sent to be crushed to test his A.I. However he is kidnapped by the criminals Ninja, Yo-Landi and Amerika that want him to stop the robot cops. When they see the damaged robot in the van, they force Deon to program it to heist banks with them and they call it Chappie. However, Chappie acts like a child and need to be trained to learn and grow. Meanwhile Vincent follows Deon and plots an evil scheme to activate his robot.",
+      "YouTubeTrailerCode": "HhNshgSYF_M",
+      "ImageFilename": "tt1823672.jpg",
+      "Genres": [
+        "Thriller",
+        "Sci-Fi",
+        "Drama",
+        "Crime",
+        "Action"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/chappie_2015/large-cover.jpg",
+      "DateCreated": "2015-10-31T22:23:04",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/BE4AA07856542F2DCD4E12362EF9F0A1AC88C358",
+        "Hash": "BE4AA07856542F2DCD4E12362EF9F0A1AC88C358",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 909566280
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/5B9AA3DE5580488E9D1B502C9EAC5540CF6FC07F",
+        "Hash": "5B9AA3DE5580488E9D1B502C9EAC5540CF6FC07F",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1975684956
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2020-05-12T19:21:59",
+      "DateScraped": "2020-05-12T19:22:28.810809"
+    },
+    "Download": {
+      "ExternalId": "15",
+      "Name": "Chappie (2015)",
+      "MagnetUri": "magnet:?xt=urn:btih:BE4AA07856542F2DCD4E12362EF9F0A1AC88C358\u0026dn=Chappie%20%282015%29\u0026tr=udp://open.demonii.com:1337/announce\u0026tr=udp://tracker.openbittorrent.com:80\u0026tr=udp://tracker.coppersurfer.tk:6969\u0026tr=udp://glotorrents.pw:6969/announce\u0026tr=udp://tracker.opentrackr.org:1337/announce\u0026tr=udp://torrent.gresille.org:80/announce\u0026tr=udp://p4p.arenabg.com:1337\u0026tr=udp://tracker.leechers-paradise.org:6969",
+      "Source": "yts",
+      "Quality": "720p",
+      "Type": "bluray",
+      "Statuses": [
+        {
+          "Status": "Started",
+          "DateCreated": "2020-05-12T19:13:16.08293"
+        },
+        {
+          "Status": "Downloaded",
+          "DateCreated": "2020-05-12T19:21:58.709612"
+        },
+        {
+          "Status": "Complete",
+          "DateCreated": "2020-05-12T19:21:58.736647"
+        }
+      ]
+    }
+  },
+  {
+    "ImdbCode": "tt0083866",
+    "Meta": {
+      "Source": "yts",
+      "Title": "E.T. the Extra-Terrestrial",
+      "Language": "English",
+      "Year": 1982,
+      "Rating": 7.8,
+      "Description": "After a gentle alien becomes stranded on Earth, the being is discovered and befriended by a young boy named Elliott. Bringing the extraterrestrial into his suburban California house, Elliott introduces E.T., as the alien is dubbed, to his brother and his little sister, Gertie, and the children decide to keep its existence a secret. Soon, however, E.T. falls ill, resulting in government intervention and a dire situation for both Elliott and the alien.",
+      "YouTubeTrailerCode": "aiqLxSuXBzI",
+      "ImageFilename": "tt0083866.jpg",
+      "Genres": [
+        "Sci-Fi",
+        "Family",
+        "Action"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/E_T_The_Extra_Terrestrial_1982/large-cover.jpg",
+      "DateCreated": "2015-10-31T23:17:01",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/F6B6B456E9B6BE6AA5F5D6F6AFD1829E7B0D9243",
+        "Hash": "F6B6B456E9B6BE6AA5F5D6F6AFD1829E7B0D9243",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 839081001
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/18F035EA2D976B8037F4D84DA7F074B1372259E4",
+        "Hash": "18F035EA2D976B8037F4D84DA7F074B1372259E4",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1857573356
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2020-04-26T11:07:36",
+      "DateScraped": "2020-04-26T11:08:05.784817"
+    },
+    "Download": {
+      "ExternalId": "5",
+      "Name": "E.T. the Extra-Terrestrial (1982)",
+      "MagnetUri": "magnet:?xt=urn:btih:F6B6B456E9B6BE6AA5F5D6F6AFD1829E7B0D9243\u0026dn=E.T.%20the%20Extra-Terrestrial%20%281982%29\u0026tr=udp://open.demonii.com:1337/announce\u0026tr=udp://tracker.openbittorrent.com:80\u0026tr=udp://tracker.coppersurfer.tk:6969\u0026tr=udp://glotorrents.pw:6969/announce\u0026tr=udp://tracker.opentrackr.org:1337/announce\u0026tr=udp://torrent.gresille.org:80/announce\u0026tr=udp://p4p.arenabg.com:1337\u0026tr=udp://tracker.leechers-paradise.org:6969",
+      "Source": "yts",
+      "Quality": "720p",
+      "Type": "bluray",
+      "Statuses": [
+        {
+          "Status": "Started",
+          "DateCreated": "2020-04-26T10:53:31.681467"
+        },
+        {
+          "Status": "Downloaded",
+          "DateCreated": "2020-04-26T11:07:35.61237"
+        },
+        {
+          "Status": "Complete",
+          "DateCreated": "2020-04-26T11:07:35.634069"
+        }
+      ]
+    }
+  },
+  {
+    "ImdbCode": "tt0091059",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Flight of the Navigator",
+      "Language": "English",
+      "Year": 1986,
+      "Rating": 6.9,
+      "Description": "A 12-year-old boy goes missing in 1978, only to reappear once more in 1986. In the eight years that have passed, he hasn\u0027t aged. It is no coincidence that at the time he \u0022comes back\u0022, a flying saucer is found, entangled in power lines.",
+      "YouTubeTrailerCode": "XnB7rIL2fy8",
+      "ImageFilename": "tt0091059.jpg",
+      "Genres": [
+        "Adventure",
+        "Sci-Fi",
+        "Family",
+        "Comedy",
+        "Action"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/Flight_of_the_Navigator_1986/large-cover.jpg",
+      "DateCreated": "2015-10-31T23:28:07",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/E2EC3AE7D081E0BF17485C150602F202E77683B2",
+        "Hash": "E2EC3AE7D081E0BF17485C150602F202E77683B2",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1503238554
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/E2B887B13978817B26D57580D0F8A71D7C1142AB",
+        "Hash": "E2B887B13978817B26D57580D0F8A71D7C1142AB",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 630183690
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2021-09-02T23:02:21",
+      "DateScraped": "2021-09-02T23:02:50.891487"
+    },
+    "Download": {
+      "ExternalId": "4",
+      "Name": "Flight of the Navigator (1986)",
+      "MagnetUri": "magnet:?xt=urn:btih:E2B887B13978817B26D57580D0F8A71D7C1142AB\u0026dn=Flight%20of%20the%20Navigator%20%281986%29\u0026tr=udp://open.demonii.com:1337/announce\u0026tr=udp://tracker.openbittorrent.com:80\u0026tr=udp://tracker.coppersurfer.tk:6969\u0026tr=udp://glotorrents.pw:6969/announce\u0026tr=udp://tracker.opentrackr.org:1337/announce\u0026tr=udp://torrent.gresille.org:80/announce\u0026tr=udp://p4p.arenabg.com:1337\u0026tr=udp://tracker.leechers-paradise.org:6969",
+      "Source": "yts",
+      "Quality": "720p",
+      "Type": "bluray",
+      "Statuses": [
+        {
+          "Status": "Started",
+          "DateCreated": "2021-09-02T22:42:36.292913"
+        },
+        {
+          "Status": "Downloaded",
+          "DateCreated": "2021-09-02T23:02:20.742436"
+        },
+        {
+          "Status": "Complete",
+          "DateCreated": "2021-09-02T23:02:20.751778"
+        }
+      ]
+    }
+  },
+  {
+    "ImdbCode": "tt0816692",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Interstellar",
+      "Language": "English",
+      "Year": 2014,
+      "Rating": 8.6,
+      "Description": "Earth\u0027s future has been riddled by disasters, famines, and droughts. There is only one way to ensure mankind\u0027s survival: Interstellar travel. A newly discovered wormhole in the far reaches of our solar system allows a team of astronauts to go where no man has gone before, a planet that may have the right environment to sustain human life.",
+      "YouTubeTrailerCode": "827FNDpQWrQ",
+      "ImageFilename": "tt0816692.jpg",
+      "Genres": [
+        "Adventure",
+        "Thriller",
+        "Sci-Fi",
+        "Drama",
+        "Action"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/interstellar_2014/large-cover.jpg",
+      "DateCreated": "2015-11-01T00:18:06",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486",
+        "Hash": "89599BF4DC369A3A8ECA26411C5CCF922D78B486",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 2426656522
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373",
+        "Hash": "6E88B3F25BA49D483D740A652BF013C341BC5373",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 1095216660
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2019-01-20T22:01:47",
+      "DateScraped": "2020-04-20T07:11:47.030392"
+    },
+    "Download": null
+  },
+  {
+    "ImdbCode": "tt0058331",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Mary Poppins",
+      "Language": "English",
+      "Year": 1964,
+      "Rating": 7.8,
+      "Description": "When Jane and Michael, the children of the wealthy and uptight Banks family, are faced with the prospect of a new nanny, they are pleasantly surprised by the arrival of the magical Mary Poppins. Embarking on a series of fantastical adventures with Mary and her Cockney performer friend, Bert, the siblings try to pass on some of their nanny\u0027s sunny attitude to their preoccupied parents.",
+      "YouTubeTrailerCode": "nOfH7uEojKk",
+      "ImageFilename": "tt0058331.jpg",
+      "Genres": [
+        "Musical",
+        "Fantasy",
+        "Family",
+        "Comedy",
+        "Action"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/mary_poppins_1964/large-cover.jpg",
+      "DateCreated": "2016-03-10T20:30:59",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/DE2CA378F37FC22829AFD6E0BEDF82364CE8E4C2",
+        "Hash": "DE2CA378F37FC22829AFD6E0BEDF82364CE8E4C2",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 1052854190
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/5A6363590292485D794B0E6B6CF9FF18F5ABE2D8",
+        "Hash": "5A6363590292485D794B0E6B6CF9FF18F5ABE2D8",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 2254857830
+      }
+    ],
+    "LocalSource": null,
+    "Download": null
+  },
+  {
+    "ImdbCode": "tt0457430",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Pan\u0027s Labyrinth",
+      "Language": "es",
+      "Year": 2006,
+      "Rating": 8.2,
+      "Description": "In 1944 Falangist Spain, a girl, fascinated with fairy-tales, is sent along with her pregnant mother to live with her new stepfather, a ruthless captain of the Spanish army. During the night, she meets a fairy who takes her to an old faun in the center of the labyrinth. He tells her she\u0027s a princess, but must prove her royalty by surviving three gruesome tasks. If she fails, she will never prove herself to be the true princess and will never see her real father, the king, again.",
+      "YouTubeTrailerCode": "MlFa-0249Po",
+      "ImageFilename": "tt0457430.jpg",
+      "Genres": [
+        "War",
+        "Fantasy",
+        "Drama"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/pans_labyrinth_2006/large-cover.jpg",
+      "DateCreated": "2018-03-06T23:47:34",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/41DDD441693D13A6979847B4FE974E4DDA256CBF",
+        "Hash": "41DDD441693D13A6979847B4FE974E4DDA256CBF",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 2050846884
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/A616BF410850C2936061DBED4DF1693EAEBE1352",
+        "Hash": "A616BF410850C2936061DBED4DF1693EAEBE1352",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 1062889062
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2019-01-20T21:19:15",
+      "DateScraped": "2020-04-20T07:11:47.030392"
+    },
+    "Download": null
+  },
+  {
+    "ImdbCode": "tt0110912",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Pulp Fiction",
+      "Language": "English",
+      "Year": 1994,
+      "Rating": 8.9,
+      "Description": "Jules Winnfield (Samuel L. Jackson) and Vincent Vega (John Travolta) are two hit men who are out to retrieve a suitcase stolen from their employer, mob boss Marsellus Wallace (Ving Rhames). Wallace has also asked Vincent to take his wife Mia (Uma Thurman) out a few days later when Wallace himself will be out of town. Butch Coolidge (Bruce Willis) is an aging boxer who is paid by Wallace to lose his fight. The lives of these seemingly unrelated people are woven together comprising of a series of funny, bizarre and uncalled-for incidents.",
+      "YouTubeTrailerCode": "tGpTpVyI_OQ",
+      "ImageFilename": "tt0110912.jpg",
+      "Genres": [
+        "Drama",
+        "Crime",
+        "Action"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/Pulp_Fiction_1994/large-cover.jpg",
+      "DateCreated": "2015-11-01T01:52:11",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/D55F1E840F1BD6576EAD67A4D04E5D6EA294414B",
+        "Hash": "D55F1E840F1BD6576EAD67A4D04E5D6EA294414B",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 787784663
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/3F8F219568B8B229581DDDD7BC5A5E889E906A9B",
+        "Hash": "3F8F219568B8B229581DDDD7BC5A5E889E906A9B",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1503238554
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2019-01-20T21:21:58",
+      "DateScraped": "2020-04-20T07:11:47.030392"
+    },
+    "Download": null
+  },
+  {
+    "ImdbCode": "tt0105236",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Reservoir Dogs",
+      "Language": "English",
+      "Year": 1992,
+      "Rating": 8.3,
+      "Description": "Six criminals, who are strangers to each other, are hired by a crime boss, Joe Cabot, to carry out a diamond robbery. Right at the outset, they are given false names with the intention that they won\u0027t get too close and will concentrate on the job instead. They are completely sure that the robbery is going to be a success. But, when the police show up right at the time and the site of the robbery, panic spreads amongst the group members, and two of them are killed in the subsequent shootout, along with a few policemen and civilians. When the remaining people assemble at the premeditated rendezvous point (a warehouse), they begin to suspect that one of them is an undercover cop.",
+      "YouTubeTrailerCode": "GyR4RK0LA_E",
+      "ImageFilename": "tt0105236.jpg",
+      "Genres": [
+        "Action",
+        "Thriller",
+        "Drama",
+        "Crime"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/Reservoir_Dogs_1992/large-cover.jpg",
+      "DateCreated": "2015-11-01T01:00:16",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/C51B66FC446AC82D2C56DD2E0826382EC143C54E",
+        "Hash": "C51B66FC446AC82D2C56DD2E0826382EC143C54E",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 670249779
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/3AC7749C54E6273CE187E842B20C4E710E3DCB24",
+        "Hash": "3AC7749C54E6273CE187E842B20C4E710E3DCB24",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1653562409
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2019-01-20T22:32:29",
+      "DateScraped": "2020-04-20T07:11:47.030392"
+    },
+    "Download": null
+  },
+  {
+    "ImdbCode": "tt0945513",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Source Code",
+      "Language": "English",
+      "Year": 2011,
+      "Rating": 7.5,
+      "Description": "Army Captain Colter Stevens finds himself working on a special program where his consciousness can be inserted into another human being. The only catch is can only be there for 8 minutes at any given time. That morning, a bomb exploded on a commuter train just outside Chicago. He occupies the body of teacher going to work on that train and is confused as to what he is doing or why he is there as his last memory is of flying his helicopter on a combat mission in Afghanistan. Those in charge of the program explain to him that there is a bomb on the train, and that he must locate it. More importantly, he must identify the bomber as another bombing is expected later that day. He is also told however that he cannot change the past and can only gather information. As he develops a liking for his traveling companion Christina, he sets out to test that theory.",
+      "YouTubeTrailerCode": "NkTrG-gpIzE",
+      "ImageFilename": "tt0945513.jpg",
+      "Genres": [
+        "Thriller",
+        "Sci-Fi",
+        "Romance",
+        "Mystery",
+        "Drama",
+        "Action"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/Source_Code_2011/large-cover.jpg",
+      "DateCreated": "2015-11-01T01:35:35",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/4063BBC5D3EA61FC498A14A84DE965DCABD2DE93",
+        "Hash": "4063BBC5D3EA61FC498A14A84DE965DCABD2DE93",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 578038006
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/7D93B02F80E22FB8FD470D48783D9545093C2752",
+        "Hash": "7D93B02F80E22FB8FD470D48783D9545093C2752",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1256277934
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2020-07-29T22:08:54",
+      "DateScraped": "2020-07-29T22:09:24.636991"
+    },
+    "Download": {
+      "ExternalId": "6",
+      "Name": "Source Code (2011)",
+      "MagnetUri": "magnet:?xt=urn:btih:4063BBC5D3EA61FC498A14A84DE965DCABD2DE93\u0026dn=Source%20Code%20%282011%29\u0026tr=udp://open.demonii.com:1337/announce\u0026tr=udp://tracker.openbittorrent.com:80\u0026tr=udp://tracker.coppersurfer.tk:6969\u0026tr=udp://glotorrents.pw:6969/announce\u0026tr=udp://tracker.opentrackr.org:1337/announce\u0026tr=udp://torrent.gresille.org:80/announce\u0026tr=udp://p4p.arenabg.com:1337\u0026tr=udp://tracker.leechers-paradise.org:6969",
+      "Source": "yts",
+      "Quality": "720p",
+      "Type": "bluray",
+      "Statuses": [
+        {
+          "Status": "Started",
+          "DateCreated": "2020-07-29T21:58:13.646807"
+        },
+        {
+          "Status": "Downloaded",
+          "DateCreated": "2020-07-29T22:08:54.576165"
+        },
+        {
+          "Status": "Complete",
+          "DateCreated": "2020-07-29T22:08:54.590196"
+        }
+      ]
+    }
+  },
+  {
+    "ImdbCode": "tt0088247",
+    "Meta": {
+      "Source": "yts",
+      "Title": "The Terminator",
+      "Language": "English",
+      "Year": 1984,
+      "Rating": 8,
+      "Description": "Sent back from a dystopian 2029--where the cold machines have conquered the entire world--to 1984 Los Angeles, the indestructible cyborg-assassin known as the \u0022Terminator\u0022 commences his deadly mission to kill humankind\u0027s most important woman: the unsuspecting, Sarah Connor. However, from the same war-torn post-apocalyptic future comes a battle-scarred defender--Kyle Reese, a brave soldier of the human Resistance Army--bent on stopping the cybernetic killer from eliminating the world\u0027s last hope. But, the Terminator has no feelings, he doesn\u0027t sleep, and above all, he won\u0027t stop until he carries out his grim task. Does our future lie in our past?",
+      "YouTubeTrailerCode": "k64P4l2Wmeg",
+      "ImageFilename": "tt0088247.jpg",
+      "Genres": [
+        "Sci-Fi",
+        "Action"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/The_Terminator_1984/large-cover.jpg",
+      "DateCreated": "2015-11-01T03:25:52",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/D8C08F28219897B36C311A189DFE130451A35509",
+        "Hash": "D8C08F28219897B36C311A189DFE130451A35509",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 683430380
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/02CD53257B68FAC90489850BE10691DF7C42E45A",
+        "Hash": "02CD53257B68FAC90489850BE10691DF7C42E45A",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1717986918
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2020-05-11T22:53:05",
+      "DateScraped": "2020-05-11T22:53:35.221432"
+    },
+    "Download": {
+      "ExternalId": "11",
+      "Name": "The Terminator (1984)",
+      "MagnetUri": "magnet:?xt=urn:btih:D8C08F28219897B36C311A189DFE130451A35509\u0026dn=The%20Terminator%20%281984%29\u0026tr=udp://open.demonii.com:1337/announce\u0026tr=udp://tracker.openbittorrent.com:80\u0026tr=udp://tracker.coppersurfer.tk:6969\u0026tr=udp://glotorrents.pw:6969/announce\u0026tr=udp://tracker.opentrackr.org:1337/announce\u0026tr=udp://torrent.gresille.org:80/announce\u0026tr=udp://p4p.arenabg.com:1337\u0026tr=udp://tracker.leechers-paradise.org:6969",
+      "Source": "yts",
+      "Quality": "720p",
+      "Type": "bluray",
+      "Statuses": [
+        {
+          "Status": "Started",
+          "DateCreated": "2020-05-11T22:45:14.814164"
+        },
+        {
+          "Status": "Downloaded",
+          "DateCreated": "2020-05-11T22:53:05.156852"
+        },
+        {
+          "Status": "Complete",
+          "DateCreated": "2020-05-11T22:53:05.170301"
+        }
+      ]
+    }
+  },
+  {
+    "ImdbCode": "tt0114709",
+    "Meta": {
+      "Source": "yts",
+      "Title": "Toy Story",
+      "Language": "English",
+      "Year": 1995,
+      "Rating": 8.3,
+      "Description": "A little boy named Andy loves to be in his room, playing with his toys, especially his doll named \u0022Woody\u0022. But, what do the toys do when Andy is not with them, they come to life. Woody believes that his life (as a toy) is good. However, he must worry about Andy\u0027s family moving, and what Woody does not know is about Andy\u0027s birthday party. Woody does not realize that Andy\u0027s mother gave him an action figure known as Buzz Lightyear, who does not believe that he is a toy, and quickly becomes Andy\u0027s new favorite toy. Woody, who is now consumed with jealousy, tries to get rid of Buzz. Then, both Woody and Buzz are now lost. They must find a way to get back to Andy before he moves without them, but they will have to pass through a ruthless toy killer, Sid Phillips.",
+      "YouTubeTrailerCode": "u9y2tXnjP_E",
+      "ImageFilename": "tt0114709.jpg",
+      "Genres": [
+        "Action",
+        "Fantasy",
+        "Family",
+        "Comedy",
+        "Adventure",
+        "Animation"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/Toy_Story_1995/large-cover.jpg",
+      "DateCreated": "2015-11-01T03:44:31",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/AA023EF402D739D400ADB05D6765B362853A3990",
+        "Hash": "AA023EF402D739D400ADB05D6765B362853A3990",
+        "Quality": "3D",
+        "Type": "bluray",
+        "SizeBytes": 1503238554
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/71C36367F0416D36DC1B7712C3F662EBA65203B6",
+        "Hash": "71C36367F0416D36DC1B7712C3F662EBA65203B6",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 525923779
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/AEE2BCB4DA9A5650941C64B127F491683C273D86",
+        "Hash": "AEE2BCB4DA9A5650941C64B127F491683C273D86",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1181116006
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2020-04-20T07:42:46",
+      "DateScraped": "2020-04-20T19:49:07.50477"
+    },
+    "Download": {
+      "ExternalId": "1",
+      "Name": "Toy Story (1995)",
+      "MagnetUri": "magnet:?xt=urn:btih:71C36367F0416D36DC1B7712C3F662EBA65203B6\u0026dn=Toy%20Story%20%281995%29\u0026tr=udp://open.demonii.com:1337/announce\u0026tr=udp://tracker.openbittorrent.com:80\u0026tr=udp://tracker.coppersurfer.tk:6969\u0026tr=udp://glotorrents.pw:6969/announce\u0026tr=udp://tracker.opentrackr.org:1337/announce\u0026tr=udp://torrent.gresille.org:80/announce\u0026tr=udp://p4p.arenabg.com:1337\u0026tr=udp://tracker.leechers-paradise.org:6969",
+      "Source": "yts",
+      "Quality": "720p",
+      "Type": "bluray",
+      "Statuses": [
+        {
+          "Status": "Started",
+          "DateCreated": "2020-04-20T07:23:55.733186"
+        },
+        {
+          "Status": "Downloaded",
+          "DateCreated": "2020-04-20T07:41:58.421116"
+        },
+        {
+          "Status": "Complete",
+          "DateCreated": "2020-04-20T07:41:58.458287"
+        }
+      ]
+    }
+  },
+  {
+    "ImdbCode": "tt0086567",
+    "Meta": {
+      "Source": "yts",
+      "Title": "WarGames",
+      "Language": "English",
+      "Year": 1983,
+      "Rating": 7.1,
+      "Description": "A young computer whiz kid accidentally connects into a top secret super-computer which has complete control over the U.S. nuclear arsenal. It challenges him to a game between America and Russia, and he innocently starts the countdown to World War 3. Can he convince the computer he wanted to play a game and not the real thing ?",
+      "YouTubeTrailerCode": "O4YUdtr-WBQ",
+      "ImageFilename": "tt0086567.jpg",
+      "Genres": [
+        "Thriller",
+        "Sci-Fi",
+        "Action"
+      ],
+      "RemoteImageUrl": "/assets/images/movies/wargames_1983/large-cover.jpg",
+      "DateCreated": "2016-02-05T12:16:06",
+      "DateScraped": "2020-04-19T21:46:47.962165"
+    },
+    "Torrents": [
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/208CB01F198F9174605C37B11F34344747964015",
+        "Hash": "208CB01F198F9174605C37B11F34344747964015",
+        "Quality": "720p",
+        "Type": "bluray",
+        "SizeBytes": 865043743
+      },
+      {
+        "Source": "yts",
+        "Url": "/torrent/download/EC2006777A4F3C4024EEEE6E47CDA48D12BB5B9A",
+        "Hash": "EC2006777A4F3C4024EEEE6E47CDA48D12BB5B9A",
+        "Quality": "1080p",
+        "Type": "bluray",
+        "SizeBytes": 1836098519
+      }
+    ],
+    "LocalSource": {
+      "Source": "plex",
+      "DateCreated": "2020-04-21T21:50:50",
+      "DateScraped": "2020-04-21T21:51:20.321648"
+    },
+    "Download": {
+      "ExternalId": "4",
+      "Name": "WarGames (1983)",
+      "MagnetUri": "magnet:?xt=urn:btih:208CB01F198F9174605C37B11F34344747964015\u0026dn=WarGames%20%281983%29\u0026tr=udp://open.demonii.com:1337/announce\u0026tr=udp://tracker.openbittorrent.com:80\u0026tr=udp://tracker.coppersurfer.tk:6969\u0026tr=udp://glotorrents.pw:6969/announce\u0026tr=udp://tracker.opentrackr.org:1337/announce\u0026tr=udp://torrent.gresille.org:80/announce\u0026tr=udp://p4p.arenabg.com:1337\u0026tr=udp://tracker.leechers-paradise.org:6969",
+      "Source": "yts",
+      "Quality": "720p",
+      "Type": "bluray",
+      "Statuses": [
+        {
+          "Status": "Started",
+          "DateCreated": "2020-04-21T21:34:34.126279"
+        },
+        {
+          "Status": "Downloaded",
+          "DateCreated": "2020-04-21T21:50:49.255002"
+        },
+        {
+          "Status": "Complete",
+          "DateCreated": "2020-04-21T21:50:49.269422"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,6 @@
+<div class="badge-group" *ngIf="movie">
+  <span class="badge rounded-pill bg-primary">{{movie.year}}</span>
+  <span class="badge rounded-pill bg-secondary" *ngFor="let genre of movie.genres">{{genre | titlecase}}</span>
+  <span class="badge rounded-pill bg-success" *ngFor="let quality of qualities">{{quality}}</span>
+  <span class="badge rounded-pill bg-info" *ngFor="let type of types">{{type | titlecase}}</span>
+</div>

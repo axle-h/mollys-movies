@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mollys-movies.ui.fullname" . }}
+  labels:
+    {{- include "mollys-movies.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.ui.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "mollys-movies.ui.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "mollys-movies.ui.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "mollys-movies.serviceAccountName" . }}
+      containers:
+        - name: "{{ .Chart.Name }}-ui"
+          image: {{ include "mollys-movies.ui.image" . }}
+          imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http

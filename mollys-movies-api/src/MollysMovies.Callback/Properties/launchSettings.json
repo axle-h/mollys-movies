@@ -1,0 +1,12 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "MollysMovies.Callback": {
+      "commandName": "Project",
+      "commandLineArgs": "--TorrentId 100",
+      "environmentVariables": {
+        "CONNECTIONSTRINGS__RABBITMQ": "rabbitmq://user:password@localhost:5672"
+      }
+    }
+  }
+}

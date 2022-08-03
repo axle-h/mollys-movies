@@ -1,0 +1,178 @@
+name: Build
+on: [push]
+jobs:
+  build-test-api:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:6.0
+    env:
+      MONGO_HOST: mongo
+      RABBITMQ_HOST: rabbitmq
+    services:
+      mongo:
+        image: mongo:5
+        ports:
+           - 27017:27017
+      rabbitmq:
+        image: rabbitmq:3-management
+        env:
+          RABBITMQ_DEFAULT_USER: user
+          RABBITMQ_DEFAULT_PASS: password
+        ports:
+           - 5672:5672
+           - 15672:15672
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache nuget packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('mollys-movies-api/**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Build
+        run: dotnet build
+        working-directory: mollys-movies-api
+
+      - name: Unit test
+        run: dotnet test src/MollysMovies.Test
+        working-directory: mollys-movies-api
+
+      - name: E2E test API
+        run: dotnet test src/MollysMovies.Api.E2e
+        working-directory: mollys-movies-api
+
+      - name: E2E test scraper
+        run: dotnet test src/MollysMovies.Scraper.E2e
+        working-directory: mollys-movies-api
+  
+  build-test-ui:
+    runs-on: ubuntu-latest
+    container: node:16
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('mollys-movies-ui/**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Restore npm packages
+        run: npm install
+        working-directory: mollys-movies-ui
+
+      - name: Build
+        run: npm run build
+        working-directory: mollys-movies-ui
+
+  api-docker:
+    needs:
+      - build-test-api
+      - build-test-ui
+    uses: ./.github/workflows/publish-container.yml
+    with:
+      name: api
+      context: ./mollys-movies-api
+      file: ./mollys-movies-api/api.Dockerfile
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  scraper-docker:
+    needs:
+      - build-test-api
+      - build-test-ui
+    uses: ./.github/workflows/publish-container.yml
+    with:
+      name: scraper
+      context: ./mollys-movies-api
+      file: ./mollys-movies-api/scraper.Dockerfile
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  transmission-docker:
+    needs:
+      - build-test-api
+      - build-test-ui
+    uses: ./.github/workflows/publish-container.yml
+    with:
+      name: transmission
+      context: ./mollys-movies-api
+      file: ./mollys-movies-api/transmission.Dockerfile
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  ui-docker:
+    needs:
+      - build-test-api
+      - build-test-ui
+    uses: ./.github/workflows/publish-container.yml
+    with:
+      name: ui
+      context: ./mollys-movies-ui
+      file: ./mollys-movies-ui/Dockerfile
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  openvpn-docker:
+    needs:
+      - build-test-api
+      - build-test-ui
+    uses: ./.github/workflows/publish-container.yml
+    with:
+      name: openvpn
+      context: ./openvpn
+      file: ./openvpn/Dockerfile
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  helm:
+    needs:
+      - build-test-api
+      - build-test-ui
+    runs-on: ubuntu-latest
+    env:
+      GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/mollys-movies
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install helm
+        uses: azure/setup-helm@v3
+        with:
+          version: '3.9.0'
+
+      - name: Restore helm dependencies
+        run: helm dependency update 
+        working-directory: helm
+      
+      - name: OCI meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.GCR_IMAGE }}
+
+      - name: Login to repository
+        run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
+
+      - name: Build
+        run: |
+          VERSION=$(echo '${{ steps.meta.outputs.json }}' | jq -r '.labels["org.opencontainers.image.version"]')
+          SEMVER=0.0.$GITHUB_RUN_NUMBER
+          if [[ $VERSION != "latest" ]]; then
+            SEMVER=$SEMVER-$VERSION
+          fi
+          echo "app-version: $VERSION, version: $SEMVER"
+          helm package . --app-version $VERSION --version $SEMVER
+        working-directory: helm
+
+      - name: Publish
+        run: helm push ./*.tgz oci://${{ env.GCR_IMAGE }}
+        working-directory: helm
+
+

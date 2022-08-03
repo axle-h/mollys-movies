@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mollys-movies.scraper.fullname" . }}
+  labels:
+    {{- include "mollys-movies.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.scraper.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "mollys-movies.scraper.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "mollys-movies.scraper.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "mollys-movies.serviceAccountName" . }}
+      volumes:
+        - name: movie-images
+          hostPath:
+            path: {{ .Values.hostPaths.movieImages }}
+            type: DirectoryOrCreate
+        - name: movie-library
+          hostPath:
+            path: {{ .Values.hostPaths.movieLibrary }}
+            type: DirectoryOrCreate
+        - name: downloads
+          hostPath:
+            path: {{ .Values.hostPaths.downloads }}
+            type: DirectoryOrCreate
+      containers:
+        - name: "{{ .Chart.Name }}-scraper"
+          image: {{ include "mollys-movies.scraper.image" . }}
+          imagePullPolicy: {{ .Values.scraper.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: /movie-images
+              name: movie-images
+            - mountPath: /movie-library
+              name: movie-library
+            - mountPath: /downloads
+              name: downloads
+          env:
+            - name: CONNECTIONSTRINGS__MONGO
+              value: {{ include "mollys-movies.mongodbConnectionString" . | quote }}
+            - name: CONNECTIONSTRINGS__RABBITMQ
+              value: {{ include "mollys-movies.rabbitmqConnectionString" . | quote }}
+            - name: CONNECTIONSTRINGS__TRANSMISSION
+              value: "http://{{ include "mollys-movies.transmission.fullname" . }}:{{ .Values.transmission.service.port }}/transmission/"
+            - name: CONNECTIONSTRINGS__PROXY
+              value: "socks5h://{{ include "mollys-movies.vpn.fullname" . }}:{{ .Values.vpn.service.port }}"
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: CONNECTIONSTRINGS__PLEX
+              value: {{ default "http://$(HOST_IP):32400/" .Values.plex.url }}
+            - name: SCRAPER__PLEX__TOKEN
+              value: {{ required "must provide plex.token" .Values.plex.token | quote }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
