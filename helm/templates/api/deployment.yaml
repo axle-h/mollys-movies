@@ -28,6 +28,8 @@ spec:
             - mountPath: /movie-images
               name: movie-images
           env:
+            - name: MONGO__INDEX
+              value: "true"
             - name: CONNECTIONSTRINGS__MONGO
               value: {{ include "mollys-movies.mongodbConnectionString" . | quote }}
             - name: CONNECTIONSTRINGS__RABBITMQ

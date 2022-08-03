@@ -156,6 +156,9 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.GCR_IMAGE }}
+          tags: |
+            type=ref,event=branch,enable=${{ github.ref != format('refs/heads/{0}', 'master') }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
 
       - name: Login to repository
         run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin

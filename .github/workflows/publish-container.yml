@@ -35,6 +35,9 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ghcr.io/axle-h/mollys-movies-${{ inputs.name }}
+          tags: |
+            type=ref,event=branch,enable=${{ github.ref != format('refs/heads/{0}', 'master') }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
 
       - name: Build and push
         uses: docker/build-push-action@v2

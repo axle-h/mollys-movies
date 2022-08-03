@@ -17,7 +17,7 @@ kubectl --namespace mollys-movies create secret generic openvpn \
     --from-file=openvpn.conf=./openvpn.conf
 
 # Install mollys-movies chart from gitub packages
-helm upgrade v1 oci://ghcr.io/axle-h/mollys-movies/mollys-movies --version latest
+helm upgrade --namespace mollys-movies --install v1 oci://ghcr.io/axle-h/mollys-movies/mollys-movies --version {latest version} --set plex.token=your-plex-token
 
 # Or install/upgrade from local copy
 helm dependency update
