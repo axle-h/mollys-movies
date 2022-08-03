@@ -58,9 +58,7 @@ public class MongoInitService : BackgroundService, IMongoInitService
     {
         var indexes = new List<CreateIndexModel<Movie>>
         {
-            new(Builders<Movie>.IndexKeys
-                    .Text(x => x.Meta!.Title)
-                    .Text(x => x.Meta!.Description),
+            new(Builders<Movie>.IndexKeys.Text(x => x.Meta!.Title),
                 new CreateIndexOptions
                 {
                     Weights = new BsonDocument {{nameof(MovieMeta.Title), 2}, {nameof(MovieMeta.Description), 1}}
