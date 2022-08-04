@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentValidation;
 
 namespace MollysMovies.Scraper.Models;
 
@@ -34,3 +35,16 @@ public record CreateMovieRequest(
     DateTime DateCreated,
     ICollection<CreateTorrentRequest> Torrents
 );
+
+public class CreateMovieRequestValidator : AbstractValidator<CreateMovieRequest>
+{
+    public CreateMovieRequestValidator()
+    {
+        RuleFor(x => x.ImdbCode).NotEmpty();
+        RuleFor(x => x.Title).NotEmpty();
+        RuleFor(x => x.Language).NotEmpty();
+        RuleFor(x => x.Year).GreaterThan(1900);
+        RuleFor(x => x.Rating).GreaterThanOrEqualTo(0m).LessThanOrEqualTo(10m);
+        RuleFor(x => x.Torrents).NotEmpty();
+    }
+}

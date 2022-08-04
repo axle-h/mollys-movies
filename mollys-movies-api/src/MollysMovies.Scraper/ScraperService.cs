@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using MollysMovies.Common;
 using MollysMovies.Common.Scraper;
@@ -77,11 +78,20 @@ public class ScraperService : IScraperService
                     case ITorrentScraper torrentScraper:
                         await foreach (var movie in torrentScraper.ScrapeMoviesAsync(session, cancellationToken))
                         {
+                            try
+                            {
+                                await _movieService.CreateMovieAsync(session, movie, cancellationToken);
+                            }
+                            catch (ValidationException e)
+                            {
+                                _logger.LogError(e, "invalid movie from {Source} with imdb {ImdbCode}", scraper.Source, movie.ImdbCode);
+                                continue;
+                            }
+                            
                             scrape.MovieCount++;
                             source.MovieCount++;
                             source.TorrentCount += movie.Torrents.Count;
                             scrape.TorrentCount += movie.Torrents.Count;
-                            await _movieService.CreateMovieAsync(session, movie, cancellationToken);
                             await _scraperClient.ScrapeMovieImageAsync(movie.ImdbCode, scraper.Source, movie.SourceCoverImageUrl, cancellationToken);
                         }
                         break;
