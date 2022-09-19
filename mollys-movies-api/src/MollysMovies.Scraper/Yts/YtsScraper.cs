@@ -91,9 +91,8 @@ public class YtsScraper : ITorrentScraper
 
             var requests = movies.Select(_mapper.ToCreateMovieRequest).ToList();
 
-            foreach (var request in requests.OrderBy(x => x.DateCreated))
+            foreach (var request in requests)
             {
-                // yield ordered by date created so we dont miss any on error when filtering by scrape date
                 yield return request;
             }
 

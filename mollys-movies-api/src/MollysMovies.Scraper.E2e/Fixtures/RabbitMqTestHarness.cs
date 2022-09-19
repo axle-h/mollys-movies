@@ -10,7 +10,7 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace MollysMovies.Scraper.E2e;
+namespace MollysMovies.Scraper.E2e.Fixtures;
 
 public class RabbitMqTestHarness : IDisposable
 {

@@ -76,15 +76,6 @@ public sealed class MollysMoviesApiFixture : WebApplicationFactory<Program>
 
     public RabbitMqTestHarness.Builder RabbitMq(string name) =>
         new(Services.GetRequiredService<IConfiguration>().GetConnectionUrl("rabbitmq").ToString(), name);
-
-    private async Task EnsureRabbitMqVirtualHostAsync()
-    {
-        using var handler = new HttpClientHandler { Credentials = new NetworkCredential { UserName = "user", Password = "password" } };
-        using var client = new HttpClient(handler);
-        var content = new StringContent("", Encoding.UTF8, "application/json");
-        var result = await client.PutAsync($"http://{GetConfiguredHost("rabbitmq")}:15672/api/vhosts/{_testRunId}", content);
-        result.EnsureSuccessStatusCode();
-    }
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -94,8 +85,8 @@ public sealed class MollysMoviesApiFixture : WebApplicationFactory<Program>
         builder.UseEnvironment("e2e")
             .ConfigureAppConfiguration(config => config.AddInMemoryCollection(new Dictionary<string, string>
             {
-                ["ConnectionStrings:mongo"] = $"mongodb://{GetConfiguredHost("mongo")}:27017/{_testRunId}",
-                ["ConnectionStrings:rabbitmq"] = $"rabbitmq://user:password@{GetConfiguredHost("rabbitmq")}:5672/{_testRunId}",
+                ["ConnectionStrings:mongo"] = TestEnvironment.MongoUrl(_testRunId),
+                ["ConnectionStrings:rabbitmq"] = TestEnvironment.RabbitMqUrl(_testRunId),
                 ["ConnectionStrings:transmission"] = $"{WireMock.Urls[0]}/transmission/",
                 // the images aren't actually stored in this mock filesystem, this is just to pass validation... yawn
                 ["MovieImages:Path"] = "/movie-images"
@@ -116,7 +107,7 @@ public sealed class MollysMoviesApiFixture : WebApplicationFactory<Program>
 
     protected override IHost CreateHost(IHostBuilder builder)
     {
-        EnsureRabbitMqVirtualHostAsync().Wait();
+        TestEnvironment.EnsureRabbitMqVirtualHostAsync(_testRunId).Wait();
         var host = base.CreateHost(builder);
 
         async Task StartedAndHealthyAsync()
@@ -142,9 +133,6 @@ public sealed class MollysMoviesApiFixture : WebApplicationFactory<Program>
         WireMock.Stop();
     }
     
-    private static string GetConfiguredHost(string name) =>
-        Environment.GetEnvironmentVariable($"{name.ToUpper()}_HOST") ?? "localhost";
-
     private class DummyMovieImageFileProviderFactory : IMovieImageFileProviderFactory
     {
         private static readonly Assembly FakeAssembly = typeof(Fake).Assembly;

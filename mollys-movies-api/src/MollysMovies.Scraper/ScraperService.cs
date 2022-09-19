@@ -89,9 +89,10 @@ public class ScraperService : IScraperService
                             }
                             
                             scrape.MovieCount++;
+                            scrape.TorrentCount += movie.Torrents.Count;
+
                             source.MovieCount++;
                             source.TorrentCount += movie.Torrents.Count;
-                            scrape.TorrentCount += movie.Torrents.Count;
                             await _scraperClient.ScrapeMovieImageAsync(movie.ImdbCode, scraper.Source, movie.SourceCoverImageUrl, cancellationToken);
                         }
                         break;

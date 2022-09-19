@@ -9,6 +9,7 @@ using MassTransit;
 using MollysMovies.Common.Movies;
 using MollysMovies.FakeData.FileSystem;
 using MollysMovies.FakeData;
+using MollysMovies.Scraper.E2e.Fixtures;
 using MollysMovies.Scraper.Plex.Models;
 using MollysMovies.ScraperClient;
 using MongoDB.Driver;

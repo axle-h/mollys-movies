@@ -15,7 +15,7 @@ public static class Fake
         .StrictMode(true)
         .RuleFor(x => x.Source, f => f.SourceName())
         .RuleFor(x => x.Type, f => f.PickRandom<ScraperType>())
-        .RuleFor(x => x.StartDate, f => f.Date.Past())
+        .RuleFor(x => x.StartDate, f => f.Date.Past().ToUniversalTime())
         .RuleFor(x => x.EndDate, () => null)
         .RuleFor(x => x.Success, f => f.Random.Bool())
         .RuleFor(x => x.Error, () => null)
@@ -37,7 +37,7 @@ public static class Fake
     public static Faker<Scrape> Scrape { get; } = new Faker<Scrape>()
         .StrictMode(true)
         .RuleFor(x => x.Id, f => f.MongoId())
-        .RuleFor(x => x.StartDate, f => f.Date.Past())
+        .RuleFor(x => x.StartDate, f => f.Date.Past().ToUniversalTime())
         .RuleFor(x => x.EndDate, () => null)
         .RuleFor(x => x.Success, f => f.Random.Bool())
         .RuleFor(x => x.LocalMovieCount, f => f.Random.Number(0, 1000))
@@ -62,8 +62,8 @@ public static class Fake
 
     public static Faker<LocalMovieSource> LocalMovieSource { get; } = new Faker<LocalMovieSource>()
         .RuleFor(x => x.Source, f => f.SourceName())
-        .RuleFor(x => x.DateCreated, f => f.Date.Past())
-        .RuleFor(x => x.DateScraped, f => f.Date.Past());
+        .RuleFor(x => x.DateCreated, f => f.Date.Past().ToUniversalTime())
+        .RuleFor(x => x.DateScraped, f => f.Date.Past().ToUniversalTime());
 
     public static Faker<MovieDownloadStatus> MovieDownloadStatus { get; } =
         new Faker<MovieDownloadStatus>()
@@ -71,7 +71,7 @@ public static class Fake
             .RuleSet("Started", set => set.RuleFor(x => x.Status, MovieDownloadStatusCode.Started))
             .RuleSet("Downloaded", set => set.RuleFor(x => x.Status, MovieDownloadStatusCode.Downloaded))
             .RuleSet("Complete", set => set.RuleFor(x => x.Status, MovieDownloadStatusCode.Complete))
-            .RuleFor(x => x.DateCreated, f => f.Date.Past());
+            .RuleFor(x => x.DateCreated, f => f.Date.Past().ToUniversalTime());
 
     public static Faker<MovieDownload> MovieDownload { get; } = new Faker<MovieDownload>()
         .RuleFor(x => x.ExternalId, f => f.Id().ToString())
@@ -103,8 +103,8 @@ public static class Fake
         .RuleFor(x => x.ImageFilename, f => f.System.FilePath())
         .RuleFor(x => x.Genres, f => f.Genres().ToHashSet())
         .RuleFor(x => x.RemoteImageUrl, f => f.Image.PicsumUrl(500, 750))
-        .RuleFor(x => x.DateCreated, f => f.Date.Past())
-        .RuleFor(x => x.DateScraped, f => f.Date.Past());
+        .RuleFor(x => x.DateCreated, f => f.Date.Past().ToUniversalTime())
+        .RuleFor(x => x.DateScraped, f => f.Date.Past().ToUniversalTime());
 
     public static Faker<Movie> Movie { get; } = new Faker<Movie>()
         .RuleFor(x => x.ImdbCode, f => f.ImdbCode())
@@ -137,7 +137,7 @@ public static class Fake
         MovieDownloadStatusCode? lastStatus = null)
     {
         lastStatus ??= f.PickRandom<MovieDownloadStatusCode>();
-        var date = f.Date.Past();
+        var date = f.Date.Past().ToUniversalTime();
         for (var status = MovieDownloadStatusCode.Started; status <= lastStatus; status++)
         {
             var context = MovieDownloadStatus.Generate($"default,{status}");

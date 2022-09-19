@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using MassTransit;
-using MassTransit.Testing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -26,7 +25,7 @@ using MongoDB.Driver;
 using WireMock.Server;
 using IHost = Microsoft.Extensions.Hosting.IHost;
 
-namespace MollysMovies.Scraper.E2e;
+namespace MollysMovies.Scraper.E2e.Fixtures;
 
 public class MollysMoviesScraperFixture : WebApplicationFactory<Program>
 {
@@ -68,8 +67,8 @@ public class MollysMoviesScraperFixture : WebApplicationFactory<Program>
         builder.UseEnvironment("e2e")
             .ConfigureAppConfiguration(config => config.AddInMemoryCollection(new Dictionary<string, string>
             {
-                ["ConnectionStrings:mongo"] = $"mongodb://{GetConfiguredHost("mongo")}:27017/{_testRunId}",
-                ["ConnectionStrings:rabbitmq"] = $"rabbitmq://user:password@{GetConfiguredHost("rabbitmq")}:5672/{_testRunId}",
+                ["ConnectionStrings:mongo"] = TestEnvironment.MongoUrl(_testRunId),
+                ["ConnectionStrings:rabbitmq"] = TestEnvironment.RabbitMqUrl(_testRunId),
                 ["ConnectionStrings:plex"] = $"{WireMock.Urls[0]}/plex/",
                 ["ConnectionStrings:yts"] = $"{WireMock.Urls[0]}/yts/",
                 ["ConnectionStrings:transmission"] = $"{WireMock.Urls[0]}/transmission/"
@@ -87,7 +86,7 @@ public class MollysMoviesScraperFixture : WebApplicationFactory<Program>
                     o.LocalUpdateMovieDelay = TimeSpan.Zero;
                     o.Yts = new YtsOptions
                     {
-                        Limit = 50,
+                        Limit = 2,
                         RetryDelay = TimeSpan.Zero
                     };
                     o.Plex = new PlexOptions
@@ -99,18 +98,9 @@ public class MollysMoviesScraperFixture : WebApplicationFactory<Program>
             });
     }
 
-    private async Task EnsureRabbitMqVirtualHostAsync()
-    {
-        using var handler = new HttpClientHandler { Credentials = new NetworkCredential { UserName = "user", Password = "password" } };
-        using var client = new HttpClient(handler);
-        var content = new StringContent("", Encoding.UTF8, "application/json");
-        var result = await client.PutAsync($"http://{GetConfiguredHost("rabbitmq")}:15672/api/vhosts/{_testRunId}", content);
-        result.EnsureSuccessStatusCode();
-    }
-    
     protected override IHost CreateHost(IHostBuilder builder)
     {
-        EnsureRabbitMqVirtualHostAsync().Wait();
+        TestEnvironment.EnsureRabbitMqVirtualHostAsync(_testRunId).Wait();
         var host = base.CreateHost(builder);
 
         async Task StartedAndHealthyAsync()
@@ -135,7 +125,4 @@ public class MollysMoviesScraperFixture : WebApplicationFactory<Program>
         await base.DisposeAsync();
         WireMock.Stop();
     }
-    
-    private static string GetConfiguredHost(string name) =>
-        Environment.GetEnvironmentVariable($"{name.ToUpper()}_HOST") ?? "localhost";
 }

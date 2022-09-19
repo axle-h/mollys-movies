@@ -4,7 +4,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using WireMock.Server;
 
-namespace MollysMovies.Scraper.E2e;
+namespace MollysMovies.Scraper.E2e.Fixtures;
 
 public class WireMockAssertions
 {

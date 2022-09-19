@@ -33,6 +33,8 @@
         <EmbeddedResource Include="MovieImages\not-an-image.txt" />
         <None Remove="MovieImages\tt0076759.jpg" />
         <EmbeddedResource Include="MovieImages\tt0076759.jpg" />
+        <None Remove="Yts\list_movies_2.json" />
+        <EmbeddedResource Include="Yts\list_movies_2.json" />
     </ItemGroup>
 
     <ItemGroup>
