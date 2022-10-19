@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -21,8 +23,11 @@ public class YtsClientTests : IClassFixture<ApiClientFixture<YtsClient>>
 
     public YtsClientTests(ApiClientFixture<YtsClient> fixture)
     {
-        _fixture = fixture.Configure("https://yts",
-            s => s.Configure<ScraperOptions>(o => o.Yts = new YtsOptions {RetryDelay = TimeSpan.Zero}));
+        _fixture = fixture
+            .Configure("https://yts",
+            s => s
+                .AddSingleton<IFileSystem>(new MockFileSystem())
+                .Configure<ScraperOptions>(o => o.Yts = new YtsOptions {RetryDelay = TimeSpan.Zero}));
     }
 
     [Fact]

@@ -7,6 +7,7 @@ using FluentAssertions.Execution;
 using MassTransit;
 using MollysMovies.Common.Movies;
 using MollysMovies.Common.Scraper;
+using MollysMovies.FakeData;
 using MollysMovies.FakeData.FileSystem;
 using MollysMovies.Scraper.E2e.Fixtures;
 using MollysMovies.Scraper.Plex.Models;
@@ -274,5 +275,9 @@ public class StartScrapeTests
         }, o => o.WithoutStrictOrdering()
             .Excluding(x => x.Meta!.DateScraped)
             .Excluding(x => x.LocalSource!.DateScraped));
+
+        fixture.FileSystem.Should().ContainFile("/var/downloads/yts_list_movies_1.json", Fake.Resource("Yts.list_movies.json"));
+        fixture.FileSystem.Should().ContainFile("/var/downloads/yts_list_movies_2.json", Fake.Resource("Yts.list_movies_2.json"));
+        fixture.FileSystem.Should().ContainFile("/var/downloads/yts_list_movies_3.json", Fake.Resource("Yts.list_movies_empty.json"));
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -33,6 +34,8 @@ public class YtsClient : IYtsClient
 {
     private readonly HttpClient _client;
     private readonly AsyncRetryPolicy _clientPolicy;
+    private readonly ScraperOptions _options;
+    private readonly IFileSystem _fileSystem;
 
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
@@ -41,13 +44,15 @@ public class YtsClient : IYtsClient
         Converters = {new DateTimeConverterUsingDateTimeParse()}
     };
 
-    public YtsClient(HttpClient client, ILogger<YtsClient> logger, IOptions<ScraperOptions> options)
+    public YtsClient(HttpClient client, ILogger<YtsClient> logger, IOptions<ScraperOptions> options, IFileSystem fileSystem)
     {
+        _options = options.Value;
         _client = client;
+        _fileSystem = fileSystem;
         _clientPolicy = Policy.Handle<Exception>()
             .WaitAndRetryAsync(
                 5,
-                _ => options.Value.Yts?.RetryDelay ?? TimeSpan.Zero,
+                _ => _options.Yts?.RetryDelay ?? TimeSpan.Zero,
                 (exception, timeSpan, retryCount) => logger.LogWarning(
                     exception,
                     "delaying for {delay}ms, then retry #{retry}.",
@@ -88,6 +93,13 @@ public class YtsClient : IYtsClient
         var uri = GetUrl("api/v2/list_movies.json", request);
         var response = await _client.GetAsync(uri, cancellationToken);
         response.EnsureSuccessStatusCode();
+
+        if (_options.Yts?.DumpJson == true)
+        {
+            var json = await response.Content.ReadAsStringAsync(cancellationToken);
+            await _fileSystem.File.WriteAllTextAsync(_fileSystem.Path.Combine(_options.DownloadsPath, $"yts_list_movies_{request.Page}.json"), json, cancellationToken);
+        }
+
         var content =
             await response.Content
                 .ReadFromJsonAsync<YtsResponseWrapper<YtsListMoviesResponse>>(_jsonOptions, cancellationToken);

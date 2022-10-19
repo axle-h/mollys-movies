@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MollysMovies.Callback", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MollysMovies.ScraperClient", "src\MollysMovies.ScraperClient\MollysMovies.ScraperClient.csproj", "{BCC7CEB8-AA9C-4FEF-8477-1EF91CD95360}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MollysMovies.Callback.E2e", "src\MollysMovies.Callback.E2e\MollysMovies.Callback.E2e.csproj", "{A07CD9C3-EE85-4E38-A841-4FD6C619D3BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{BCC7CEB8-AA9C-4FEF-8477-1EF91CD95360}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCC7CEB8-AA9C-4FEF-8477-1EF91CD95360}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCC7CEB8-AA9C-4FEF-8477-1EF91CD95360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A07CD9C3-EE85-4E38-A841-4FD6C619D3BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A07CD9C3-EE85-4E38-A841-4FD6C619D3BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A07CD9C3-EE85-4E38-A841-4FD6C619D3BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A07CD9C3-EE85-4E38-A841-4FD6C619D3BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -24,6 +24,7 @@ scraper:
     repository: ghcr.io/axle-h/mollys-movies-scraper
     pullPolicy: Always
     tag: ""
+  dumpJson: false
 
 transmission:
   image:

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
@@ -54,7 +51,7 @@ public class MollysMoviesScraperFixture : WebApplicationFactory<Program>
     public WireMockServer WireMock { get; } = WireMockServer.Start();
     
     public RabbitMqTestHarness.Builder RabbitMq() =>
-        new(Services.GetRequiredService<IConfiguration>().GetConnectionUrl("rabbitmq").ToString(), _testRunId);
+        new(Services.GetRequiredService<IConfiguration>().GetConnectionUrl("rabbitmq").ToString());
 
     private T Service<T>() where T : notnull => Server.Services.GetRequiredService<T>();
 
@@ -87,7 +84,8 @@ public class MollysMoviesScraperFixture : WebApplicationFactory<Program>
                     o.Yts = new YtsOptions
                     {
                         Limit = 2,
-                        RetryDelay = TimeSpan.Zero
+                        RetryDelay = TimeSpan.Zero,
+                        DumpJson = true
                     };
                     o.Plex = new PlexOptions
                     {

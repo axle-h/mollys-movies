@@ -34,6 +34,8 @@ public class YtsOptions
     public TimeSpan RetryDelay { get; set; } = TimeSpan.Zero;
 
     public int Limit { get; set; } = 50;
+
+    public bool DumpJson { get; set; } = false;
 }
 
 public class ScraperOptionsValidator : AbstractValidator<ScraperOptions>

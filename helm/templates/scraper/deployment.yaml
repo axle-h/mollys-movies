@@ -56,15 +56,19 @@ spec:
               value: {{ default "http://$(HOST_IP):32400/" .Values.plex.url }}
             - name: SCRAPER__PLEX__TOKEN
               value: {{ required "must provide plex.token" .Values.plex.token | quote }}
+            - name: SCRAPER__YTS__DUMPJSON
+              value: {{ .Values.scraper.dumpJson | quote }}
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
+          startupProbe:
             httpGet:
               path: /health/live
               port: http
-          readinessProbe:
+          livenessProbe:
             httpGet:
               path: /health/ready
               port: http
+            initialDelaySeconds: 30
+            periodSeconds: 300

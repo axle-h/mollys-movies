@@ -42,9 +42,15 @@ spec:
               containerPort: 1080
               protocol: TCP
           livenessProbe:
-            tcpSocket:
-              port: socks
-            periodSeconds: 60
+            exec:
+              command:
+              - curl
+              - --fail
+              - -s
+              - --socks5-hostname
+              - localhost:1080
+              - ipinfo.io/ip
+            periodSeconds: 300 # uses internet IO so make it 5 minutes
           startupProbe:
             tcpSocket:
               port: socks
