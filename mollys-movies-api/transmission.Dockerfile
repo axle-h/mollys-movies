@@ -64,7 +64,7 @@ RUN mkdir /config && echo $'{\n\
     "rpc-whitelist-enabled": false,\n\
     "scrape-paused-torrents-enabled": true,\n\
     "script-torrent-done-enabled": true,\n\
-    "script-torrent-done-filename": "dotnet /opt/mollys-movies/MollysMovies.Callback.dll --TorrentId $TR_TORRENT_ID",\n\
+    "script-torrent-done-filename": "/config/callback.sh",\n\
     "seed-queue-enabled": false,\n\
     "seed-queue-size": 10,\n\
     "speed-limit-down": 100,\n\
@@ -78,7 +78,9 @@ RUN mkdir /config && echo $'{\n\
     "utp-enabled": true,\n\
     "watch-dir": "/watch",\n\
     "watch-dir-enabled": false\n\
-}' > /config/settings.json
+}' > /config/settings.json && echo $'#/bin/sh\n\
+dotnet /opt/mollys-movies/MollysMovies.Callback.dll --TorrentId $TR_TORRENT_ID' > /config/callback.sh \
+&& chmod +x /config/callback.sh
 RUN apk add --no-cache transmission-daemon
 EXPOSE 9091 51413/tcp 51413/udp
 VOLUME /downloads
