@@ -3,7 +3,7 @@
   "profiles": {
     "MollysMovies.Callback": {
       "commandName": "Project",
-      "commandLineArgs": "--TorrentId 100",
+      "commandLineArgs": "--TorrentId 1",
       "environmentVariables": {
         "CONNECTIONSTRINGS__RABBITMQ": "rabbitmq://user:password@localhost:5672"
       }

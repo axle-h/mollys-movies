@@ -48,7 +48,7 @@ vpn:
 hostPaths:
   movieImages: "/var/mollys-movies/movie-images"
   movieLibrary: "/mnt/storage/movies"
-  downloads: "/mnt/downloads"
+  downloads: "/var/downloads"
 
 nameOverride: ""
 fullnameOverride: ""

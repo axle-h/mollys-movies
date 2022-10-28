@@ -18,7 +18,7 @@ public class CallbackServiceTests : IClassFixture<AutoMockFixtureBuilder<Callbac
     public CallbackServiceTests(AutoMockFixtureBuilder<CallbackService> builder)
     {
         _fixture = builder
-            .InjectMock<IHostLifetime>()
+            .InjectMock<IHostApplicationLifetime>()
             .InjectMock<IScraperClient>()
             .Services(s => s.Configure<TransmissionCallbackOptions>(o => o.TorrentId = "100"))
             .Build();
@@ -32,9 +32,9 @@ public class CallbackServiceTests : IClassFixture<AutoMockFixtureBuilder<Callbac
                 mock.Setup(x => x.NotifyDownloadCompleteAsync("100", It.IsAny<CancellationToken>()))
                     .Returns(Task.CompletedTask);
             })
-            .Mock<IHostLifetime>(mock =>
+            .Mock<IHostApplicationLifetime>(mock =>
             {
-                mock.Setup(x => x.StopAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+                mock.Setup(x => x.StopApplication());
             });
 
         // the mocks complete synchronously so no need to mess around with async
@@ -51,9 +51,9 @@ public class CallbackServiceTests : IClassFixture<AutoMockFixtureBuilder<Callbac
                 mock.Setup(x => x.NotifyDownloadCompleteAsync("100", It.IsAny<CancellationToken>()))
                     .ThrowsAsync(new Exception("notify failed"));
             })
-            .Mock<IHostLifetime>(mock =>
+            .Mock<IHostApplicationLifetime>(mock =>
             {
-                mock.Setup(x => x.StopAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+                mock.Setup(x => x.StopApplication());
             });
 
         // the mocks complete synchronously so no need to mess around with async
