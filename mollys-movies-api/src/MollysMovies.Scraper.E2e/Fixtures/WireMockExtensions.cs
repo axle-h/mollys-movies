@@ -16,7 +16,7 @@ using MetadataMediaContainer = Plex.Schema.Metadata.MediaContainer;
 using MetadataMediaContainerType = Plex.Schema.Metadata.MediaContainerType;
 using MetadataTypeManager = Plex.Schema.Metadata.LinqToXsdTypeManager;
 
-namespace MollysMovies.Scraper.E2e;
+namespace MollysMovies.Scraper.E2e.Fixtures;
 
 public static class WireMockExtensions
 {
@@ -164,33 +164,26 @@ public static class WireMockExtensions
 
     public static WireMockServer GivenYtsListMovies(this WireMockServer wireMock)
     {
-        wireMock.Given(
-                Request.Create()
-                    .WithPath("/yts/api/v2/list_movies.json")
-                    .WithParam("page", "1")
-                    .WithParam("limit", "50")
-                    .WithParam("order_by", "desc")
-                    .WithParam("sort_by", "date_added")
-                    .UsingGet()
-            )
-            .RespondWith(Response.Create()
-                .WithStatusCode(200)
-                .WithHeader("Content-Type", "text/xml")
-                .WithBody(Fake.Resource("Yts.list_movies.json")));
+        void GivenPage(int page, string resource)
+        {
+            wireMock.Given(
+                    Request.Create()
+                        .WithPath("/yts/api/v2/list_movies.json")
+                        .WithParam("page", page.ToString())
+                        .WithParam("limit", "2")
+                        .WithParam("order_by", "desc")
+                        .WithParam("sort_by", "date_added")
+                        .UsingGet()
+                )
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBody(Fake.Resource(resource)));
+        }
 
-        wireMock.Given(
-                Request.Create()
-                    .WithPath("/yts/api/v2/list_movies.json")
-                    .WithParam("page", "2")
-                    .WithParam("limit", "50")
-                    .WithParam("order_by", "desc")
-                    .WithParam("sort_by", "date_added")
-                    .UsingGet()
-            )
-            .RespondWith(Response.Create()
-                .WithStatusCode(200)
-                .WithHeader("Content-Type", "text/xml")
-                .WithBody(Fake.Resource("Yts.list_movies_empty.json")));
+        GivenPage(1, "Yts.list_movies.json");
+        GivenPage(2, "Yts.list_movies_2.json");
+        GivenPage(3, "Yts.list_movies_empty.json");
 
         return wireMock;
     }

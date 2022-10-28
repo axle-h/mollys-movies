@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using Humanizer;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace MollysMovies.Scraper.E2e;
+namespace MollysMovies.FakeData;
 
 public class RabbitMqTestHarness : IDisposable
 {
@@ -39,14 +35,12 @@ public class RabbitMqTestHarness : IDisposable
     public class Builder
     {
         private readonly string _rabbitMqUrl;
-        private readonly string _name;
         private readonly Dictionary<Type, ICollection> _queues = new();
         private readonly List<Action<IRabbitMqBusFactoryConfigurator>> _configurators = new();
         
-        public Builder(string rabbitMqUrl, string name)
+        public Builder(string rabbitMqUrl)
         {
             _rabbitMqUrl = rabbitMqUrl;
-            _name = name;
         }
     
         public Builder Consume<T>() where T : class

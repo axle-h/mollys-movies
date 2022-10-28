@@ -10,12 +10,12 @@ namespace MollysMovies.Callback;
 
 public class CallbackService : BackgroundService
 {
-    private readonly IHostLifetime _lifetime;
+    private readonly IHostApplicationLifetime _lifetime;
     private readonly ILogger<CallbackService> _logger;
     private readonly IScraperClient _scraperClient;
     private readonly TransmissionCallbackOptions _options; 
     
-    public CallbackService(IHostLifetime lifetime, ILogger<CallbackService> logger, IScraperClient scraperClient, IOptions<TransmissionCallbackOptions> options)
+    public CallbackService(IHostApplicationLifetime lifetime, ILogger<CallbackService> logger, IScraperClient scraperClient, IOptions<TransmissionCallbackOptions> options)
     {
         _lifetime = lifetime;
         _logger = logger;
@@ -41,7 +41,7 @@ public class CallbackService : BackgroundService
         }
         finally
         {
-            await _lifetime.StopAsync(CancellationToken.None);
+            _lifetime.StopApplication();
         }
     }
 }

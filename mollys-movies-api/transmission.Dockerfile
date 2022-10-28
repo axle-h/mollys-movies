@@ -23,7 +23,7 @@ RUN mkdir /config && echo $'{\n\
     "blocklist-url": "http://www.example.com/blocklist",\n\
     "cache-size-mb": 4,\n\
     "dht-enabled": true,\n\
-    "download-dir": "/downloads/complete",\n\
+    "download-dir": "/downloads",\n\
     "download-queue-enabled": true,\n\
     "download-queue-size": 5,\n\
     "encryption": 1,\n\

@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MollysMovies.Scraper;
 using MollysMovies.Scraper.Health;
@@ -19,7 +21,10 @@ public class ScraperHealthCheckTests : IClassFixture<AutoMockFixtureBuilder<Scra
     {
         _fixture = builder
             .InjectMock<IScraper>()
+            .Services(s => s.AddMemoryCache())
             .Build();
+        
+        _fixture.Provider.GetRequiredService<IMemoryCache>().Remove("health-some-scraper");
     }
 
     private HealthCheckContext Context => new()

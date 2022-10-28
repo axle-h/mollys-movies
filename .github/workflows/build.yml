@@ -150,32 +150,21 @@ jobs:
       - name: Restore helm dependencies
         run: helm dependency update 
         working-directory: helm
-      
-      - name: OCI meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: ${{ env.GCR_IMAGE }}
-          tags: |
-            type=ref,event=branch,enable=${{ github.ref != format('refs/heads/{0}', 'master') }}
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
 
       - name: Login to repository
         run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
 
       - name: Build
         run: |
-          VERSION=$(echo '${{ steps.meta.outputs.json }}' | jq -r '.labels["org.opencontainers.image.version"]')
+          SHA=$(git rev-parse --short HEAD)
           SEMVER=0.0.$GITHUB_RUN_NUMBER
-          if [[ $VERSION != "latest" ]]; then
-            SEMVER=$SEMVER-$VERSION
+          if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
+            SEMVER=$SEMVER-$SHA
           fi
-          echo "app-version: $VERSION, version: $SEMVER"
-          helm package . --app-version $VERSION --version $SEMVER
+          echo "app-version: $SHA, version: $SEMVER"
+          helm package . --app-version sha-$SHA --version $SEMVER
         working-directory: helm
 
       - name: Publish
         run: helm push ./*.tgz oci://${{ env.GCR_IMAGE }}
         working-directory: helm
-
-

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using MollysMovies.Common;
 using MollysMovies.Common.Movies;
@@ -29,12 +30,14 @@ public class MovieService : IMovieService
     private readonly ISystemClock _clock;
     private readonly IMovieRepository _repository;
     private readonly ILogger<MovieService> _logger;
+    private readonly IValidator<CreateMovieRequest> _createMovieRequestValidator;
 
-    public MovieService(ISystemClock clock, IMovieRepository repository, ILogger<MovieService> logger)
+    public MovieService(ISystemClock clock, IMovieRepository repository, ILogger<MovieService> logger, IValidator<CreateMovieRequest> createMovieRequestValidator)
     {
         _clock = clock;
         _repository = repository;
         _logger = logger;
+        _createMovieRequestValidator = createMovieRequestValidator;
     }
 
     public async Task SetStatusAsync(string imdbCode, MovieDownloadStatusCode status,
@@ -60,6 +63,8 @@ public class MovieService : IMovieService
         {
             throw new InvalidOperationException($"scrape session of type {session.Type} cannot create torrent movies");
         }
+        
+        await _createMovieRequestValidator.ValidateAndThrowAsync(request, cancellationToken);
 
         var imdbCode = request.ImdbCode.Trim().ToLower();
         var meta = new MovieMeta

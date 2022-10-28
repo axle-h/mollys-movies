@@ -7,7 +7,9 @@ using FluentAssertions.Execution;
 using MassTransit;
 using MollysMovies.Common.Movies;
 using MollysMovies.Common.Scraper;
+using MollysMovies.FakeData;
 using MollysMovies.FakeData.FileSystem;
+using MollysMovies.Scraper.E2e.Fixtures;
 using MollysMovies.Scraper.Plex.Models;
 using MollysMovies.ScraperClient;
 using MongoDB.Driver;
@@ -99,8 +101,9 @@ public class StartScrapeTests
             .GivenYtsListMovies()
             .GivenYtsImages()
             .GivenPlexLibraries()
-            .GivenPlexMovieLibrary(new PlexMovieMetadata("100", date))
-            .GivenPlexMovieMetadata("100", date);
+            .GivenPlexMovieLibrary(new PlexMovieMetadata("99", date), new PlexMovieMetadata("100", date))
+            .GivenPlexMovieMetadata("99", date, imdbCode: "tt8015984") // dunkirk already in plex
+            .GivenPlexMovieMetadata("100", date); // American Psycho
 
         var initialScrape = new Scrape {StartDate = DateTime.UtcNow};
         await fixture.Scrapes.InsertOneAsync(initialScrape);
@@ -123,9 +126,9 @@ public class StartScrapeTests
         {
             Id = initialScrape.Id,
             Success = true,
-            MovieCount = 2,
-            TorrentCount = 4,
-            LocalMovieCount = 1,
+            MovieCount = 4,
+            TorrentCount = 8,
+            LocalMovieCount = 2,
             StartDate = initialScrape.StartDate,
             Sources = new List<ScrapeSource>
             {
@@ -134,15 +137,15 @@ public class StartScrapeTests
                     Source = "yts",
                     Type = ScraperType.Torrent,
                     Success = true,
-                    MovieCount = 2,
-                    TorrentCount = 4
+                    MovieCount = 4,
+                    TorrentCount = 8
                 },
                 new()
                 {
                     Source = "plex",
                     Type = ScraperType.Local,
                     Success = true,
-                    MovieCount = 1
+                    MovieCount = 2
                 }
             }
         }, o => o
@@ -240,10 +243,15 @@ public class StartScrapeTests
                     Url = "https://yts.mx/torrent/download/E5EBAECEC177D427B5C99E81B608A30BCA2B996C"
                 }
             },
-            LocalSource = null,
+            LocalSource = new LocalMovieSource
+            {
+                DateCreated = DateTime.Parse("2121-12-01T12:00:00"),
+                Source = "plex"
+            },
             Download = null
         }, o => o.WithoutStrictOrdering()
-            .Excluding(x => x.Meta!.DateScraped));
+            .Excluding(x => x.Meta!.DateScraped)
+            .Excluding(x => x.LocalSource!.DateScraped));
 
         var psycho = await fixture.Movies.Find(x => x.ImdbCode == "tt0144084").FirstOrDefaultAsync();
         psycho.Should().NotBeNull("should create movie with imdb code tt0144084");
@@ -267,5 +275,9 @@ public class StartScrapeTests
         }, o => o.WithoutStrictOrdering()
             .Excluding(x => x.Meta!.DateScraped)
             .Excluding(x => x.LocalSource!.DateScraped));
+
+        fixture.FileSystem.Should().ContainFile("/var/downloads/yts_list_movies_1.json", Fake.Resource("Yts.list_movies.json"));
+        fixture.FileSystem.Should().ContainFile("/var/downloads/yts_list_movies_2.json", Fake.Resource("Yts.list_movies_2.json"));
+        fixture.FileSystem.Should().ContainFile("/var/downloads/yts_list_movies_3.json", Fake.Resource("Yts.list_movies_empty.json"));
     }
 }

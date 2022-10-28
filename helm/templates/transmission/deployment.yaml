@@ -42,7 +42,3 @@ spec:
             httpGet:
               path: /transmission
               port: rpc
-          readinessProbe:
-            httpGet:
-              path: /transmission
-              port: rpc

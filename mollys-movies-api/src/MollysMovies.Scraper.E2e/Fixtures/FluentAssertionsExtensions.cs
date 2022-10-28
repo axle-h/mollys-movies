@@ -6,7 +6,7 @@ using FluentAssertions.Equivalency;
 using FluentValidation.Internal;
 using WireMock.Server;
 
-namespace MollysMovies.Scraper.E2e;
+namespace MollysMovies.Scraper.E2e.Fixtures;
 
 public static class FluentAssertionsExtensions
 {

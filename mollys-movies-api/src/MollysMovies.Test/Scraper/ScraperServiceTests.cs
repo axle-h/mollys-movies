@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using FluentValidation;
 using MollysMovies.Common;
 using MollysMovies.Common.Scraper;
 using MollysMovies.FakeData;
@@ -114,6 +115,79 @@ public class ScraperServiceTests : IClassFixture<AutoMockFixtureBuilder<ScraperS
             new("local-scraper", "Local", localException.ToString()),
             new("remote-scraper", "Torrent", remoteException.ToString())
         }));
+    }
+    
+    [Fact]
+    public async Task Ignores_invalid_movies()
+    {
+        var session = FakeDto.ScrapeSession.Generate();
+        var scrape = new Scrape {Id = "100", StartDate = Fake.UtcNow};
+
+        HavingScrape(scrape);
+        HavingScrapers(session);
+
+        var remoteRequest = FakeDto.CreateMovieRequest.Generate();
+
+        _fixture
+            .Mock<ITorrentScraper>(mock =>
+            {
+                mock.Setup(x => x.ScrapeMoviesAsync(session, CancellationToken.None))
+                    .Returns(new List<CreateMovieRequest> { remoteRequest }.ToAsyncEnumerable());
+            })
+            .Mock<ILocalScraper>(mock =>
+            {
+                mock.Setup(x => x.ScrapeMoviesAsync(session, CancellationToken.None))
+                    .Returns(new List<CreateLocalMovieRequest>().ToAsyncEnumerable());
+            })
+            .Mock<IMovieService>(mock =>
+            {
+                mock.Setup(x => x.CreateMovieAsync(session, remoteRequest, CancellationToken.None))
+                    .ThrowsAsync(new ValidationException("bad things"));
+            })
+            .Mock<IScrapeRepository>(mock =>
+            {
+                mock.Setup(x => x.ReplaceAsync(scrape, CancellationToken.None)).Returns(Task.CompletedTask);
+            });
+
+        var observed = await _fixture.Subject.ScrapeAsync("100", CancellationToken.None);
+
+        _fixture.VerifyAll();
+        scrape.Should().BeEquivalentTo(
+            new Scrape
+            {
+                Id = "100",
+                StartDate = Fake.UtcNow,
+                EndDate = UtcNow,
+                Success = true,
+                MovieCount = 0,
+                TorrentCount = 0,
+                LocalMovieCount = 0,
+                Sources = new List<ScrapeSource>
+                {
+                    new()
+                    {
+                        Source = "local-scraper",
+                        Type = ScraperType.Local,
+                        Success = true,
+                        StartDate = UtcNow,
+                        EndDate = UtcNow,
+                        MovieCount = 0,
+                        TorrentCount = 0
+                    },
+                    new()
+                    {
+                        Source = "remote-scraper",
+                        Type = ScraperType.Torrent,
+                        Success = true,
+                        StartDate = UtcNow,
+                        EndDate = UtcNow,
+                        MovieCount = 0,
+                        TorrentCount = 0
+                    }
+                }
+            }
+        );
+        observed.Should().BeEquivalentTo(new NotifyScrapeComplete("100", new List<ScrapeSourceFailure>()));
     }
 
     [Fact]

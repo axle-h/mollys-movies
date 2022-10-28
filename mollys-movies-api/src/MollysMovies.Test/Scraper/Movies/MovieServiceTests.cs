@@ -4,6 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using FluentValidation;
+using FluentValidation.Internal;
+using FluentValidation.Results;
 using MollysMovies.Common.Movies;
 using MollysMovies.Common.Scraper;
 using MollysMovies.FakeData;
@@ -23,6 +26,7 @@ public class MovieServiceTests : IClassFixture<AutoMockFixtureBuilder<MovieServi
     {
         _fixture = builder
             .InjectMock<IMovieRepository>()
+            .InjectMock<IValidator<CreateMovieRequest>>()
             .MockSystemClock()
             .Build();
     }
@@ -83,6 +87,8 @@ public class MovieServiceTests : IClassFixture<AutoMockFixtureBuilder<MovieServi
                 })
                 .ReturnsAsync(Fake.Movie.Generate()));
 
+        HavingValidCreateMovieRequest(request);
+        
         await _fixture.Subject.CreateMovieAsync(session, request);
 
         using var scope = new AssertionScope();
@@ -145,7 +151,20 @@ public class MovieServiceTests : IClassFixture<AutoMockFixtureBuilder<MovieServi
         meta.DateCreated.Should().Be(request.DateCreated);
         meta.DateScraped.Should().Be(session.ScrapeDate);
     }
+    
+    [Fact]
+    public async Task Attempting_to_create_invalid_movie()
+    {
+        var request = FakeDto.CreateMovieRequest.Generate();
+        var session = FakeDto.ScrapeSession.Generate() with {Type = ScraperType.Torrent};
 
+        HavingValidCreateMovieRequest(request, isValid: false);
+
+        var act = () => _fixture.Subject.CreateMovieAsync(session, request);
+        await act.Should().ThrowAsync<ValidationException>()
+            .WithMessage("bad things");
+    }
+    
     [Fact]
     public async Task Attempting_to_create_movie_with_local_session()
     {
@@ -166,5 +185,23 @@ public class MovieServiceTests : IClassFixture<AutoMockFixtureBuilder<MovieServi
         var act = () => _fixture.Subject.CreateLocalMovieAsync(session, request);
         await act.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("scrape session of type Torrent cannot create local movies");
+    }
+    
+    private void HavingValidCreateMovieRequest(CreateMovieRequest request, bool isValid = true)
+    {
+        _fixture.Mock<IValidator<CreateMovieRequest>>(m =>
+        {
+            var setup = m.Setup(x => x.ValidateAsync(
+                It.Is<ValidationContext<CreateMovieRequest>>(r => r.InstanceToValidate == request && r.ThrowOnFailures),
+                CancellationToken.None));
+            if (isValid)
+            {
+                setup.ReturnsAsync(new ValidationResult());
+            }
+            else
+            {
+                setup.ThrowsAsync(new ValidationException("bad things"));
+            }
+        });
     }
 }
