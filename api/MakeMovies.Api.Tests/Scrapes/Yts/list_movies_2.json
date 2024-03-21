@@ -1,0 +1,98 @@
+﻿{
+  "status": "ok",
+  "status_message": "Query was successful",
+  "data": {
+    "movie_count": 3,
+    "limit": 2,
+    "page_number": 2,
+    "movies": [
+      {
+        "id": 2429,
+        "url": "https:\/\/yts.mx\/movies\/pulp-fiction-1994",
+        "imdb_code": "tt0110912",
+        "title": "Pulp Fiction",
+        "title_english": "Pulp Fiction",
+        "title_long": "Pulp Fiction (1994)",
+        "slug": "pulp-fiction-1994",
+        "year": 1994,
+        "rating": 8.9,
+        "runtime": 154,
+        "genres": [
+          "Action",
+          "Crime",
+          "Drama"
+        ],
+        "summary": "Pumpkin (Tim Roth) and Honey Bunny (Amanda Plummer) are two thieves who, while dining at a coffee shop, decide that the best thing to do is to rob it. Vincent Vega (John Travolta) and Jules Winnfield (Samuel L. Jackson), two hit men working for mob kingpin Marcellus Wallace (Ving Rhames'), are sent to retrieve a very special and very mysterious briefcase for their boss. Vincent later must also show Mrs. Wallace (Uma Thurman) a good time while her husband is out. Butch Coolidge (Bruce Willis) is an aging prizefighter who is being paid to \"take a dive\", but instead accidentally kills his opponent, and tries to flee town, but not before getting his dead father's lucky golden watch. These four seemingly unrelated stories are interwoven in a non-linear fashion.\u2014movies_are_forever",
+        "description_full": "Pumpkin (Tim Roth) and Honey Bunny (Amanda Plummer) are two thieves who, while dining at a coffee shop, decide that the best thing to do is to rob it. Vincent Vega (John Travolta) and Jules Winnfield (Samuel L. Jackson), two hit men working for mob kingpin Marcellus Wallace (Ving Rhames'), are sent to retrieve a very special and very mysterious briefcase for their boss. Vincent later must also show Mrs. Wallace (Uma Thurman) a good time while her husband is out. Butch Coolidge (Bruce Willis) is an aging prizefighter who is being paid to \"take a dive\", but instead accidentally kills his opponent, and tries to flee town, but not before getting his dead father's lucky golden watch. These four seemingly unrelated stories are interwoven in a non-linear fashion.\u2014movies_are_forever",
+        "synopsis": "Pumpkin (Tim Roth) and Honey Bunny (Amanda Plummer) are two thieves who, while dining at a coffee shop, decide that the best thing to do is to rob it. Vincent Vega (John Travolta) and Jules Winnfield (Samuel L. Jackson), two hit men working for mob kingpin Marcellus Wallace (Ving Rhames'), are sent to retrieve a very special and very mysterious briefcase for their boss. Vincent later must also show Mrs. Wallace (Uma Thurman) a good time while her husband is out. Butch Coolidge (Bruce Willis) is an aging prizefighter who is being paid to \"take a dive\", but instead accidentally kills his opponent, and tries to flee town, but not before getting his dead father's lucky golden watch. These four seemingly unrelated stories are interwoven in a non-linear fashion.\u2014movies_are_forever",
+        "yt_trailer_code": "tGpTpVyI_OQ",
+        "language": "en",
+        "mpa_rating": "R",
+        "background_image": "https:\/\/yts.mx\/assets\/images\/movies\/Pulp_Fiction_1994\/background.jpg",
+        "background_image_original": "https:\/\/yts.mx\/assets\/images\/movies\/Pulp_Fiction_1994\/background.jpg",
+        "small_cover_image": "https:\/\/yts.mx\/assets\/images\/movies\/Pulp_Fiction_1994\/small-cover.jpg",
+        "medium_cover_image": "https:\/\/yts.mx\/assets\/images\/movies\/Pulp_Fiction_1994\/medium-cover.jpg",
+        "large_cover_image": "https:\/\/yts.mx\/assets\/images\/movies\/Pulp_Fiction_1994\/large-cover.jpg",
+        "state": "ok",
+        "torrents": [
+          {
+            "url": "https:\/\/yts.mx\/torrent\/download\/D55F1E840F1BD6576EAD67A4D04E5D6EA294414B",
+            "hash": "D55F1E840F1BD6576EAD67A4D04E5D6EA294414B",
+            "quality": "720p",
+            "type": "bluray",
+            "is_repack": "0",
+            "video_codec": "x264",
+            "bit_depth": "8",
+            "audio_channels": "2.0",
+            "seeds": 73,
+            "peers": 7,
+            "size": "751.29 MB",
+            "size_bytes": 787784663,
+            "date_uploaded": "2015-11-01 01:52:11",
+            "date_uploaded_unix": 1446339131
+          },
+          {
+            "url": "https:\/\/yts.mx\/torrent\/download\/3F8F219568B8B229581DDDD7BC5A5E889E906A9B",
+            "hash": "3F8F219568B8B229581DDDD7BC5A5E889E906A9B",
+            "quality": "1080p",
+            "type": "bluray",
+            "is_repack": "0",
+            "video_codec": "x264",
+            "bit_depth": "8",
+            "audio_channels": "2.0",
+            "seeds": 100,
+            "peers": 31,
+            "size": "1.40 GB",
+            "size_bytes": 1503238554,
+            "date_uploaded": "2015-11-01 01:52:15",
+            "date_uploaded_unix": 1446339135
+          },
+          {
+            "url": "https:\/\/yts.mx\/torrent\/download\/592388870FD8E5C07AE5BB6508E96CF7E0A14B0B",
+            "hash": "592388870FD8E5C07AE5BB6508E96CF7E0A14B0B",
+            "quality": "2160p",
+            "type": "bluray",
+            "is_repack": "",
+            "video_codec": "x265",
+            "bit_depth": "10",
+            "audio_channels": "5.1",
+            "seeds": 100,
+            "peers": 21,
+            "size": "7.3 GB",
+            "size_bytes": 7838315315,
+            "date_uploaded": "2022-12-20 21:31:56",
+            "date_uploaded_unix": 1671568316
+          }
+        ],
+        "date_uploaded": "2015-11-01 01:52:11",
+        "date_uploaded_unix": 1446339131
+      }
+    ]
+  },
+  "@meta": {
+    "server_time": 1660082896,
+    "server_timezone": "CET",
+    "api_version": 2,
+    "execution_time": "0.15 ms"
+  }
+}

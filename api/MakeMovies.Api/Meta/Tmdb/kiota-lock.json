@@ -1,0 +1,30 @@
+{
+  "descriptionHash": "1B5425CD952D1CB31D25D1C7633BAD42D8AEE69C3465B9A68D2A1D77E34D415CFEA254781265BB34165A7F7AF4AE7C245C1B88EA5646CCA1F0BC999717AA9AE5",
+  "descriptionLocation": "tmdb-api-v3.json",
+  "lockFileVersion": "1.0.0",
+  "kiotaVersion": "1.11.1",
+  "clientClassName": "TmdbClient",
+  "clientNamespaceName": "MakeMovies.Meta.Tmdb",
+  "language": "CSharp",
+  "usesBackingStore": false,
+  "excludeBackwardCompatible": true,
+  "includeAdditionalData": true,
+  "serializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory"
+  ],
+  "deserializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory"
+  ],
+  "structuredMimeTypes": [
+    "application/json",
+    "text/plain;q=0.9",
+    "application/x-www-form-urlencoded;q=0.2",
+    "multipart/form-data;q=0.1"
+  ],
+  "includePatterns": [
+    "/3/find/*",
+    "/3/configuration"
+  ],
+  "excludePatterns": [],
+  "disabledValidationRules": []
+}

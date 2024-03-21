@@ -1,0 +1,36 @@
+{
+  "name": "make-movies-ui",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "openapi-generator": "openapi-generator-cli generate"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/next-js": "^2.2.0",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@microsoft/kiota-abstractions": "^1.0.0-preview.44",
+    "@microsoft/kiota-http-fetchlibrary": "^1.0.0-preview.43",
+    "@microsoft/kiota-serialization-json": "^1.0.0-preview.44",
+    "framer-motion": "^11.0.14",
+    "next": "14.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "swr": "^2.2.5"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.12.0",
+    "@types/node": "^20.11.28",
+    "@types/react": "^18.2.67",
+    "@types/react-dom": "^18.2.22",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.1.2",
+    "typescript": "^5.4.2"
+  }
+}

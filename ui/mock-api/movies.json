@@ -1,0 +1,93 @@
+[
+  {
+    "id": "yts_3926",
+    "imdbCode": "tt0114709",
+    "title": "Toy Story",
+    "searchableTitle": "toy story",
+    "language": "en",
+    "year": 1995,
+    "rating": 8.3,
+    "runtime": "01:21:00",
+    "summary": "The film takes place in a world where toys come to life whenever their owners are not looking. It is in this world where we focus on the toys belonging to one Andy Davis. Andy\u0027s favourite toy is a cowboy doll named Woody, who often acts as the leader or \u0022man with a plan\u0022 for the other toys. During an early birthday celebration, Andy receives an action figure of the famous Buzz Lightyear. However, trouble arises when this new toy begins attracting the attention of not just Andy, but the other toys as well; making Woody jealous. Things get way out of hand when both Woody and Buzz are snatched away from Andy and end up in the hands of his maniacal neighbour. Together, the two toys must set aside their differences and escape.\u2014Affan Jamsari",
+    "description": "The film takes place in a world where toys come to life whenever their owners are not looking. It is in this world where we focus on the toys belonging to one Andy Davis. Andy\u0027s favourite toy is a cowboy doll named Woody, who often acts as the leader or \u0022man with a plan\u0022 for the other toys. During an early birthday celebration, Andy receives an action figure of the famous Buzz Lightyear. However, trouble arises when this new toy begins attracting the attention of not just Andy, but the other toys as well; making Woody jealous. Things get way out of hand when both Woody and Buzz are snatched away from Andy and end up in the hands of his maniacal neighbour. Together, the two toys must set aside their differences and escape.\u2014Affan Jamsari",
+    "genres": [
+      "action",
+      "adventure",
+      "animation",
+      "comedy",
+      "family",
+      "fantasy"
+    ],
+    "youTubeTrailerCode": "b_Wwb4H0oxQ",
+    "dateCreated": "2015-11-01T02:44:31Z",
+    "torrents": [
+      {
+        "hash": "71C36367F0416D36DC1B7712C3F662EBA65203B6",
+        "quality": "720p",
+        "type": "bluray",
+        "sizeBytes": 525923779,
+        "dateCreated": "2015-11-01T02:44:31Z"
+      },
+      {
+        "hash": "AEE2BCB4DA9A5650941C64B127F491683C273D86",
+        "quality": "1080p",
+        "type": "bluray",
+        "sizeBytes": 1181116006,
+        "dateCreated": "2015-11-01T02:44:34Z"
+      },
+      {
+        "hash": "B2AF99B855E901EDECB97061EA1EAA794B8DFDFA",
+        "quality": "2160p",
+        "type": "bluray",
+        "sizeBytes": 4005057004,
+        "dateCreated": "2022-03-29T23:39:56Z"
+      }
+    ],
+    "inLibrary": false
+  },
+  {
+    "id": "yts_1632",
+    "imdbCode": "tt0816692",
+    "title": "Interstellar",
+    "searchableTitle": "interstellar",
+    "language": "en",
+    "year": 2014,
+    "rating": 8.7,
+    "runtime": "02:49:00",
+    "summary": "In Earth\u0027s future, a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable. Professor Brand, a brilliant N.A.S.A. physicist, is working on plans to save mankind by transporting Earth\u0027s population to a new home via a womhole. But first, Brand must send former N.A.S.A. pilot Cooper and a team of researchers through the wormhole and across the galaxy to find out which of three planets could be mankind\u0027s new home.\u2014Jwelch5742",
+    "description": "In Earth\u0027s future, a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable. Professor Brand, a brilliant N.A.S.A. physicist, is working on plans to save mankind by transporting Earth\u0027s population to a new home via a womhole. But first, Brand must send former N.A.S.A. pilot Cooper and a team of researchers through the wormhole and across the galaxy to find out which of three planets could be mankind\u0027s new home.\u2014Jwelch5742",
+    "genres": [
+      "action",
+      "adventure",
+      "drama",
+      "sci-fi",
+      "thriller"
+    ],
+    "youTubeTrailerCode": "0vxOhd4qlnA",
+    "dateCreated": "2015-10-31T23:18:06Z",
+    "torrents": [
+      {
+        "hash": "6E88B3F25BA49D483D740A652BF013C341BC5373",
+        "quality": "720p",
+        "type": "bluray",
+        "sizeBytes": 1095216660,
+        "dateCreated": "2015-10-31T23:18:06Z"
+      },
+      {
+        "hash": "89599BF4DC369A3A8ECA26411C5CCF922D78B486",
+        "quality": "1080p",
+        "type": "bluray",
+        "sizeBytes": 2426656522,
+        "dateCreated": "2015-10-31T23:18:07Z"
+      },
+      {
+        "hash": "FA9773B96054338D1F1C10F2A4D2D9BD5A578B92",
+        "quality": "2160p",
+        "type": "bluray",
+        "sizeBytes": 8976481649,
+        "dateCreated": "2021-05-26T10:30:10Z"
+      }
+    ],
+    "inLibrary": true
+  }
+]

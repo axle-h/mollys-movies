@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.12.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
+        <PackageReference Include="RichardSzalay.MockHttp" Version="7.0.0" />
+        <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="20.0.15" />
+        <PackageReference Include="WireMock.Net" Version="1.5.49" />
+        <PackageReference Include="xunit" Version="2.4.2"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="6.0.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MakeMovies.Api\MakeMovies.Api.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="movies.json" />
+      <EmbeddedResource Include="Meta\Tmdb\tt0816692.jpg" />
+      <EmbeddedResource Include="Scrapes\Yts\list_movies.json" />
+      <EmbeddedResource Include="Scrapes\Yts\list_movies_2.json" />
+      <EmbeddedResource Include="Scrapes\Yts\list_movies_empty.json" />
+      <EmbeddedResource Include="Downloads\TransmissionRpc\conflict.html" />
+      <EmbeddedResource Include="Downloads\TransmissionRpc\torrent_add.json" />
+      <EmbeddedResource Include="Downloads\TransmissionRpc\torrent_get.json" />
+      <EmbeddedResource Include="Downloads\TransmissionRpc\torrent_get_all.json" />
+    </ItemGroup>
+
+</Project>

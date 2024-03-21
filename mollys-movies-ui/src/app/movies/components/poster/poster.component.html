@@ -1,7 +1,0 @@
-<div class="poster" *ngIf="movie" [ngClass]="{ thumb: thumb }">
-  <img [src]="basePath + '/movie-images/' + movie.imageFilename" alt="" />
-  <div class="overlay" *ngIf="thumb && !!movie.localSource?.source">
-    <i class="fa fa-download"></i>
-  </div>
-</div>
-

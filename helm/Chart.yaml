@@ -1,15 +1,6 @@
 apiVersion: v2
-name: mollys-movies
-description: Movie scraper and torrent manager
+name: openvpn-proxy
+description: Socks5 proxy over a VPN
 type: application
 version: 0.0.1
 appVersion: "latest"
-dependencies:
-  - name: mongodb
-    version: 12.1.26
-    repository: https://charts.bitnami.com/bitnami
-    alias: mongodb
-  - name: rabbitmq
-    version: 8.31.2
-    repository: https://charts.bitnami.com/bitnami
-    alias: rabbitmq

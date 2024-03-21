@@ -1,0 +1,31 @@
+### Health
+GET {{host}}/health/ready
+Accept: application/json
+
+### Get Genres
+GET {{host}}/api/v1/genre
+Accept: application/json
+
+### Get Movies
+GET {{host}}/api/v1/movie?page=1&limit=10&search=inter
+Accept: application/json
+
+### Get Movie
+GET {{host}}/api/v1/movie/yts_1632
+Accept: application/json
+
+### Get Scrapes
+GET {{host}}/api/v1/scrape
+Accept: application/json
+
+### Start Scrape
+POST {{host}}/api/v1/scrape
+Accept: application/json
+
+### Update Library Movies
+POST {{host}}/api/v1/library
+Accept: application/json
+
+### Get Downloads
+GET {{host}}/api/v1/download
+Accept: application/json

@@ -1,6 +1,0 @@
-# keep only the models, ignore everything else
-git_push.sh
-.gitignore
-.npmignore
-api/
-*.ts

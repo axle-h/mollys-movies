@@ -1,7 +1,0 @@
-dist/
-e2e/
-node_modules/
-.git/
-Dockerfile
-docker-compose.yml
-README.md

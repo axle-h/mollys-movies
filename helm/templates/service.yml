@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "make-movies.vpn.fullname" . }}
+  labels:
+    {{- include "make-movies.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.vpn.service.type }}
+  ports:
+    - port: {{ .Values.vpn.service.port }}
+      targetPort: socks
+      protocol: TCP
+      name: socks
+  selector:
+    {{- include "make-movies.vpn.selectorLabels" . | nindent 4 }}
