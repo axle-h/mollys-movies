@@ -1,0 +1,98 @@
+name: Build
+on: [push]
+jobs:
+  build-test-api:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:8.0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache nuget packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('api/**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Build
+        run: dotnet build
+        working-directory: api
+
+      - name: Test
+        run: dotnet test
+        working-directory: api
+  
+  build-test-ui:
+    runs-on: ubuntu-latest
+    container: node:21
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('ui/**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Restore npm packages
+        run: npm install
+        working-directory: ui
+
+      - name: Build
+        run: npm run build
+        working-directory: ui
+
+  openvpn-docker:
+    needs:
+      - build-test-api
+      - build-test-ui
+    uses: ./.github/workflows/publish-container.yml
+    with:
+      name: openvpn
+      context: ./openvpn
+      file: ./openvpn/Dockerfile
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  helm:
+    needs:
+      - build-test-api
+      - build-test-ui
+    runs-on: ubuntu-latest
+    env:
+      GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/make-movies
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install helm
+        uses: azure/setup-helm@v4
+        with:
+          version: '3.14.3'
+
+      - name: Restore helm dependencies
+        run: helm dependency update 
+        working-directory: helm
+
+      - name: Login to repository
+        run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
+
+      - name: Build
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          SEMVER=0.0.$GITHUB_RUN_NUMBER
+          if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
+            SEMVER=$SEMVER-$SHA
+          fi
+          echo "app-version: $SHA, version: $SEMVER"
+          helm package . --app-version sha-$SHA --version $SEMVER
+        working-directory: helm
+
+      - name: Publish
+        run: helm push ./*.tgz oci://${{ env.GCR_IMAGE }}
+        working-directory: helm
