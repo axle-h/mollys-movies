@@ -19,8 +19,7 @@ public class TransmissionRpcClientTests
         {
             Transmission = new Transmission { Url = new Uri("https://transmission") }
         });
-        var handler = new TransmissionRpcClient.TransmissionRpcHandler(_mockHttp);
-        _client = new TransmissionRpcClient(new HttpClient(handler), options);
+        _client = new TransmissionRpcClient(new HttpClient(_mockHttp), options);
     }
 
     [Fact]

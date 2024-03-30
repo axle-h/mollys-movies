@@ -20,6 +20,10 @@ public interface ITransmissionRpcClient
 
 public class TransmissionRpcClient : ITransmissionRpcClient
 {
+    private const string TransmissionSessionIdHeader = "X-Transmission-Session-Id";
+    private string? _currentSessionId;
+    private readonly SemaphoreSlim _sessionLock = new(1);
+    
     private readonly HttpClient _client;
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
@@ -75,14 +79,56 @@ public class TransmissionRpcClient : ITransmissionRpcClient
     private async Task<TResponse> Rpc<TRequest, TResponse>(string method, TRequest body, CancellationToken cancellationToken)
         where TRequest : class where TResponse : class
     {
+        // optimistic attempt using current session
+        var response = await TryRpc<TRequest, TResponse>(method, body, cancellationToken);
+        if (response is not null)
+        {
+            return response;
+        }
+
+        // otherwise lock whilst establishing current session to avoid multiple threads clobbering each other
+        await _sessionLock.WaitAsync(cancellationToken);
+        try
+        {
+            for (var attempt = 0; attempt < 10; attempt++)
+            {
+                response = await TryRpc<TRequest, TResponse>(method, body, cancellationToken);
+                if (response is not null)
+                {
+                    return response;
+                }
+            }
+        }
+        finally
+        {
+            _sessionLock.Release();
+        }
+
+        throw new Exception("failed to get a transmission session");
+    }
+
+    private async Task<TResponse?> TryRpc<TRequest, TResponse>(string method, TRequest body,
+        CancellationToken cancellationToken)
+        where TRequest : class where TResponse : class
+    {
         var wrapper = new TransmissionRequestWrapper<TRequest>(method, body);
         var request = new HttpRequestMessage(HttpMethod.Post, "rpc")
         {
             Content = JsonContent.Create(wrapper, new MediaTypeHeaderValue("application/json-rpc"), _jsonOptions)
         };
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+        if (_currentSessionId is not null)
+        {
+            request.Headers.Add(TransmissionSessionIdHeader, _currentSessionId);
+        }
+        
         var response = await _client.SendAsync(request, cancellationToken);
+        if (response.StatusCode == HttpStatusCode.Conflict)
+        {
+            _currentSessionId = response.Headers.GetValues(TransmissionSessionIdHeader).FirstOrDefault();
+            return null;
+        }
+        
         response.EnsureSuccessStatusCode();
 
         var content = await response.Content.ReadFromJsonAsync<TransmissionResponseWrapper<TResponse>>(_jsonOptions, cancellationToken);
@@ -110,35 +156,4 @@ public class TransmissionRpcClient : ITransmissionRpcClient
     private record TorrentAddResponse(
         [property: JsonPropertyName("torrent-added")] NewTorrentInfo? TorrentAdded,
         [property: JsonPropertyName("torrent-duplicate")] NewTorrentInfo? TorrentDuplicate);
-
-    public class TransmissionRpcHandler : DelegatingHandler
-    {
-        private const string TransmissionSessionIdHeader = "X-Transmission-Session-Id";
-        private static string? _currentSessionId;
-
-        public TransmissionRpcHandler(HttpMessageHandler innerHandler) : base(innerHandler)
-        {
-        }
-
-        protected override async Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request,
-            CancellationToken cancellationToken)
-        {
-            if (_currentSessionId is not null)
-            {
-                request.Headers.Add(TransmissionSessionIdHeader, _currentSessionId);
-            }
-
-            var response = await base.SendAsync(request, cancellationToken);
-            if (response.StatusCode != HttpStatusCode.Conflict)
-            {
-                return response;
-            }
-
-            // session id is unset or stale
-            _currentSessionId = response.Headers.GetValues(TransmissionSessionIdHeader).FirstOrDefault();
-            request.Headers.Add(TransmissionSessionIdHeader, _currentSessionId);
-            return await base.SendAsync(request, cancellationToken);
-        }
-    }
 }

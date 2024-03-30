@@ -69,7 +69,7 @@ builder.Services.AddSwaggerGen(c => {
 });
 
 // Download
-builder.Services.AddTransmissionRpcClient();
+builder.Services.AddHttpClient<ITransmissionRpcClient, TransmissionRpcClient>();
 builder.Services
     .AddSingleton<IDownloadRepository, DownloadRepository>()
     .AddSingleton<TorrentService>()
