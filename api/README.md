@@ -54,7 +54,12 @@ dotnet run --project MakeMovies.Api
 
 For simplicity, I run this on Ubuntu via systemd.
 
-1. Create systemd unit in `/etc/systemd/system/make-movies-api.service`:
+1. Build and copy an export to a central place.
+    ```shell
+    mkdir -p /opt/make-movies/api
+    dotnet publish MakeMovies.Api/MakeMovies.Api.csproj  -c Release -o /opt/make-movies/api
+    ```
+2. Create systemd unit in `/etc/systemd/system/make-movies-api.service`:
 
     ```ini
     [Unit]
@@ -75,8 +80,8 @@ For simplicity, I run this on Ubuntu via systemd.
     WantedBy=default.target
     ```
     > Note: set a user and group that has access to your movie library & transmission download folder.
-2. Create data directories: `mkdir -p /var/make-movies/images`
-3. Configure via environment variables in `/var/make-movies/.env` e.g.
+3. Create data directories: `mkdir -p /var/make-movies/images`
+4. Configure via environment variables in `/var/make-movies/.env` e.g.
     ```ini
     Scrape__ProxyUrl=socks5://localhost:1080
     Meta__ImagePath=/var/make-movies/images
@@ -89,6 +94,10 @@ For simplicity, I run this on Ubuntu via systemd.
     Download__Transmission__Url=http://localhost:9091/transmission/
     Db__Path=/var/make-movies
     ```
-4. Reload systemd `sudo systemctl daemon-reload`
-5. Install via `sudo ./build.sh`
+5. Reload systemd, start and enable the service:
+    ```shell
+    sudo systemctl daemon-reload
+    sudo systemctl enable make-movies-api
+    sudo systemctl start make-movies-api
+    ```
 6. Check health with `curl http://localhost:5000/health/ready`
