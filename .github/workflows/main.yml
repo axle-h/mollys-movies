@@ -86,7 +86,7 @@ jobs:
         run: |
           SHA=$(git rev-parse --short HEAD)
           SEMVER=0.0.$GITHUB_RUN_NUMBER
-          if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             SEMVER=$SEMVER-$SHA
           fi
           echo "app-version: $SHA, version: $SEMVER"
